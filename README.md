@@ -10,7 +10,7 @@ Flutter SDK used: 3.27.1
 
 ```dart
 flutter pub get --no-example
-dart pub global run intl_utils:generate
+dart run intl_utils:generate
 ```
 
 ```dart

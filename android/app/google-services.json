@@ -14,19 +14,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "1047757805269-ml9574e1h28s6jngbr6di5ed78ma9k5f.apps.googleusercontent.com",
+          "client_id": "1047757805269-bsu9fdnoh3stie2tjjl6mmuthjg278oe.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.fastlab.chatify_ai",
-            "certificate_hash": "01e76fb81af5bc5333e021108c4644f56ad18299"
-          }
-        },
-        {
-          "client_id": "1047757805269-o42csiuelu2d27ml1el3mo6cli12mf38.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.fastlab.chatify_ai",
-            "certificate_hash": "e58eba2ec278d32bf31fd9268903162a8a7f693d"
+            "certificate_hash": "5690973e7b24dbccb379a1a3ea3ef56802bf1b38"
           }
         },
         {

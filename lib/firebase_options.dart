@@ -66,4 +66,5 @@ class DefaultFirebaseOptions {
     projectId: 'chatifyai-7a694',
     storageBucket: 'chatifyai-7a694.firebasestorage.app',
   );
+
 }
