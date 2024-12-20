@@ -1,0 +1,62 @@
+{
+  "project_info": {
+    "project_number": "1047757805269",
+    "project_id": "chatifyai-7a694",
+    "storage_bucket": "chatifyai-7a694.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1047757805269:android:f293bc706d0baa3116745c",
+        "android_client_info": {
+          "package_name": "com.fastlab.chatify_ai"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1047757805269-ml9574e1h28s6jngbr6di5ed78ma9k5f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fastlab.chatify_ai",
+            "certificate_hash": "01e76fb81af5bc5333e021108c4644f56ad18299"
+          }
+        },
+        {
+          "client_id": "1047757805269-o42csiuelu2d27ml1el3mo6cli12mf38.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fastlab.chatify_ai",
+            "certificate_hash": "e58eba2ec278d32bf31fd9268903162a8a7f693d"
+          }
+        },
+        {
+          "client_id": "1047757805269-vehjquq0bcc886qnmsvadkr8o3pb05hr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJwoS6GArUAyDU2AElmuo5shGDbVtUymQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1047757805269-vehjquq0bcc886qnmsvadkr8o3pb05hr.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1047757805269-h2f1kq2cgh5tslouqk3om5rkqrenutc7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.chatifyAi"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
