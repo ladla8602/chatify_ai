@@ -4,6 +4,8 @@ A new Flutter project.
 
 ## Getting Started
 
+Flutter SDK used: 3.27.1
+
 ## Flutter commands
 
 ```dart
