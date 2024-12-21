@@ -13,7 +13,7 @@ class LoginView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AuthController _authController = Get.find<AuthController>();
+    final AuthController _authController = Get.find();
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
       body: Stack(
@@ -60,14 +60,16 @@ class LoginView extends StatelessWidget {
                 ),
               ),
               Spacer(),
-              SizedBox(
-                child: CommonElevatedButtonWidget(
-                  isLoading: _authController.isLoading.value,
-                  imagePath: SvgPicture.asset("assets/icons/google.svg"),
-                  text: 'login_with_google'.tr.toUpperCase(),
-                  onClick: _authController.loginWithGoogle,
-                ),
-              ),
+              Obx(() {
+                return SizedBox(
+                  child: CommonElevatedButtonWidget(
+                    isLoading: _authController.isLoading.value,
+                    imagePath: SvgPicture.asset("assets/icons/google.svg"),
+                    text: 'login_with_google'.tr.toUpperCase(),
+                    onClick: _authController.loginWithGoogle,
+                  ),
+                );
+              }),
               const SizedBox(height: 20),
               RichText(
                   text: TextSpan(style: TextStyle(fontSize: 13, color: Theme.of(context).colorScheme.onPrimary), children: [
