@@ -41,18 +41,21 @@ class AuthController extends GetxController {
         return; // User canceled the login
       }
 
-      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
       final AuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
 
       // Sign in to Firebase
-      final UserCredential userCredential = await _auth.signInWithCredential(credential);
+      final UserCredential userCredential =
+          await _auth.signInWithCredential(credential);
       final User? firebaseUser = userCredential.user;
 
       // Save firebaseUser data to Firestore
-      final usersCollection = _firestore.collection(AppConstant.usersCollection);
+      final usersCollection =
+          _firestore.collection(AppConstant.usersCollection);
       await usersCollection.doc(firebaseUser?.uid).set({
         'uid': firebaseUser?.uid,
         'name': firebaseUser?.displayName,
