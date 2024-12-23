@@ -8,6 +8,7 @@ import '../routes/app_routes.dart';
 
 class AuthController extends GetxController {
   var isLoading = false.obs;
+  var checkbox = false.obs;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
@@ -19,6 +20,11 @@ class AuthController extends GetxController {
   void onInit() {
     super.onInit();
     firebaseUser.bindStream(_auth.authStateChanges());
+  }
+
+  void toggleCheckbox(bool? value) {
+    checkbox.value = value ?? false;
+    update();
   }
 
   bool get isLoggedIn => firebaseUser.value != null;

@@ -20,8 +20,10 @@ class LoginView extends StatelessWidget {
         fit: StackFit.expand,
         children: [
           ColorFiltered(
-            colorFilter: const ColorFilter.mode(Colors.black54, BlendMode.darken),
-            child: Image.asset("assets/images/Splash.png", height: double.infinity, fit: BoxFit.cover),
+            colorFilter:
+                const ColorFilter.mode(Colors.black54, BlendMode.darken),
+            child: Image.asset("assets/images/Splash.png",
+                height: double.infinity, fit: BoxFit.cover),
           ),
           Column(
             children: [
@@ -29,7 +31,10 @@ class LoginView extends StatelessWidget {
               const SizedBox(height: 5),
               Text(
                 'app_name'.tr,
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Theme.of(context).primaryColor),
+                style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).primaryColor),
               ),
               const SizedBox(height: 35),
               SizedBox(
@@ -41,17 +46,26 @@ class LoginView extends StatelessWidget {
                       TypewriterAnimatedText(
                         'typewriter_animation_first'.tr,
                         textAlign: TextAlign.center,
-                        textStyle: const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.white),
+                        textStyle: const TextStyle(
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
                       ),
                       TypewriterAnimatedText(
                         'typewriter_animation_second'.tr,
                         textAlign: TextAlign.center,
-                        textStyle: const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.white),
+                        textStyle: const TextStyle(
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
                       ),
                       TypewriterAnimatedText(
                         'typewriter_animation_third'.tr,
                         textAlign: TextAlign.center,
-                        textStyle: const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.white),
+                        textStyle: const TextStyle(
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
                       ),
                     ],
                     totalRepeatCount: 20,
@@ -72,17 +86,22 @@ class LoginView extends StatelessWidget {
               }),
               const SizedBox(height: 20),
               RichText(
-                  text: TextSpan(style: TextStyle(fontSize: 13, color: Theme.of(context).colorScheme.onPrimary), children: [
-                TextSpan(text: 'already_account'.tr),
-                TextSpan(
-                  text: 'login'.tr,
-                  style: TextStyle(color: Theme.of(context).primaryColor),
-                  recognizer: TapGestureRecognizer()
-                    ..onTap = () {
-                      // Navigator.of(context).push(MaterialPageRoute(builder: (context) => const EmailLoginScreen()));
-                    },
-                ),
-              ])),
+                  text: TextSpan(
+                      style: TextStyle(
+                          fontSize: 13,
+                          color: Theme.of(context).colorScheme.onPrimary),
+                      children: [
+                    TextSpan(text: 'already_account'.tr),
+                    TextSpan(
+                      text: 'login'.tr,
+                      style: TextStyle(color: Theme.of(context).primaryColor),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          // Navigator.of(context).push(MaterialPageRoute(builder: (context) => const EmailLoginScreen()));
+                          Get.toNamed('/signin');
+                        },
+                    ),
+                  ])),
               SizedBox(height: height * 0.025),
             ],
           ),

@@ -31,6 +31,8 @@ dependencies:
   cloud_firestore:
   google_sign_in:
   flutter_svg:
+  hugeicons:
+  pinput: ^5.0.0
 
 dev_dependencies:
   flutter_test:
