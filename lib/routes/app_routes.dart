@@ -1,3 +1,4 @@
+import 'package:chatify_ai/views/history/history.dart';
 import 'package:get/get.dart';
 
 import '../views/auth/forgot_password_view.dart';
@@ -16,6 +17,7 @@ class AppRoutes {
   static const otpaccess = '/otpaccess';
   static const dashboard = '/dashboard';
   static const chatview = '/chatview';
+  static const history = '/history';
 
   static final pages = [
     GetPage(name: login, page: () => LoginView()),
@@ -24,6 +26,7 @@ class AppRoutes {
     GetPage(name: otpaccess, page: () => OtpCodeView()),
     GetPage(name: forgotpassword, page: () => ForgotPasswordView()),
     GetPage(name: chatview, page: () => ChatView()),
+    GetPage(name: history, page: () => History()),
     GetPage(name: dashboard, page: () => DashboardView()),
   ];
 }

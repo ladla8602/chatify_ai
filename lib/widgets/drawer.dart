@@ -1,4 +1,7 @@
+import 'package:chatify_ai/views/history/history.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:hugeicons/hugeicons.dart';
 
 import '../constants/constants.dart';
@@ -91,7 +94,8 @@ class DrawerWigets extends StatelessWidget {
             ),
             onTap: () {
               // Handle item tap
-              Navigator.pop(context); // Close the drawer
+               Get.toNamed('/history'); 
+            
             },
           ),
           ListTile(
