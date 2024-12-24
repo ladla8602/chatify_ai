@@ -124,7 +124,9 @@ class SigninView extends StatelessWidget {
             Spacer(),
             ElevatedButtonWigets(
               text: 'Sign in',
-              onClick: () {},
+              onClick: () {
+                Get.toNamed('/chatview');
+              },
               backgroundColor: ColorConstant.primaryColor,
             ),
           ],
