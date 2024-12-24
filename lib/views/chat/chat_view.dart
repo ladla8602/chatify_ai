@@ -12,13 +12,14 @@ class ChatView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         leading: IconButton(
           icon: Icon(HugeIcons.strokeRoundedMenuSquare, color: Colors.black),
           onPressed: () {
-            Scaffold.of(Get.context!).openDrawer();
+            Scaffold.of(context).openDrawer();
           },
         ),
         title: Text(
@@ -31,98 +32,150 @@ class ChatView extends StatelessWidget {
         centerTitle: true,
       ),
       drawer: DrawerWigets(),
-      body: Column(
+      body: Stack(
         children: [
-          SizedBox(height: 50),
-          Center(
-            child: Column(
-              children: [
-                SvgPicture.asset(
-                  'assets/icons/chatify_logo.svg',
-                  height: 60,
-                  color: ColorConstant.primaryColor,
-                ),
-                SizedBox(height: 10),
-                Text(
-                  "Capabilities",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: ColorConstant.primaryColor,
-                  ),
-                ),
-                SizedBox(height: 30),
-                Column(
+          Column(
+            children: [
+              SizedBox(height: 50),
+              Center(
+                child: Column(
                   children: [
-                    CapabilityCard(
-                      title: "Answer all your questions.",
-                      subtitle: "(Just ask me anything you like!)",
+                    SvgPicture.asset(
+                      'assets/icons/chatify_logo.svg',
+                      height: 60,
+                      color: ColorConstant.primaryColor,
                     ),
-                    CapabilityCard(
-                      title: "Generate all the text you want.",
-                      subtitle: "(essays, articles, reports, stories, & more)",
+                    SizedBox(height: 10),
+                    Text(
+                      "Capabilities",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: ColorConstant.primaryColor,
+                      ),
                     ),
-                    CapabilityCard(
-                      title: "Conversational AI.",
-                      subtitle: "(I can talk to you like a natural human)",
+                    SizedBox(height: 30),
+                    Column(
+                      children: [
+                        CapabilityCard(
+                          title: "Answer all your questions.",
+                          subtitle: "(Just ask me anything you like!)",
+                        ),
+                        CapabilityCard(
+                          title: "Generate all the text you want.",
+                          subtitle:
+                              "(essays, articles, reports, stories, & more)",
+                        ),
+                        CapabilityCard(
+                          title: "Conversational AI.",
+                          subtitle: "(I can talk to you like a natural human)",
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 30),
+                    Text(
+                      "These are just a few examples of what I can do.",
+                      style:
+                          TextStyle(color: Colors.grey.shade400, fontSize: 13),
                     ),
                   ],
                 ),
-                SizedBox(height: 30),
-                Text(
-                  "These are just a few examples of what I can do.",
-                  style: TextStyle(color: Colors.grey.shade400, fontSize: 13),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-      bottomNavigationBar: BottomAppBar(
-        color: Colors.white,
-        elevation: 0,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            children: [
-              Expanded(
-                child: TextFormField(
-                  style: TextStyle(fontSize: 14),
-                  decoration: InputDecoration(
-                    contentPadding:
-                        EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-                    prefixIcon: Icon(
-                      HugeIcons.strokeRoundedAdd01,
-                      size: 20,
-                    ),
-                    suffixIcon: Icon(
-                      HugeIcons.strokeRoundedMic01,
-                      size: 20,
-                    ),
-                    hintText: "Ask me anything...",
-                    hintStyle: TextStyle(fontSize: 13),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    filled: true,
-                    fillColor: Colors.grey.shade100,
-                  ),
-                ),
               ),
-              SizedBox(width: 10),
-              CircleAvatar(
-                backgroundColor: ColorConstant.primaryColor,
-                child: Icon(
-                  HugeIcons.strokeRoundedSent,
-                  color: Colors.white,
-                  size: 18,
-                ),
-              )
             ],
           ),
-        ),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      style: TextStyle(fontSize: 14),
+                      decoration: InputDecoration(
+                        contentPadding:
+                            EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+                        prefixIcon: Icon(
+                          HugeIcons.strokeRoundedAdd01,
+                          size: 20,
+                        ),
+                        suffixIcon: Icon(
+                          HugeIcons.strokeRoundedMic01,
+                          size: 20,
+                        ),
+                        hintText: "Ask me anything...",
+                        hintStyle: TextStyle(fontSize: 13),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        filled: true,
+                        fillColor: Colors.grey.shade100,
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 10),
+                  CircleAvatar(
+                    backgroundColor: ColorConstant.primaryColor,
+                    child: Icon(
+                      HugeIcons.strokeRoundedSent,
+                      color: Colors.white,
+                      size: 18,
+                    ),
+                  )
+                ],
+              ),
+            ),
+          )
+        ],
       ),
+      // bottomNavigationBar: BottomAppBar(
+      //   color: Colors.white,
+      //   elevation: 0,
+      //   child: Padding(
+      //     padding: const EdgeInsets.all(8.0),
+      //     child: Row(
+      //       children: [
+      //         Expanded(
+      //           child: TextFormField(
+      //             style: TextStyle(fontSize: 14),
+      //             decoration: InputDecoration(
+      //               contentPadding:
+      //                   EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+      //               prefixIcon: Icon(
+      //                 HugeIcons.strokeRoundedAdd01,
+      //                 size: 20,
+      //               ),
+      //               suffixIcon: Icon(
+      //                 HugeIcons.strokeRoundedMic01,
+      //                 size: 20,
+      //               ),
+      //               hintText: "Ask me anything...",
+      //               hintStyle: TextStyle(fontSize: 13),
+      //               border: OutlineInputBorder(
+      //                 borderSide: BorderSide.none,
+      //                 borderRadius: BorderRadius.circular(8),
+      //               ),
+      //               filled: true,
+      //               fillColor: Colors.grey.shade100,
+      //             ),
+      //           ),
+      //         ),
+      //         SizedBox(width: 10),
+      //         CircleAvatar(
+      //           backgroundColor: ColorConstant.primaryColor,
+      //           child: Icon(
+      //             HugeIcons.strokeRoundedSent,
+      //             color: Colors.white,
+      //             size: 18,
+      //           ),
+      //         )
+      //       ],
+      //     ),
+      //   ),
+      // ),
     );
   }
 }
