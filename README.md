@@ -4,11 +4,13 @@ A new Flutter project.
 
 ## Getting Started
 
+Flutter SDK used: 3.27.1
+
 ## Flutter commands
 
 ```dart
 flutter pub get --no-example
-dart pub global run intl_utils:generate
+dart run intl_utils:generate
 ```
 
 ```dart
