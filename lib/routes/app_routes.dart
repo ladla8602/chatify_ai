@@ -7,6 +7,7 @@ import '../views/auth/signin_view.dart';
 import '../views/auth/singup_view.dart';
 import '../views/chat/chat_view.dart';
 import '../views/dashboard_view.dart';
+import '../views/upgrade/upgrade_view.dart';
 
 class AppRoutes {
   static const login = '/login';
@@ -16,6 +17,7 @@ class AppRoutes {
   static const otpaccess = '/otpaccess';
   static const dashboard = '/dashboard';
   static const chatview = '/chatview';
+  static const upgrade = '/upgrade';
 
   static final pages = [
     GetPage(name: login, page: () => LoginView()),
@@ -24,6 +26,7 @@ class AppRoutes {
     GetPage(name: otpaccess, page: () => OtpCodeView()),
     GetPage(name: forgotpassword, page: () => ForgotPasswordView()),
     GetPage(name: chatview, page: () => ChatView()),
+    GetPage(name: upgrade, page: () => UpgradeView()),
     GetPage(name: dashboard, page: () => DashboardView()),
   ];
 }

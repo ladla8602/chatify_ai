@@ -108,7 +108,7 @@ class SigninView extends StatelessWidget {
                     Spacer(),
                     GestureDetector(
                       onTap: () {
-                        Get.toNamed('/forgotpassword');
+                        Get.toNamed(AppRoutes.forgotpassword);
                       },
                       child: Text("Forgot Password?",
                           style: TextStyle(
@@ -124,7 +124,7 @@ class SigninView extends StatelessWidget {
                         style: TextStyle(fontSize: 13)),
                     SizedBox(width: 5),
                     GestureDetector(
-                      onTap: () => Get.toNamed('/signup'),
+                      onTap: () => Get.toNamed(AppRoutes.signup),
                       child: Text('Sign up',
                           style: TextStyle(
                               fontSize: 13, color: ColorConstant.primaryColor)),

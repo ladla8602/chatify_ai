@@ -16,11 +16,13 @@ class ChatView extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        leading: IconButton(
-          icon: Icon(HugeIcons.strokeRoundedMenuSquare, color: Colors.black),
-          onPressed: () {
-            Scaffold.of(context).openDrawer();
-          },
+        leading: Builder(
+          builder: (context) => IconButton(
+            icon: Icon(HugeIcons.strokeRoundedMenuSquare, color: Colors.black),
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+            },
+          ),
         ),
         title: Text(
           "Chatify-AI",
@@ -131,51 +133,6 @@ class ChatView extends StatelessWidget {
           )
         ],
       ),
-      // bottomNavigationBar: BottomAppBar(
-      //   color: Colors.white,
-      //   elevation: 0,
-      //   child: Padding(
-      //     padding: const EdgeInsets.all(8.0),
-      //     child: Row(
-      //       children: [
-      //         Expanded(
-      //           child: TextFormField(
-      //             style: TextStyle(fontSize: 14),
-      //             decoration: InputDecoration(
-      //               contentPadding:
-      //                   EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-      //               prefixIcon: Icon(
-      //                 HugeIcons.strokeRoundedAdd01,
-      //                 size: 20,
-      //               ),
-      //               suffixIcon: Icon(
-      //                 HugeIcons.strokeRoundedMic01,
-      //                 size: 20,
-      //               ),
-      //               hintText: "Ask me anything...",
-      //               hintStyle: TextStyle(fontSize: 13),
-      //               border: OutlineInputBorder(
-      //                 borderSide: BorderSide.none,
-      //                 borderRadius: BorderRadius.circular(8),
-      //               ),
-      //               filled: true,
-      //               fillColor: Colors.grey.shade100,
-      //             ),
-      //           ),
-      //         ),
-      //         SizedBox(width: 10),
-      //         CircleAvatar(
-      //           backgroundColor: ColorConstant.primaryColor,
-      //           child: Icon(
-      //             HugeIcons.strokeRoundedSent,
-      //             color: Colors.white,
-      //             size: 18,
-      //           ),
-      //         )
-      //       ],
-      //     ),
-      //   ),
-      // ),
     );
   }
 }
