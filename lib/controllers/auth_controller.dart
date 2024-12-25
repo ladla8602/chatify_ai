@@ -74,6 +74,7 @@ class AuthController extends GetxController {
       isLoading.value = true;
 
       await _auth.signInWithEmailAndPassword(email: email, password: password);
+      Get.toNamed(AppRoutes.chatview);
     } catch (e) {
       Get.snackbar("Error", "Failed to sign in: $e");
     } finally {
@@ -122,10 +123,90 @@ class AuthController extends GetxController {
       isLoading.value = false;
     }
   }
+  // Future<void> loginWithGoogle() async {
+  //   try {
+  //     isLoading.value = true;
+
+  //     final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+  //     if (googleUser == null) {
+  //       isLoading.value = false;
+  //       return; // User canceled the login
+  //     }
+
+  //     final GoogleSignInAuthentication googleAuth =
+  //         await googleUser.authentication;
+  //     final AuthCredential credential = GoogleAuthProvider.credential(
+  //       accessToken: googleAuth.accessToken,
+  //       idToken: googleAuth.idToken,
+  //     );
+
+  //     // Sign in to Firebase
+  //     final UserCredential userCredential =
+  //         await _auth.signInWithCredential(credential);
+  //     final User? firebaseUser = userCredential.user;
+
+  //     // Check if user already exists in Firestore
+  //     final docSnapshot = await _firestore
+  //         .collection(AppConstant.usersCollection)
+  //         .doc(firebaseUser?.uid)
+  //         .get();
+
+  //     if (!docSnapshot.exists) {
+  //       // New Google user -> Create in Firestore
+  //       await _createUserInFirestore(firebaseUser);
+
+  //       // Navigate to password setup screen
+  //       Get.toNamed(AppRoutes.setPassword, arguments: firebaseUser);
+  //     } else {
+  //       // Existing user
+  //       Get.snackbar(
+  //           "Welcome back", "Logged in as ${firebaseUser?.displayName}");
+  //       Get.toNamed(AppRoutes.chatview);
+  //     }
+  //   } catch (e) {
+  //     Get.printError(info: e.toString());
+  //     Get.snackbar("Error", e.toString());
+  //   } finally {
+  //     isLoading.value = false;
+  //   }
+  // }
+
+  Future<void> setPasswordForGoogleUser(String password) async {
+    try {
+      isLoading.value = true;
+
+      final user = _auth.currentUser;
+      if (user == null) {
+        throw Exception("No authenticated user found");
+      }
+
+      final email = user.email;
+      if (email == null) {
+        throw Exception("Google user has no email");
+      }
+
+      // Reauthenticate the user before updating
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        idToken: await user.getIdToken(),
+      );
+      await user.reauthenticateWithCredential(credential);
+
+      // Update password
+      await user.updatePassword(password);
+      Get.snackbar("Success", "Password set successfully");
+      Get.toNamed(AppRoutes.chatview);
+    } catch (e) {
+      Get.snackbar("Error", "Failed to set password: $e");
+    } finally {
+      isLoading.value = false;
+    }
+  }
 
   Future<void> logout() async {
     await _googleSignIn.signOut();
     await _auth.signOut();
+
+    Get.toNamed(AppRoutes.login);
   }
 
   Future<void> _createUserInFirestore(User? firebaseUser) async {
@@ -134,28 +215,21 @@ class AuthController extends GetxController {
         throw Exception("Firebase user is null");
       }
 
-      // Ensure the data is available
-      String uid = firebaseUser.uid;
-      String email = firebaseUser.email ?? 'No email';
-      String? displayName = firebaseUser.displayName ?? 'No name';
-      String? photoUrl = firebaseUser.photoURL ?? 'No photo URL';
-
-      // Create or update the user in Firestore
       final usersCollection =
           _firestore.collection(AppConstant.usersCollection);
-      await usersCollection.doc(uid).set({
-        'uid': uid,
-        'email': email,
-        'name': displayName,
-        'photoUrl': photoUrl,
-        'lastLogin': DateTime.now(),
-      });
+      final userDoc = usersCollection.doc(firebaseUser.uid);
 
-      print("User added to Firestore with uid: $uid");
+      // Merge user data
+      await userDoc.set({
+        'uid': firebaseUser.uid,
+        'email': firebaseUser.email ?? '',
+        'name': firebaseUser.displayName ?? '',
+        'photoUrl': firebaseUser.photoURL ?? '',
+        'lastLogin': DateTime.now(),
+      }, SetOptions(merge: true)); // Merge with existing data
     } catch (e) {
-      // Log any errors for debugging
       print("Error creating user in Firestore: $e");
-      Get.snackbar("Error", "Failed to create user in Firestore: $e");
+      Get.snackbar("Error", "Failed to save user data: $e");
     }
   }
 }

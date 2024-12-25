@@ -13,7 +13,7 @@ class DrawerWigets extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AuthController authController = Get.find();
+    final AuthController authController = Get.find<AuthController>();
     return Drawer(
       backgroundColor: Colors.white,
       child: ListView(
@@ -23,39 +23,40 @@ class DrawerWigets extends StatelessWidget {
             height: 110,
             child: DrawerHeader(
               decoration: BoxDecoration(),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  CircleAvatar(
-                    radius: 30,
-                    backgroundImage: NetworkImage(
-                        'https://images.pexels.com/photos/29850612/pexels-photo-29850612/free-photo-of-stylish-man-posing-by-waterfront-at-twilight.jpeg?auto=compress&cs=tinysrgb&w=400'),
-                  ),
-                  SizedBox(width: 10),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Andrew Ainsley',
-                          style: TextStyle(
-                            // color: Colors.white,
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          'andrew83@gmail.com',
-                          style: TextStyle(
-                            // color: Colors.grey.shade100,
-                            fontSize: 12,
-                          ),
-                        )
-                      ],
+              child: Obx(() {
+                final user = authController.firebaseUser.value;
+                return Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    CircleAvatar(
+                      radius: 30,
+                      backgroundImage: NetworkImage(
+                          'https://images.pexels.com/photos/29850612/pexels-photo-29850612/free-photo-of-stylish-man-posing-by-waterfront-at-twilight.jpeg?auto=compress&cs=tinysrgb&w=400'),
                     ),
-                  ),
-                ],
-              ),
+                    SizedBox(width: 10),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            user?.displayName ?? '',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            user?.email ?? '',
+                            style: TextStyle(
+                              fontSize: 12,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                );
+              }),
             ),
           ),
           GestureDetector(
@@ -136,7 +137,7 @@ class DrawerWigets extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Upgrade to PRO!',
+                            'upgrade_to_pro'.tr,
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 16,
@@ -144,7 +145,7 @@ class DrawerWigets extends StatelessWidget {
                           ),
                           SizedBox(height: 2),
                           Text(
-                            'Enjoy all the benefits and explore more features!',
+                            'enjoy_all_benefits'.tr,
                             style: TextStyle(fontSize: 12, color: Colors.white),
                           )
                         ],
@@ -159,10 +160,11 @@ class DrawerWigets extends StatelessWidget {
                   ],
                 )),
           ),
+          SizedBox(height: 10),
           ListTile(
             leading: Icon(HugeIcons.strokeRoundedAdd01, size: 18),
             title: Text(
-              'New Chat',
+              'new_chat'.tr,
               style: TextStyle(
                 fontSize: 15,
               ),
@@ -175,7 +177,7 @@ class DrawerWigets extends StatelessWidget {
           ListTile(
             leading: Icon(HugeIcons.strokeRoundedImage01, size: 18),
             title: Text(
-              'Image generate',
+              'image_generate'.tr,
               style: TextStyle(
                 fontSize: 15,
               ),
@@ -191,7 +193,7 @@ class DrawerWigets extends StatelessWidget {
               size: 18,
             ),
             title: Text(
-              'Audio generate',
+              'audio_generate'.tr,
               style: TextStyle(
                 fontSize: 15,
               ),
@@ -204,7 +206,7 @@ class DrawerWigets extends StatelessWidget {
           ListTile(
             leading: Icon(HugeIcons.strokeRoundedClock04, size: 18),
             title: Text(
-              'History',
+              'history'.tr,
               style: TextStyle(
                 fontSize: 15,
               ),
@@ -217,27 +219,15 @@ class DrawerWigets extends StatelessWidget {
           ListTile(
             leading: Icon(HugeIcons.strokeRoundedSettings02, size: 18),
             title: Text(
-              'Settings',
+              'settings'.tr,
               style: TextStyle(
                 fontSize: 15,
               ),
             ),
             onTap: () {
-              // Handle item tap
-              Navigator.pop(context); // Close the drawer
+              Get.toNamed(AppRoutes.setting);
             },
           ),
-          ListTile(
-            leading: Icon(
-              HugeIcons.strokeRoundedLogout03,
-              size: 18,
-            ),
-            title: Text(
-              'Log Out',
-              style: TextStyle(fontSize: 15),
-            ),
-            onTap: () => authController.logout(),
-          )
         ],
       ),
     );

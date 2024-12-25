@@ -12,5 +12,12 @@ final Map<String, String> enUS = {
   "email": "Email",
   "password": "Password",
   "forgot_password": "Forgot Password?",
-  "login_with_google": "Login with Google"
+  "login_with_google": "Login with Google",
+  "upgrade_to_pro": "Upgrade to PRO!",
+  "enjoy_all_benefits": "Enjoy all the benefits and explore more features!",
+  "new_chat": "New Chat",
+  "image_generate": "Image generate",
+  "audio_generate": "Audio generate",
+  "history": "History",
+  "settings": "Settings"
 };

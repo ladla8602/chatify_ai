@@ -62,6 +62,14 @@ class SigninView extends StatelessWidget {
                     fillColor: Colors.grey.shade100,
                     filled: true,
                   ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter an email address';
+                    } else if (!GetUtils.isEmail(value)) {
+                      return 'Please enter a valid email address';
+                    }
+                    return null;
+                  },
                 ),
                 SizedBox(height: 24),
                 Text('Password'),
@@ -86,6 +94,14 @@ class SigninView extends StatelessWidget {
                     fillColor: Colors.grey.shade100,
                     filled: true,
                   ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a password';
+                    } else if (value.length < 6) {
+                      return 'Password must be at least 6 characters';
+                    }
+                    return null;
+                  },
                 ),
                 SizedBox(height: 10),
                 Row(
@@ -145,7 +161,6 @@ class SigninView extends StatelessWidget {
                               await authController.signIn(emailController.text,
                                   passwordController.text);
                             }
-                            Get.toNamed(AppRoutes.chatview);
                           },
                           backgroundColor: ColorConstant.primaryColor,
                         );

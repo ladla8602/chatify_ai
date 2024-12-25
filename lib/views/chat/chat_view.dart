@@ -25,7 +25,7 @@ class ChatView extends StatelessWidget {
           ),
         ),
         title: Text(
-          "Chatify-AI",
+          "app_name".tr,
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
