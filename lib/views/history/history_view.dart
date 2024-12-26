@@ -141,7 +141,6 @@ class History extends StatelessWidget {
         backgroundColor: Colors.white,
         appBar: AppBar(
           title: Center(child: Text('History')),
-         
           backgroundColor: Colors.white,
           actions: [
             Padding(
@@ -225,7 +224,12 @@ class History extends StatelessWidget {
                       itemBuilder: (context, index) {
                         final data = sharedata[index];
                         return ListTile(
-                          leading: Icon(HugeIcons.strokeRoundedLink01),
+                          leading: Container(
+                              height: 50,
+                              width: 50,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle, border: Border.all()),
+                              child: Icon(HugeIcons.strokeRoundedLink01)),
                           title: Text(
                             data['title'],
                             overflow: TextOverflow.ellipsis,

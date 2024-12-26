@@ -1,3 +1,4 @@
+import 'package:chatify_ai/routes/app_routes.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -127,8 +128,12 @@ class LoginView extends StatelessWidget {
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        automaticallyImplyLeading: false,
+      ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 40),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
         child: Column(
           children: [
             SvgPicture.asset(
@@ -199,7 +204,7 @@ class LoginView extends StatelessWidget {
             ElevatedButtonWigets(
               text: 'Log in',
               onClick: () {
-                Get.toNamed('/signin');
+                Get.toNamed(AppRoutes.signin);
               },
               backgroundColor: ColorConstant.primaryColor,
             ),
@@ -210,7 +215,7 @@ class LoginView extends StatelessWidget {
                 Text('Don\'t have an account?', style: TextStyle(fontSize: 13)),
                 SizedBox(width: 5),
                 GestureDetector(
-                  onTap: () => Get.toNamed('/signup'),
+                  onTap: () => Get.toNamed(AppRoutes.signup),
                   child: Text('Sign up',
                       style: TextStyle(
                           fontSize: 13, color: ColorConstant.primaryColor)),
