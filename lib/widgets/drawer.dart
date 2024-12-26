@@ -31,27 +31,32 @@ class DrawerWigets extends StatelessWidget {
                     CircleAvatar(
                       radius: 30,
                       backgroundImage: NetworkImage(
-                          'https://images.pexels.com/photos/29850612/pexels-photo-29850612/free-photo-of-stylish-man-posing-by-waterfront-at-twilight.jpeg?auto=compress&cs=tinysrgb&w=400'),
+                        user?.photoURL ??
+                            'https://cdn-icons-png.flaticon.com/128/8984/8984545.png',
+                      ),
                     ),
                     SizedBox(width: 10),
                     Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            user?.displayName ?? '',
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 5),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              user?.displayName ?? '',
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
-                          Text(
-                            user?.email ?? '',
-                            style: TextStyle(
-                              fontSize: 12,
-                            ),
-                          )
-                        ],
+                            Text(
+                              user?.email ?? '',
+                              style: TextStyle(
+                                fontSize: 12,
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ],

@@ -17,6 +17,7 @@ class SettingView extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
+        surfaceTintColor: Colors.white,
         elevation: 0,
         title: const Text(
           'Settings',
@@ -85,7 +86,9 @@ class SettingView extends StatelessWidget {
               'English (US)',
               style: TextStyle(color: Colors.grey),
             ),
-            onTap: () {},
+            onTap: () {
+              Get.toNamed(AppRoutes.languaeview);
+            },
           ),
           Obx(
             () {
