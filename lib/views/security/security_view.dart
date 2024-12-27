@@ -29,7 +29,7 @@ class Security extends StatelessWidget {
         centerTitle: true,
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16),
+        padding: EdgeInsets.symmetric(horizontal: 5),
         child: Column(
           children: [
             Obx(

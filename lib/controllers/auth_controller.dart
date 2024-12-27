@@ -82,47 +82,6 @@ class AuthController extends GetxController {
     }
   }
 
-  Future<void> loginWithGoogle() async {
-    try {
-      isLoading.value = true;
-
-      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-      if (googleUser == null) {
-        isLoading.value = false;
-        return; // User canceled the login
-      }
-
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
-      final AuthCredential credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-
-      // Sign in to Firebase
-      final UserCredential userCredential =
-          await _auth.signInWithCredential(credential);
-      final User? firebaseUser = userCredential.user;
-
-      // Save firebaseUser data to Firestore
-      final usersCollection =
-          _firestore.collection(AppConstant.usersCollection);
-      await usersCollection.doc(firebaseUser?.uid).set({
-        'uid': firebaseUser?.uid,
-        'name': firebaseUser?.displayName,
-        'email': firebaseUser?.email,
-        'photoUrl': firebaseUser?.photoURL,
-        'lastLogin': DateTime.now(),
-      });
-
-      Get.snackbar("Success", "Logged in as ${_auth.currentUser?.displayName}");
-    } catch (e) {
-      Get.printError(info: e.toString());
-      Get.snackbar("Error", e.toString());
-    } finally {
-      isLoading.value = false;
-    }
-  }
   // Future<void> loginWithGoogle() async {
   //   try {
   //     isLoading.value = true;
@@ -145,24 +104,22 @@ class AuthController extends GetxController {
   //         await _auth.signInWithCredential(credential);
   //     final User? firebaseUser = userCredential.user;
 
-  //     // Check if user already exists in Firestore
-  //     final docSnapshot = await _firestore
-  //         .collection(AppConstant.usersCollection)
-  //         .doc(firebaseUser?.uid)
-  //         .get();
+  //     // Save firebaseUser data to Firestore
+  //     final usersCollection =
+  //         _firestore.collection(AppConstant.usersCollection);
+  //     await usersCollection.doc(firebaseUser?.uid).set({
+  //       'uid': firebaseUser?.uid,
+  //       'name': firebaseUser?.displayName,
+  //       'email': firebaseUser?.email,
+  //       'photoUrl': firebaseUser?.photoURL,
+  //       'lastLogin': DateTime.now(),
+  //     });
 
-  //     if (!docSnapshot.exists) {
-  //       // New Google user -> Create in Firestore
-  //       await _createUserInFirestore(firebaseUser);
-
-  //       // Navigate to password setup screen
-  //       Get.toNamed(AppRoutes.setPassword, arguments: firebaseUser);
-  //     } else {
-  //       // Existing user
-  //       Get.snackbar(
-  //           "Welcome back", "Logged in as ${firebaseUser?.displayName}");
-  //       Get.toNamed(AppRoutes.chatview);
-  //     }
+  //     Get.snackbar("Success", "Logged in successfully",
+  //         snackPosition: SnackPosition.BOTTOM,
+  //         backgroundColor: ColorConstant.primaryColor,
+  //         colorText: Colors.white);
+  //     Get.toNamed(AppRoutes.chatview);
   //   } catch (e) {
   //     Get.printError(info: e.toString());
   //     Get.snackbar("Error", e.toString());
@@ -170,6 +127,55 @@ class AuthController extends GetxController {
   //     isLoading.value = false;
   //   }
   // }
+  Future<void> loginWithGoogle() async {
+    try {
+      isLoading.value = true;
+
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      if (googleUser == null) {
+        isLoading.value = false;
+        return; // User canceled the login
+      }
+
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      // Sign in to Firebase
+      final UserCredential userCredential =
+          await _auth.signInWithCredential(credential);
+      final User? firebaseUser = userCredential.user;
+
+      // Check if user already exists in Firestore
+      final docSnapshot = await _firestore
+          .collection(AppConstant.usersCollection)
+          .doc(firebaseUser?.uid)
+          .get();
+
+      if (!docSnapshot.exists) {
+        // New Google user -> Create in Firestore
+        await _createUserInFirestore(firebaseUser);
+
+        // Navigate to password setup screen
+        Get.toNamed(AppRoutes.setPassword, arguments: firebaseUser);
+      } else {
+        Get.snackbar("Success", "Logged in as ${firebaseUser?.displayName}",
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: ColorConstant.primaryColor,
+            colorText: Colors.white);
+
+        Get.toNamed(AppRoutes.chatview);
+      }
+    } catch (e) {
+      Get.printError(info: e.toString());
+      Get.snackbar("Error", e.toString());
+    } finally {
+      isLoading.value = false;
+    }
+  }
 
   Future<void> setPasswordForGoogleUser(String password) async {
     try {

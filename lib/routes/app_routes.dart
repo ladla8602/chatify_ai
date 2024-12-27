@@ -10,8 +10,10 @@ import '../views/auth/otp_code_view.dart';
 import '../views/auth/set_password_view.dart';
 import '../views/auth/signin_view.dart';
 import '../views/auth/singup_view.dart';
+import '../views/chat/chat_content_view.dart';
 import '../views/chat/chat_view.dart';
 import '../views/dashboard_view.dart';
+import '../views/language/language_view.dart';
 import '../views/payment/add_payment_view.dart';
 import '../views/payment/payment_methods_view.dart';
 import '../views/settings/custom_instruction_view.dart';
@@ -28,6 +30,7 @@ class AppRoutes {
   static const otpaccess = '/otpaccess';
   static const dashboard = '/dashboard';
   static const chatview = '/chatview';
+  static const chatContentView = '/chatContentView';
   static const upgrade = '/upgrade';
   static const setting = '/setting';
   static const history = '/history';
@@ -40,6 +43,7 @@ class AppRoutes {
   static const security = '/scurity';
 
   
+  static const languaeview = '/languaeview';
 
   static final pages = [
     GetPage(name: login, page: () => LoginView()),
@@ -49,12 +53,14 @@ class AppRoutes {
     GetPage(name: forgotpassword, page: () => ForgotPasswordView()),
     GetPage(name: setPassword, page: () => SetPasswordView()),
     GetPage(name: chatview, page: () => ChatView()),
+    GetPage(name: chatContentView, page: () => ChatContentView()),
     GetPage(name: upgrade, page: () => UpgradeView()),
     GetPage(name: setting, page: () => SettingView()),
     GetPage(name: customInstruction, page: () => CustomInstructionView()),
     GetPage(name: dataControls, page: () => DataControlsView()),
     GetPage(name: paymentMethods, page: () => PaymentMethodsView()),
     GetPage(name: addPaymentMethods, page: () => AddPaymentView()),
+    GetPage(name: languaeview, page: () => LanguageView()),
     GetPage(name: dashboard, page: () => DashboardView()),
     GetPage(name: history, page: () => History()),
     GetPage(name: linkedAccount, page: () => Linked_Account()),
