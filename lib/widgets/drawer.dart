@@ -1,9 +1,9 @@
 import 'package:chatify_ai/controllers/auth_controller.dart';
 import 'package:chatify_ai/routes/app_routes.dart';
+import 'package:chatify_ai/views/history/history_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/instance_manager.dart';
-import 'package:get/state_manager.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:hugeicons/hugeicons.dart';
 
 import '../constants/constants.dart';
@@ -189,7 +189,7 @@ class DrawerWigets extends StatelessWidget {
             ),
             onTap: () {
               // Handle item tap
-              Navigator.pop(context); // Close the drawer
+              Get.toNamed(AppRoutes.imageView);
             },
           ),
           ListTile(
@@ -205,7 +205,7 @@ class DrawerWigets extends StatelessWidget {
             ),
             onTap: () {
               // Handle item tap
-              Navigator.pop(context); // Close the drawer
+              Get.toNamed(AppRoutes.audioView);
             },
           ),
           ListTile(
@@ -218,7 +218,7 @@ class DrawerWigets extends StatelessWidget {
             ),
             onTap: () {
               // Handle item tap
-              Navigator.pop(context); // Close the drawer
+              Get.toNamed('/history');
             },
           ),
           ListTile(

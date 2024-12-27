@@ -13,10 +13,33 @@ class ChatView extends StatefulWidget {
   State<ChatView> createState() => _ChatViewState();
 }
 
-class _ChatViewState extends State<ChatView> {
+class _ChatViewState extends State<ChatView>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+  late Animation<Offset> _offsetAnimation;
+  TextEditingController _messageController = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      duration: const Duration(seconds: 1),
+      vsync: this,
+    );
+
+    _offsetAnimation = Tween<Offset>(
+      begin: const Offset(-1.0, 0.0), // Start off-screen to the left
+      end: Offset.zero, // End at original position
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeInOut,
+    ));
+
+    // Start the animation
+    _animationController.forward();
+  }
+
   @override
   Widget build(BuildContext context) {
-    TextEditingController _messageController = TextEditingController();
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,

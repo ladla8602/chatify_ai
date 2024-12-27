@@ -53,7 +53,9 @@ class SettingView extends StatelessWidget {
           BuildTileWigets(
             icon: HugeIcons.strokeRoundedLink01,
             title: 'Linked Accounts',
-            onTap: () {},
+            onTap: () {
+              Get.toNamed(AppRoutes.linkedAccount);
+            },
           ),
           Padding(
             padding: const EdgeInsets.symmetric(
@@ -73,12 +75,16 @@ class SettingView extends StatelessWidget {
           BuildTileWigets(
             icon: HugeIcons.strokeRoundedUser,
             title: 'Personal Info',
-            onTap: () {},
+            onTap: () {
+              Get.toNamed(AppRoutes.personalInfo);
+            },
           ),
           BuildTileWigets(
             icon: HugeIcons.strokeRoundedSecurity,
             title: 'Security',
-            onTap: () {},
+            onTap: () {
+              Get.toNamed(AppRoutes.security);
+            },
           ),
           BuildTileWigets(
             icon: HugeIcons.strokeRoundedGlobe02,

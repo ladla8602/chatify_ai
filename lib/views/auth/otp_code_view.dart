@@ -10,6 +10,7 @@ class OtpCodeView extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
 
   @override
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
