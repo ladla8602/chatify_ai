@@ -18,7 +18,7 @@ if (!OPENAI_API_KEY) {
 }
 
 // Set emulator before initializing
-process.env.FIREBASE_AUTH_EMULATOR_HOST = "127.0.0.1:9099";
+// process.env.FIREBASE_AUTH_EMULATOR_HOST = "127.0.0.1:9099";
 
 // Initialize Firebase Admin
 initializeApp();
