@@ -11,5 +11,5 @@
     "target": "ESNext"
   },
   "compileOnSave": true,
-  "include": ["src"]
+  "include": ["src/*"]
 }

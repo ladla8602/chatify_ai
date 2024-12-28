@@ -26,6 +26,9 @@ module.exports = {
     "import",
   ],
   rules: {
+    "require-jsdoc": "off",
+    "valid-jsdoc": "off",
+    "max-len": "off",
     "object-curly-spacing": "off",
     "quotes": ["error", "double"],
     "import/no-unresolved": 0,

@@ -1,54 +1,136 @@
-// The Firebase Admin SDK to access Firestore.
-import { initializeApp } from "firebase-admin/app";
-// import { getFirestore } from "firebase-admin/firestore";
+// index.ts
 import { onCall } from "firebase-functions/v2/https";
-import * as logger from "firebase-functions/logger";
-// import { getAuth } from "firebase-admin/auth";
+import { logger } from "firebase-functions";
+import { initializeApp } from "firebase-admin/app";
+import { OpenAIService } from "./openai-service.js";
+// import { AuthService } from "./auth-service.js";
+import { RequestValidator } from "./validators.js";
+import type { ChatRequest, ChatResponse } from "./types.js";
+import { config } from "dotenv";
+import { getAuth, ListUsersResult } from "firebase-admin/auth";
 
+// Load environment variables
+config();
+
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+if (!OPENAI_API_KEY) {
+  throw new Error("OPENAI_API_KEY environment variable is required");
+}
+
+// Set emulator before initializing
+process.env.FIREBASE_AUTH_EMULATOR_HOST = "127.0.0.1:9099";
+
+// Initialize Firebase Admin
 initializeApp();
-// const db = getFirestore();
 
-// Middleware function to validate Firebase ID token
-// const validateAuthToken = async (req: any, res: any, next: any) => {
-//   const idToken = req.headers.authorization?.split('Bearer ')[1];
+export const askChatGPT = onCall<ChatRequest, Promise<ChatResponse>>({
+  maxInstances: 2,
+  timeoutSeconds: 30,
+  memory: "128MiB",
+}, async (request) => {
+  try {
+    const { auth } = request;
 
-//   if (!idToken) {
-//     res.status(401).send("Authorization token is required");
-//     return;
-//   }
+    if (!auth || !auth.uid) {
+      throw new Error("Authentication required");
+    }
+    // Validate request
+    const message = RequestValidator.validateMessage(request.data.message);
 
-//   try {
-//     const decodedToken = await getAuth().verifyIdToken(idToken);
-//     req.user = decodedToken; // Attach user info to request
-//     next(); // Proceed to the next handler
-//   } catch (error) {
-//     res.status(403).send("Unauthorized access");
-//   }
-// };
+    // Log request
+    logger.info("Processing request", {
+      uid: request.auth?.uid,
+      messageLength: message.length,
+      timestamp: new Date().toISOString(),
+    });
 
-// export const askChatGPT = onRequest((req: any, res) => {
-//   logger.info("Ask ChatGPT", { structuredData: true });
-//   validateAuthToken(req, res, () => {
-//     const user = req.user;
-//     logger.info("Authenticated user:", { uid: user.uid });
+    // Get OpenAI service instance
+    const openAIService = OpenAIService.getInstance(OPENAI_API_KEY);
 
-//     // Process the request, e.g., interact with ChatGPT, and respond
-//     res.send(`Hello, ${user.uid}. You can now ask ChatGPT!`);
-//   });
-// });
+    // Generate response with timeout
+    const timeoutPromise = new Promise<string>((_, reject) =>
+      setTimeout(() => reject(new Error("Request timeout")), 25000)
+    );
 
-export const askChatGPT2 = onCall(async (request) => {
-  logger.info(process.env.OPENAI_API_KEY, { structuredData: true });
+    const response = await Promise.race<string>([
+      openAIService.generateCompletion(message),
+      timeoutPromise,
+    ]);
 
-  // Check if the request is authenticated
-  if (!request.auth) {
-    throw new Error("Authentication required");
+    // Log success
+    logger.info("Request successful", {
+      uid: request.auth?.uid,
+      responseLength: response.length,
+    });
+
+    return {
+      success: true,
+      message: response,
+      timestamp: new Date().toISOString(),
+    };
+  } catch (error) {
+    // Log error
+    logger.error("Error in askChatGPT:", {
+      error: error instanceof Error ? {
+        message: error.message,
+        stack: error.stack,
+        name: error.name,
+      } : "Unknown error",
+      uid: request.auth?.uid,
+      timestamp: new Date().toISOString(),
+    });
+
+    // Return error response
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "An unexpected error occurred",
+      timestamp: new Date().toISOString(),
+    };
   }
+});
 
-  // Access the authenticated user
-  const user = request.auth;
-  logger.info("Authenticated user:", { uid: user.uid });
+export const getUsers = onCall(async (request) => {
+  try {
+    const { auth } = request;
 
-  // Process the request, e.g., interact with ChatGPT, and respond
-  return `Hello, ${user.uid}. You can now ask ChatGPT!`;
+    if (!auth || !auth.uid) {
+      throw new Error("Authentication required");
+    }
+
+    // Only allow admin users
+    const user = await getAuth().getUser(request.auth?.uid || "");
+    // const isAdmin = user.customClaims?.isAdmin === true;
+
+    if (!user || user.email !== process.env.ADMIN_EMAIL) {
+      throw new Error("Unauthorized access");
+    }
+
+    const users = [];
+    let pageToken;
+    do {
+      const result: ListUsersResult = await getAuth().listUsers(1000, pageToken);
+      users.push(...result.users);
+      pageToken = result.pageToken;
+    } while (pageToken);
+
+    return {
+      success: true,
+      users: users.map((user) => ({
+        uid: user.uid,
+        email: user.email,
+        image: user.photoURL,
+        emailVerified: user.emailVerified,
+        displayName: user.displayName,
+        createdAt: user.metadata.creationTime,
+      })),
+      timestamp: new Date().toISOString(),
+    };
+  } catch (error) {
+    logger.error("Error in getUsers:", error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "An unexpected error occurred",
+      timestamp: new Date().toISOString(),
+    };
+  }
 });
