@@ -1,15 +1,19 @@
+import 'package:chatify_ai/constants/constants.dart';
+import 'package:chatify_ai/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
+import 'package:get/utils.dart';
 import 'package:hugeicons/hugeicons.dart';
 
 class BuildTileWigets extends StatelessWidget {
-  final IconData icon;
+  final IconData? icon;
   final String title;
   final Widget? trailing;
   final VoidCallback? onTap;
   const BuildTileWigets({
     super.key,
-    required this.icon,
+    this.icon,
     required this.title,
     this.trailing,
     this.onTap,
@@ -69,6 +73,48 @@ class CustomSwitchButtonWigets extends StatelessWidget {
                   color: Colors.white,
                 ),
               ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class GetPrimeWigets extends StatelessWidget {
+  const GetPrimeWigets({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Get.toNamed(AppRoutes.upgrade);
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 6, vertical: 5),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(40),
+          gradient: LinearGradient(
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+              colors: [
+                ColorConstant.primaryColor.withOpacity(0.6),
+                ColorConstant.primaryColor,
+                ColorConstant.primaryColor.withOpacity(0.7),
+              ]),
+        ),
+        child: Row(
+          children: [
+            Icon(
+              HugeIcons.strokeRoundedCrown,
+              color: Colors.white,
+              size: 18,
+              fill: 1,
+            ),
+            SizedBox(width: 8),
+            Text(
+              'GET PRIMEUM',
+              style: TextStyle(color: Colors.white, fontSize: 12),
             ),
           ],
         ),
