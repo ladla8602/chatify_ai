@@ -1,3 +1,4 @@
+import 'package:chatify_ai/models/user.model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -51,16 +52,24 @@ class AuthController extends GetxController {
       final User? firebaseUser = userCredential.user;
       // Optionally save additional user data to Firestore
       if (firebaseUser != null) {
-        await _firestore.collection('users').doc(firebaseUser.uid).set({
-          'uid': firebaseUser.uid,
-          'email': firebaseUser.email,
-          'lastLogin': DateTime.now(),
-        });
+        Locale? deviceLocale = Get.locale ?? Get.deviceLocale;
+        UserModel userModel = UserModel(
+          uid: firebaseUser.uid,
+          displayName: firebaseUser.displayName ?? 'Anonymous',
+          email: firebaseUser.email ?? 'N/A',
+          photoURL: firebaseUser.photoURL,
+          createdAt: DateTime.now(),
+          lastActive: DateTime.now(),
+          settings: UserSettings(
+            notifications: true,
+            phoneLanguage: deviceLocale?.languageCode ?? 'unknown',
+            countryCode: deviceLocale?.countryCode ?? 'unknown',
+          ),
+        );
+        await _firestore.collection('users').doc(firebaseUser.uid).set(userModel.toFirestore());
 
         Get.snackbar("Success", "Account created successfully",
-            snackPosition: SnackPosition.BOTTOM,
-            backgroundColor: ColorConstant.primaryColor,
-            colorText: Colors.white);
+            snackPosition: SnackPosition.BOTTOM, backgroundColor: ColorConstant.primaryColor, colorText: Colors.white);
       }
     } on FirebaseAuthException catch (e) {
       Get.snackbar("Error", e.message ?? "An error occurred");
@@ -137,23 +146,18 @@ class AuthController extends GetxController {
         return; // User canceled the login
       }
 
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
       final AuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
 
       // Sign in to Firebase
-      final UserCredential userCredential =
-          await _auth.signInWithCredential(credential);
+      final UserCredential userCredential = await _auth.signInWithCredential(credential);
       final User? firebaseUser = userCredential.user;
 
       // Check if user already exists in Firestore
-      final docSnapshot = await _firestore
-          .collection(AppConstant.usersCollection)
-          .doc(firebaseUser?.uid)
-          .get();
+      final docSnapshot = await _firestore.collection(AppConstant.usersCollection).doc(firebaseUser?.uid).get();
 
       if (!docSnapshot.exists) {
         // New Google user -> Create in Firestore
@@ -163,9 +167,7 @@ class AuthController extends GetxController {
         Get.offNamed(AppRoutes.setPassword, arguments: firebaseUser);
       } else {
         Get.snackbar("Success", "Logged in as ${firebaseUser?.displayName}",
-            snackPosition: SnackPosition.BOTTOM,
-            backgroundColor: ColorConstant.primaryColor,
-            colorText: Colors.white);
+            snackPosition: SnackPosition.BOTTOM, backgroundColor: ColorConstant.primaryColor, colorText: Colors.white);
 
         Get.offNamed(AppRoutes.chatview);
       }
@@ -221,8 +223,7 @@ class AuthController extends GetxController {
         throw Exception("Firebase user is null");
       }
 
-      final usersCollection =
-          _firestore.collection(AppConstant.usersCollection);
+      final usersCollection = _firestore.collection(AppConstant.usersCollection);
       final userDoc = usersCollection.doc(firebaseUser.uid);
 
       // Merge user data

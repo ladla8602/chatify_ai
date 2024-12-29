@@ -44,3 +44,77 @@ Follow this doc - https://firebase.google.com/docs/flutter/setup?platform=androi
 firebase emulators:start --import ./firebase-export-1735389641472PTCgSf --export-on-exit
 
 firebase functions:delete myFunction
+
+## 4. Firestore Database Design
+
+`users` Collection
+
+```js
+users/{userId}
+{
+  uid: string,          // Firebase Auth UID
+  displayName: string,
+  email: string,
+  photoURL: string?,
+  createdAt: timestamp,
+  lastActive: timestamp,
+  settings: {
+    notifications: boolean,
+    phoneLanguage: string,
+    countryCode: string
+  }
+}
+```
+
+`chatBots` Collection
+
+```js
+chatBots/[botId]
+{
+  botName: string,
+  botAvatar: string,
+  botRole: string,
+  botMessage: string,
+  botPrompt: string,
+  botStatus: sring,  // active, inactive
+  createdAt: timestamp,
+}
+```
+
+`chatRooms` Collection
+
+```js
+chatRooms/{chatRoomId}
+{
+  userId: string,       // Reference to user who owns this chat
+  botId: string,        // Identifier for the AI bot
+  createdAt: timestamp,
+  lastMessage: {
+    content: string,
+    timestamp: timestamp,
+    senderId: string    // Either userId or botId
+  },
+  metadata: {
+    customInstructions: string?
+  }
+}
+```
+
+`messages` Collection (Subcollection of chatRooms)
+
+```js
+chatRooms/{chatRoomId}/messages/{messageId}
+{
+  content: string,
+  timestamp: timestamp,
+  senderId: string,     // Either userId or botId
+  senderType: string,   // 'user' or 'bot'
+  status: string,       // 'sent', 'delivered', 'error'
+  type: string,         // 'text', 'image', 'system'
+  metadata: {
+    tokens: number?,    // For tracking token usage
+    model: string?,     // AI model used
+    error: string?      // Error message if status is 'error'
+  }
+}
+```

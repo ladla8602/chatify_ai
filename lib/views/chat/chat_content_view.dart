@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:intl/intl.dart';
 import '../../controllers/auth_controller.dart';
-import '../../services/chat_room_service.dart';
+import '../../services/chat_service.dart';
 import '../../services/open_ai_service.dart';
 import '../../constants/constants.dart';
 
@@ -34,7 +34,7 @@ class _ChatContentViewState extends State<ChatContentView> {
 
   // Initialize chat room (either create a new one or fetch an existing one)
   Future<void> _initializeChatRoom() async {
-    final chatRoomService = ChatRoomService();
+    final chatRoomService = ChatService();
     String? roomId = await chatRoomService.createChatRoom();
     setState(() {
       chatRoomId = roomId;
@@ -45,24 +45,15 @@ class _ChatContentViewState extends State<ChatContentView> {
   void _sendMessage() async {
     if (_messageController.text.isNotEmpty && chatRoomId != null) {
       // Send the user's message to Firestore
-      FirebaseFirestore.instance
-          .collection('chats')
-          .doc(chatRoomId)
-          .collection('messages')
-          .add({
+      FirebaseFirestore.instance.collection('chats').doc(chatRoomId).collection('messages').add({
         'text': _messageController.text,
         'senderId': userId,
         'createdAt': Timestamp.now(),
       });
 
       // Get AI response and save it to Firestore
-      String response =
-          await OpenAIService().getAIResponse(_messageController.text);
-      FirebaseFirestore.instance
-          .collection('chats')
-          .doc(chatRoomId)
-          .collection('messages')
-          .add({
+      String response = await OpenAIService().getAIResponse(_messageController.text);
+      FirebaseFirestore.instance.collection('chats').doc(chatRoomId).collection('messages').add({
         'text': response,
         'senderId': 'openai',
         'createdAt': Timestamp.now(),
@@ -86,8 +77,7 @@ class _ChatContentViewState extends State<ChatContentView> {
   void _onScroll() {
     if (_scrollController.position.atEdge) {
       setState(() {
-        _isScrolledToBottom = _scrollController.position.pixels ==
-            _scrollController.position.maxScrollExtent;
+        _isScrolledToBottom = _scrollController.position.pixels == _scrollController.position.maxScrollExtent;
       });
     }
   }
@@ -129,8 +119,7 @@ class _ChatContentViewState extends State<ChatContentView> {
                   .collection('chats')
                   .doc(chatRoomId)
                   .collection('messages')
-                  .orderBy('createdAt',
-                      descending: false) // Order messages from oldest to newest
+                  .orderBy('createdAt', descending: false) // Order messages from oldest to newest
                   .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
@@ -139,9 +128,7 @@ class _ChatContentViewState extends State<ChatContentView> {
 
                 if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
                   return Center(
-                    child: Text('What can I help with?',
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold)),
+                    child: Text('What can I help with?', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                   );
                 }
 
@@ -157,39 +144,28 @@ class _ChatContentViewState extends State<ChatContentView> {
                     final formattedTime = _formatTimestamp(timestamp);
 
                     return Align(
-                      alignment: isUserMessage
-                          ? Alignment.centerRight
-                          : Alignment.centerLeft,
+                      alignment: isUserMessage ? Alignment.centerRight : Alignment.centerLeft,
                       child: Container(
-                        margin: const EdgeInsets.symmetric(
-                            vertical: 5, horizontal: 10),
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 10, horizontal: 15),
+                        margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                         decoration: BoxDecoration(
-                          color: isUserMessage
-                              ? ColorConstant.primaryColor
-                              : Colors.grey.shade200,
+                          color: isUserMessage ? ColorConstant.primaryColor : Colors.grey.shade200,
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Column(
-                          crossAxisAlignment: isUserMessage
-                              ? CrossAxisAlignment.end
-                              : CrossAxisAlignment.start,
+                          crossAxisAlignment: isUserMessage ? CrossAxisAlignment.end : CrossAxisAlignment.start,
                           children: [
                             Text(
                               message['text'],
                               style: TextStyle(
-                                color:
-                                    isUserMessage ? Colors.white : Colors.black,
+                                color: isUserMessage ? Colors.white : Colors.black,
                               ),
                             ),
                             SizedBox(height: 5),
                             Text(
                               formattedTime,
                               style: TextStyle(
-                                color: isUserMessage
-                                    ? Colors.white70
-                                    : Colors.black54,
+                                color: isUserMessage ? Colors.white70 : Colors.black54,
                                 fontSize: 10,
                               ),
                             ),
@@ -214,8 +190,7 @@ class _ChatContentViewState extends State<ChatContentView> {
                         style: TextStyle(fontSize: 14),
                         controller: _messageController,
                         decoration: InputDecoration(
-                          contentPadding:
-                              EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+                          contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 8),
                           prefixIcon: Icon(
                             Icons.add,
                             size: 20,
