@@ -15,7 +15,7 @@ import '../models/emoji_enlargement_behavior.dart';
 import '../models/message_spacer.dart';
 import '../models/preview_image.dart';
 import '../models/unread_header_data.dart';
-import '../util.dart';
+import '../utils/util.dart';
 import 'chat_list.dart';
 import 'image_gallery.dart';
 import 'input/input.dart';

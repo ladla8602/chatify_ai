@@ -10,9 +10,9 @@ import '../constants/constants.dart';
 import '../routes/app_routes.dart';
 
 class AuthController extends GetxController {
-  var isLoading = false.obs;
-  var checkbox = false.obs;
-  var passwordVisible = false.obs;
+  RxBool isLoading = false.obs;
+  RxBool checkbox = false.obs;
+  RxBool passwordVisible = false.obs;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();

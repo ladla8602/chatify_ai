@@ -10,7 +10,7 @@ import 'package:gallery_saver_plus/gallery_saver.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../../conditional/conditional.dart';
-import '../../util.dart';
+import '../../utils/util.dart';
 import '../state/inherited_chat_theme.dart';
 import '../state/inherited_user.dart';
 

@@ -126,119 +126,111 @@ class LoginView extends StatelessWidget {
   Widget build(BuildContext context) {
     final AuthController authController = Get.put(AuthController());
     double height = MediaQuery.of(context).size.height;
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        automaticallyImplyLeading: false,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
-        child: Column(
-          children: [
-            SvgPicture.asset(
-              'assets/icons/chatify_logo.svg',
-              height: 60,
-              color: ColorConstant.primaryColor,
-            ),
-            SizedBox(height: 16),
-            Text("Let's Get Started!",
-                style: Theme.of(context).textTheme.headlineLarge),
-            SizedBox(height: 10),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.9,
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: AnimatedTextKit(
-                  animatedTexts: [
-                    TypewriterAnimatedText(
-                      'typewriter_animation_first'.tr,
-                      textAlign: TextAlign.center,
-                      textStyle:
-                          TextStyle(fontSize: 14, color: Colors.grey.shade500),
+    return Stack(
+      children: [
+        // ColorFiltered(
+        //   colorFilter: const ColorFilter.mode(Colors.black45, BlendMode.darken),
+        //   child: Image.asset("assets/images/Splash.png", height: double.infinity, fit: BoxFit.cover),
+        // ),
+        Scaffold(
+          backgroundColor: Colors.white,
+          body: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
+            child: Column(
+              spacing: 20,
+              children: [
+                SizedBox(height: height * 0.08),
+                SvgPicture.asset(
+                  'assets/icons/chatify_logo.svg',
+                  height: 60,
+                  color: ColorConstant.primaryColor,
+                ),
+                Text("Let's Get Started!".tr, style: Theme.of(context).textTheme.headlineLarge),
+
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  height: 70,
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: AnimatedTextKit(
+                      animatedTexts: [
+                        TypewriterAnimatedText(
+                          'typewriter_animation_first'.tr,
+                          textAlign: TextAlign.center,
+                          textStyle: TextStyle(fontSize: 14, color: Theme.of(context).primaryColor),
+                        ),
+                        TypewriterAnimatedText(
+                          'typewriter_animation_second'.tr,
+                          textAlign: TextAlign.center,
+                          textStyle: TextStyle(fontSize: 14, color: Theme.of(context).primaryColor),
+                        ),
+                        TypewriterAnimatedText(
+                          'typewriter_animation_third'.tr,
+                          textAlign: TextAlign.center,
+                          textStyle: TextStyle(fontSize: 14, color: Theme.of(context).primaryColor),
+                        ),
+                      ],
+                      totalRepeatCount: 20,
+                      stopPauseOnTap: true,
                     ),
-                    TypewriterAnimatedText(
-                      'typewriter_animation_second'.tr,
-                      textAlign: TextAlign.center,
-                      textStyle:
-                          TextStyle(fontSize: 14, color: Colors.grey.shade500),
-                    ),
-                    TypewriterAnimatedText(
-                      'typewriter_animation_third'.tr,
-                      textAlign: TextAlign.center,
-                      textStyle:
-                          TextStyle(fontSize: 14, color: Colors.grey.shade500),
+                  ),
+                ),
+                // Text(
+                //   "Let's dive in into your account",
+                //   style: TextStyle(fontSize: 14, color: Colors.grey.shade500),
+                // ),
+                OutlinebuttonWigets(
+                  logo: 'assets/icons/google.png',
+                  text: 'Continue with Google',
+                  onClick: authController.loginWithGoogle,
+                ),
+                OutlinebuttonWigets(
+                  logo: 'assets/icons/apple.png',
+                  text: 'Continue with Apple',
+                ),
+                OutlinebuttonWigets(
+                  logo: 'assets/icons/facebook.png',
+                  text: 'Continue with Facebook',
+                ),
+                OutlinebuttonWigets(
+                  logo: 'assets/icons/x.png',
+                  text: 'Continue with X',
+                ),
+                ElevatedButtonWigets(
+                  text: 'login_with_email'.tr,
+                  onClick: () {
+                    Get.toNamed(AppRoutes.signin);
+                  },
+                  backgroundColor: ColorConstant.primaryColor,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Don\'t have an account?', style: TextStyle(fontSize: 13)),
+                    SizedBox(width: 5),
+                    GestureDetector(
+                      onTap: () => Get.toNamed(AppRoutes.signup),
+                      child: Text('Sign up', style: TextStyle(fontSize: 13, color: ColorConstant.primaryColor)),
                     ),
                   ],
-                  totalRepeatCount: 20,
-                  stopPauseOnTap: true,
                 ),
-              ),
-            ),
-            // Text(
-            //   "Let's dive in into your account",
-            //   style: TextStyle(fontSize: 14, color: Colors.grey.shade500),
-            // ),
-            SizedBox(height: 50),
-            OutlinebuttonWigets(
-              logo: 'assets/icons/google.png',
-              text: 'Continue with Google',
-              onClick: authController.loginWithGoogle,
-            ),
-            SizedBox(height: 24),
-            OutlinebuttonWigets(
-              logo: 'assets/icons/apple.png',
-              text: 'Continue with Apple',
-            ),
-            SizedBox(height: 24),
-            OutlinebuttonWigets(
-              logo: 'assets/icons/facebook.png',
-              text: 'Continue with Facebook',
-            ),
-            SizedBox(height: 24),
-            OutlinebuttonWigets(
-              logo: 'assets/icons/x.png',
-              text: 'Continue with X',
-            ),
-            SizedBox(height: 48),
-            ElevatedButtonWigets(
-              text: 'Log in',
-              onClick: () {
-                Get.toNamed(AppRoutes.signin);
-              },
-              backgroundColor: ColorConstant.primaryColor,
-            ),
-            SizedBox(height: 18),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text('Don\'t have an account?', style: TextStyle(fontSize: 13)),
-                SizedBox(width: 5),
-                GestureDetector(
-                  onTap: () => Get.toNamed(AppRoutes.signup),
-                  child: Text('Sign up',
-                      style: TextStyle(
-                          fontSize: 13, color: ColorConstant.primaryColor)),
-                ),
+                Spacer(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Privacy Policy',
+                      style: TextStyle(color: Colors.grey.shade400, fontSize: 11),
+                    ),
+                    SizedBox(width: 16),
+                    Text('Terms of Service', style: TextStyle(color: Colors.grey.shade400, fontSize: 11)),
+                  ],
+                )
               ],
             ),
-            Spacer(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Privacy Policy',
-                  style: TextStyle(color: Colors.grey.shade400, fontSize: 11),
-                ),
-                SizedBox(width: 16),
-                Text('Terms of Service',
-                    style:
-                        TextStyle(color: Colors.grey.shade400, fontSize: 11)),
-              ],
-            )
-          ],
+          ),
         ),
-      ),
+      ],
     );
   }
 }

@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
 
 import '../message.dart';
-import '../preview_data.dart' show PreviewData;
+import '../preview_data.dart' as types show PreviewData;
 import '../user.dart' show User;
 import 'partial_text.dart';
 
@@ -34,7 +34,7 @@ abstract class TextMessage extends Message {
     int? createdAt,
     required String id,
     Map<String, dynamic>? metadata,
-    PreviewData? previewData,
+    types.PreviewData? previewData,
     String? remoteId,
     Message? repliedMessage,
     String? roomId,
@@ -46,8 +46,7 @@ abstract class TextMessage extends Message {
   }) = _TextMessage;
 
   /// Creates a text message from a map (decoded JSON).
-  factory TextMessage.fromJson(Map<String, dynamic> json) =>
-      _$TextMessageFromJson(json);
+  factory TextMessage.fromJson(Map<String, dynamic> json) => _$TextMessageFromJson(json);
 
   /// Creates a full text message from a partial one.
   factory TextMessage.fromPartial({
@@ -78,7 +77,7 @@ abstract class TextMessage extends Message {
       );
 
   /// See [PreviewData].
-  final PreviewData? previewData;
+  final types.PreviewData? previewData;
 
   /// User's message.
   final String text;
@@ -106,7 +105,7 @@ abstract class TextMessage extends Message {
     int? createdAt,
     String? id,
     Map<String, dynamic>? metadata,
-    PreviewData? previewData,
+    types.PreviewData? previewData,
     String? remoteId,
     Message? repliedMessage,
     String? roomId,
@@ -158,19 +157,12 @@ class _TextMessage extends TextMessage {
         author: author ?? this.author,
         createdAt: createdAt == _Unset ? this.createdAt : createdAt as int?,
         id: id ?? this.id,
-        metadata: metadata == _Unset
-            ? this.metadata
-            : metadata as Map<String, dynamic>?,
-        previewData: previewData == _Unset
-            ? this.previewData
-            : previewData as PreviewData?,
+        metadata: metadata == _Unset ? this.metadata : metadata as Map<String, dynamic>?,
+        previewData: previewData == _Unset ? this.previewData : previewData as types.PreviewData?,
         remoteId: remoteId == _Unset ? this.remoteId : remoteId as String?,
-        repliedMessage: repliedMessage == _Unset
-            ? this.repliedMessage
-            : repliedMessage as Message?,
+        repliedMessage: repliedMessage == _Unset ? this.repliedMessage : repliedMessage as Message?,
         roomId: roomId == _Unset ? this.roomId : roomId as String?,
-        showStatus:
-            showStatus == _Unset ? this.showStatus : showStatus as bool?,
+        showStatus: showStatus == _Unset ? this.showStatus : showStatus as bool?,
         status: status == _Unset ? this.status : status as Status?,
         text: text ?? this.text,
         updatedAt: updatedAt == _Unset ? this.updatedAt : updatedAt as int?,

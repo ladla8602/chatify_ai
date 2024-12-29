@@ -9,7 +9,7 @@ import 'package:visibility_detector/visibility_detector.dart';
 import '../../conditional/conditional.dart';
 import '../../models/bubble_rtl_alignment.dart';
 import '../../models/emoji_enlargement_behavior.dart';
-import '../../util.dart';
+import '../../utils/util.dart';
 import '../state/inherited_chat_theme.dart';
 import '../state/inherited_user.dart';
 import 'audio_message.dart';

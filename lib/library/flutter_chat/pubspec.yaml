@@ -2,6 +2,7 @@ name: flutter_chat
 description: "A new Flutter package project."
 version: 0.0.1
 homepage:
+publish_to: none
 
 environment:
   sdk: ^3.6.0
@@ -18,10 +19,11 @@ dependencies:
   json_annotation:
   meta:
   diffutil_dart:
-  flutter_link_previewer:
   flutter_parsed_text:
   cached_network_image:
   assets_audio_player:
+    git:
+      url: https://github.com/Rupakpoddar/Flutter-AssetsAudioPlayer
   dio:
   flutter_neumorphic_plus:
   permission_handler:
@@ -30,6 +32,8 @@ dependencies:
   gallery_saver_plus:
   fluttertoast:
   url_launcher:
+  flutter_linkify:
+  html:
 
 dev_dependencies:
   flutter_test:

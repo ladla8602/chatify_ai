@@ -9,7 +9,7 @@ export 'src/models/matchers.dart';
 export 'src/models/pattern_style.dart';
 export 'src/models/send_button_visibility_mode.dart';
 export 'src/models/typing_indicator_mode.dart';
-export 'src/util.dart' show formatBytes, isConsistsOfEmojis;
+export 'src/utils/util.dart' show formatBytes, isConsistsOfEmojis;
 export 'src/widgets/chat.dart';
 export 'src/widgets/chat_list.dart';
 export 'src/widgets/image_gallery.dart';

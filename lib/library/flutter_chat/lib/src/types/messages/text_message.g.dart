@@ -11,13 +11,9 @@ TextMessage _$TextMessageFromJson(Map<String, dynamic> json) => TextMessage(
       createdAt: (json['createdAt'] as num?)?.toInt(),
       id: json['id'] as String,
       metadata: json['metadata'] as Map<String, dynamic>?,
-      previewData: json['previewData'] == null
-          ? null
-          : PreviewData.fromJson(json['previewData'] as Map<String, dynamic>),
+      previewData: json['previewData'] == null ? null : types.PreviewData.fromJson(json['previewData'] as Map<String, dynamic>),
       remoteId: json['remoteId'] as String?,
-      repliedMessage: json['repliedMessage'] == null
-          ? null
-          : Message.fromJson(json['repliedMessage'] as Map<String, dynamic>),
+      repliedMessage: json['repliedMessage'] == null ? null : Message.fromJson(json['repliedMessage'] as Map<String, dynamic>),
       roomId: json['roomId'] as String?,
       showStatus: json['showStatus'] as bool?,
       status: $enumDecodeNullable(_$StatusEnumMap, json['status']),
@@ -26,8 +22,7 @@ TextMessage _$TextMessageFromJson(Map<String, dynamic> json) => TextMessage(
       updatedAt: (json['updatedAt'] as num?)?.toInt(),
     );
 
-Map<String, dynamic> _$TextMessageToJson(TextMessage instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$TextMessageToJson(TextMessage instance) => <String, dynamic>{
       'author': instance.author,
       'createdAt': instance.createdAt,
       'id': instance.id,

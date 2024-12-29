@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../flutter_chat.dart';
 import './../types/types.dart' as types;
-import '../util.dart';
+import '../utils/util.dart';
 import 'state/inherited_chat_theme.dart';
 
 class TypingIndicator extends StatefulWidget {

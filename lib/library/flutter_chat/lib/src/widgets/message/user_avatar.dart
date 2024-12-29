@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import './../../types/types.dart' as types;
 
 import '../../models/bubble_rtl_alignment.dart';
-import '../../util.dart';
+import '../../utils/util.dart';
 import '../state/inherited_chat_theme.dart';
 
 /// Renders user's avatar or initials next to a message.

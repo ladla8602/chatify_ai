@@ -1,50 +1,62 @@
+import 'package:chatify_ai/constants/constants.dart';
+import 'package:chatify_ai/models/chatbot.model.dart';
+import 'package:chatify_ai/services/chat_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/state_manager.dart';
+import 'package:get_storage/get_storage.dart';
 
 class ChatController extends GetxController {
-  // void sendMessage( message) async {
-  //   // Add user message to Firestore
-  //   final userMessage = types.TextMessage(
-  //     author: _user,
-  //     createdAt: DateTime.now().millisecondsSinceEpoch,
-  //     id: UniqueKey().toString(),
-  //     text: message.text,
-  //   );
+  ChatService chatService = ChatService();
+  // States
+  final _chatbots = <ChatBot>[].obs;
+  final _isLoading = false.obs;
+  final _error = Rxn<String>();
 
-  //   FirebaseFirestore.instance
-  //       .collection('chats')
-  //       .doc('chat_room_id')
-  //       .collection('messages')
-  //       .add({
-  //     'text': userMessage.text,
-  //     'senderId': _user.id,
-  //     'createdAt': FieldValue.serverTimestamp(),
-  //   });
+  // Getters
+  List<ChatBot> get chatbots => _chatbots;
+  bool get isLoading => _isLoading.value;
+  String? get error => _error.value;
 
-  //   setState(() {
-  //     _messages.insert(0, userMessage);
-  //   });
+  @override
+  void onInit() {
+    super.onInit();
+    getChatbots();
+  }
 
-  //   final aiResponse = await _openAIService.getAIResponse(message.text);
+  Future<void> getChatbots({bool forceRefresh = false}) async {
+    // Don't fetch if loading
+    if (_isLoading.value) return;
 
-  //   final aiMessage = types.TextMessage(
-  //     author: _ai,
-  //     createdAt: DateTime.now().millisecondsSinceEpoch,
-  //     id: UniqueKey().toString(),
-  //     text: aiResponse,
-  //   );
+    // Check cache if not force refresh
+    if (!forceRefresh) {
+      final cached = GetStorage().read(FirebasePaths.chatBots);
+      if (cached != null) {
+        _chatbots.assignAll(List<ChatBot>.from((cached as List).map((x) => ChatBot.fromJson(x))));
+        return;
+      }
+    }
 
-  //   FirebaseFirestore.instance
-  //       .collection('chats')
-  //       .doc('chat_room_id')
-  //       .collection('messages')
-  //       .add({
-  //     'text': aiMessage.text,
-  //     'senderId': _ai.id,
-  //     'createdAt': FieldValue.serverTimestamp(),
-  //   });
+    _isLoading.value = true;
+    _error.value = null;
 
-  //   setState(() {
-  //     _messages.insert(0, aiMessage);
-  //   });
-  // }
+    try {
+      // Get fresh data
+      final snapshot = await chatService.fetchChatbots();
+
+      final data = snapshot.docs.map((doc) => ChatBot.fromFirestore(doc)).toList();
+
+      // Update state and cache
+      _chatbots.assignAll(data);
+      await GetStorage().write(FirebasePaths.chatBots, data.map((x) => x.toJson()).toList());
+    } catch (e) {
+      _error.value = e.toString();
+    } finally {
+      _isLoading.value = false;
+    }
+  }
+
+  void clearCache() {
+    GetStorage().remove(FirebasePaths.chatBots);
+    _chatbots.clear();
+  }
 }

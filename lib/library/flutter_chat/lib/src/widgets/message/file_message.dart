@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import '../../utils/util.dart';
 import './../../types/types.dart' as types;
 
-import '../../util.dart';
 import '../state/inherited_chat_theme.dart';
 import '../state/inherited_l10n.dart';
 import '../state/inherited_user.dart';

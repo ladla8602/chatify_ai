@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import '../../utils/link_preview.dart';
+import '../../utils/util.dart';
 import '../focused_menu.dart';
 import './../../types/types.dart' as types;
-import 'package:flutter_link_previewer/flutter_link_previewer.dart' show LinkPreview, regexLink;
 import 'package:flutter_parsed_text/flutter_parsed_text.dart';
 
 import '../../models/emoji_enlargement_behavior.dart';
 import '../../models/matchers.dart';
 import '../../models/pattern_style.dart';
-import '../../util.dart';
 import '../state/inherited_chat_theme.dart';
 import '../state/inherited_user.dart';
 import 'user_name.dart';

@@ -1,18 +1,16 @@
 import 'dart:math';
-import 'dart:ui';
 
 import 'package:flutter/foundation.dart' show TargetPlatform, defaultTargetPlatform, kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import './types/types.dart' as types;
+import '../models/date_header.dart';
+import '../models/emoji_enlargement_behavior.dart';
+import '../models/message_spacer.dart';
+import '../models/preview_image.dart';
+import '../models/unread_header_data.dart';
+import './../types/types.dart' as types;
 import 'package:intl/intl.dart';
-
-import 'models/date_header.dart';
-import 'models/emoji_enlargement_behavior.dart';
-import 'models/message_spacer.dart';
-import 'models/preview_image.dart';
-import 'models/unread_header_data.dart';
 
 /// Returns text representation of a provided bytes value (e.g. 1kB, 1GB).
 String formatBytes(int size, [int fractionDigits = 2]) {
@@ -272,3 +270,12 @@ void copyToClipboard(String text) {
     fontSize: 16.0,
   );
 }
+
+/// Regex to check if text is email.
+const regexEmail = r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}';
+
+/// Regex to check if content type is an image.
+const regexImageContentType = r'image\/*';
+
+/// Regex to find all links in the text.
+const regexLink = r'((http|ftp|https):\/\/)?([\w_-]+(?:(?:\.[\w_-]*[a-zA-Z_][\w_-]*)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?[^\.\s]';
