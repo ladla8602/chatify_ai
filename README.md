@@ -40,3 +40,7 @@ Well done you your android package name(applicaton id) is changed to `com.yourco
 Follow this doc - https://firebase.google.com/docs/flutter/setup?platform=android
 
 ## 3. Firebase functions
+
+firebase emulators:start --import ./firebase-export-1735389641472PTCgSf --export-on-exit
+
+firebase functions:delete myFunction
