@@ -1,7 +1,7 @@
 import 'package:chatify_ai/constants/constants.dart';
 import 'package:chatify_ai/models/chatbot.model.dart';
 import 'package:chatify_ai/services/chat_service.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:chatify_ai/library/flutter_chat/lib/src/types/types.dart' as types;
 import 'package:get/state_manager.dart';
 import 'package:get_storage/get_storage.dart';
 
@@ -59,4 +59,17 @@ class ChatController extends GetxController {
     GetStorage().remove(FirebasePaths.chatBots);
     _chatbots.clear();
   }
+
+  // Chat Content
+  List<types.Message> messages = [];
+  RxBool isDataLoadingForFirstTime = true.obs;
+
+  void handleSendPressed(types.PartialText message, {String? remoteId}) {}
+
+  void addMessage(types.Message message) {
+    messages.insert(0, message);
+    isDataLoadingForFirstTime.value = false;
+  }
+
+  void sendMessage() {}
 }
