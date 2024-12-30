@@ -1,3 +1,5 @@
+import 'package:chatify_ai/views/common/popup_menu_button.dart';
+import 'package:chatify_ai/views/common/wigets.dart';
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 
@@ -152,25 +154,28 @@ class History extends StatelessWidget {
         body: Column(
           children: [
             Container(
-              width: 300,
+              width: double.infinity,
               height: 40,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
                 color: Colors.grey.shade300,
               ),
-              child: TabBar(
-                indicator: BoxDecoration(
-                  color: Colors.green,
-                  borderRadius: BorderRadius.circular(5),
+              child: Expanded(
+                child: TabBar(
+                  isScrollable: false,
+                  indicator: BoxDecoration(
+                    color: Colors.green,
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  labelColor: Colors.white,
+                  unselectedLabelColor: Colors.black,
+                  indicatorSize: TabBarIndicatorSize.tab,
+                  tabs: [
+                    Tab(text: 'Chat'),
+                    Tab(text: 'Pinned'),
+                    Tab(text: 'Shared'),
+                  ],
                 ),
-                labelColor: Colors.white,
-                unselectedLabelColor: Colors.black,
-                indicatorSize: TabBarIndicatorSize.tab,
-                tabs: [
-                  Tab(text: 'Chat'),
-                  Tab(text: 'Pinned'),
-                  Tab(text: 'Shared'),
-                ],
               ),
             ),
             SizedBox(height: 10),
@@ -183,7 +188,17 @@ class History extends StatelessWidget {
                       itemBuilder: (context, index) {
                         final data = chatdata[index];
                         return ListTile(
-                          leading: Icon(HugeIcons.strokeRoundedMessage01),
+                          leading: Container(
+                              height: 50,
+                              width: 50,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border:
+                                      Border.all(color: Colors.grey.shade200)),
+                              child: Icon(
+                                HugeIcons.strokeRoundedLink01,
+                                color: Colors.grey,
+                              )),
                           title: Text(
                             data['title'],
                             overflow: TextOverflow.ellipsis,
@@ -194,7 +209,7 @@ class History extends StatelessWidget {
                             data['subtitle'],
                             style: TextStyle(color: Colors.grey),
                           ),
-                          trailing: Icon(HugeIcons.strokeRoundedMoreVertical),
+                          trailing: ThemedPopupMenuButton(),
                         );
                       }),
 
@@ -204,7 +219,17 @@ class History extends StatelessWidget {
                       itemBuilder: (context, index) {
                         final data = pinneddata[index];
                         return ListTile(
-                          leading: Icon(HugeIcons.strokeRoundedPin),
+                          leading: Container(
+                              height: 50,
+                              width: 50,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border:
+                                      Border.all(color: Colors.grey.shade200)),
+                              child: Icon(
+                                HugeIcons.strokeRoundedPin,
+                                color: Colors.grey,
+                              )),
                           title: Text(
                             data['title'],
                             overflow: TextOverflow.ellipsis,
@@ -215,7 +240,7 @@ class History extends StatelessWidget {
                             data['subtitle'],
                             style: TextStyle(color: Colors.grey),
                           ),
-                          trailing: Icon(HugeIcons.strokeRoundedMoreVertical),
+                          trailing: ThemedPopupMenuButton(),
                         );
                       }),
                   //3
@@ -228,8 +253,13 @@ class History extends StatelessWidget {
                               height: 50,
                               width: 50,
                               decoration: BoxDecoration(
-                                  shape: BoxShape.circle, border: Border.all()),
-                              child: Icon(HugeIcons.strokeRoundedLink01)),
+                                  shape: BoxShape.circle,
+                                  border:
+                                      Border.all(color: Colors.grey.shade200)),
+                              child: Icon(
+                                HugeIcons.strokeRoundedLink01,
+                                color: Colors.grey,
+                              )),
                           title: Text(
                             data['title'],
                             overflow: TextOverflow.ellipsis,
@@ -240,7 +270,7 @@ class History extends StatelessWidget {
                             data['subtitle'],
                             style: TextStyle(color: Colors.grey),
                           ),
-                          trailing: Icon(HugeIcons.strokeRoundedMoreVertical),
+                          trailing: ThemedPopupMenuButton(),
                         );
                       }),
                 ],

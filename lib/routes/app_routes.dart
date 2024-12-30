@@ -40,10 +40,12 @@ class AppRoutes {
   static const dataControls = '/dataControls';
   static const paymentMethods = '/paymentMethods';
   static const addPaymentMethods = '/addPaymentMethods';
-  static const languaeview = '/languaeview';
   static const linkedAccount = '/linkedAccount';
   static const personalInfo = '/personalInfo';
   static const security = '/scurity';
+
+  static const languaeview = '/languaeview';
+
   static const imageView = '/imageView';
   static const audioView = '/audioView';
 
