@@ -1,4 +1,5 @@
 import 'package:chatify_ai/controllers/chat_controller.dart';
+import 'package:chatify_ai/controllers/chatbot_controller.dart';
 import 'package:chatify_ai/routes/app_routes.dart';
 import 'package:chatify_ai/views/chat/widgets/chatbot_card_widget.dart';
 import 'package:flutter/material.dart';
@@ -15,12 +16,11 @@ class ChatView extends StatefulWidget {
   State<ChatView> createState() => _ChatViewState();
 }
 
-class _ChatViewState extends State<ChatView>
-    with SingleTickerProviderStateMixin {
+class _ChatViewState extends State<ChatView> with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<Offset> _offsetAnimation;
   TextEditingController _messageController = TextEditingController();
-  ChatController controller = Get.find();
+  ChatbotController controller = Get.find();
 
   @override
   void initState() {
@@ -91,10 +91,8 @@ class _ChatViewState extends State<ChatView>
                     child: ListView.separated(
                       scrollDirection: Axis.horizontal,
                       itemCount: controller.chatbots.length,
-                      itemBuilder: (_, i) =>
-                          ChatbotCardWidget(chatbot: controller.chatbots[i]),
-                      separatorBuilder: (context, id) =>
-                          const SizedBox(width: 8),
+                      itemBuilder: (_, i) => ChatbotCardWidget(chatbot: controller.chatbots[i]),
+                      separatorBuilder: (context, id) => const SizedBox(width: 8),
                     ),
                   );
                 }),
@@ -125,8 +123,7 @@ class _ChatViewState extends State<ChatView>
                     SizedBox(height: 30),
                     Text(
                       "These are just a few examples of what I can do.",
-                      style:
-                          TextStyle(color: Colors.grey.shade600, fontSize: 13),
+                      style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
                     ),
                   ],
                 ),
@@ -147,8 +144,7 @@ class _ChatViewState extends State<ChatView>
                       GestureDetector(
                         onTap: () {
                           if (controller.chatbots.isNotEmpty) {
-                            Get.toNamed(AppRoutes.chatContentView,
-                                arguments: controller.chatbots[0]);
+                            Get.toNamed(AppRoutes.chatContentView, arguments: {"chatbot": controller.chatbots[0]});
                           } else {
                             Get.snackbar("Error", "No chatbots available");
                           }
@@ -157,8 +153,7 @@ class _ChatViewState extends State<ChatView>
                           children: [
                             Expanded(
                               child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 8, vertical: 14),
+                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 14),
                                 decoration: BoxDecoration(
                                   color: Colors.grey.shade100,
                                   borderRadius: BorderRadius.circular(8),
@@ -209,8 +204,7 @@ class CapabilityCard extends StatelessWidget {
   final String title;
   final String subtitle;
 
-  const CapabilityCard(
-      {super.key, required this.title, required this.subtitle});
+  const CapabilityCard({super.key, required this.title, required this.subtitle});
 
   @override
   Widget build(BuildContext context) {

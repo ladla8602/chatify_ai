@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ChatBot {
+  final String botId;
   final String botName;
   final String botAvatar;
   final String botRole;
@@ -12,6 +13,7 @@ class ChatBot {
   final DateTime createdAt;
 
   ChatBot({
+    required this.botId,
     required this.botName,
     required this.botAvatar,
     required this.botRole,
@@ -23,6 +25,7 @@ class ChatBot {
 
   // Create a copy of the object with updated fields
   ChatBot copyWith({
+    String? botId,
     String? botName,
     String? botAvatar,
     String? botRole,
@@ -32,6 +35,7 @@ class ChatBot {
     DateTime? createdAt,
   }) {
     return ChatBot(
+      botId: botId ?? this.botId,
       botName: botName ?? this.botName,
       botAvatar: botAvatar ?? this.botAvatar,
       botRole: botRole ?? this.botRole,
@@ -58,6 +62,7 @@ class ChatBot {
   // Convert from Map
   factory ChatBot.fromMap(Map<String, dynamic> map) {
     return ChatBot(
+      botId: map['botId'] ?? '',
       botName: map['botName'] ?? '',
       botAvatar: map['botAvatar'] ?? '',
       botRole: map['botRole'] ?? '',
@@ -91,6 +96,7 @@ class ChatBot {
   factory ChatBot.fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc) {
     final data = doc.data()!;
     return ChatBot(
+      botId: doc.id,
       botName: data['botName'] ?? '',
       botAvatar: data['botAvatar'] ?? '',
       botRole: data['botRole'] ?? '',

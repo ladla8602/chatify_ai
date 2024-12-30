@@ -1,78 +1,126 @@
-import 'package:chatify_ai/constants/constants.dart';
+import 'dart:developer';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:uuid/uuid.dart';
+import 'package:chatify_ai/models/chat_bot_command.model.dart';
 import 'package:chatify_ai/models/chatbot.model.dart';
-import 'package:chatify_ai/services/chat_service.dart';
-import 'package:chatify_ai/library/flutter_chat/lib/src/types/types.dart'
-    as types;
-import 'package:get/state_manager.dart';
-import 'package:get_storage/get_storage.dart';
+import 'package:chatify_ai/library/flutter_chat/lib/src/types/types.dart' as types;
+import 'package:chatify_ai/services/firestore_service.dart';
 
 class ChatController extends GetxController {
-  ChatService chatService = ChatService();
-  // States
-  final _chatbots = <ChatBot>[].obs;
-  final _isLoading = false.obs;
-  final _error = Rxn<String>();
+  // Controllers
+  final TextEditingController messageController = TextEditingController();
 
-  // Getters
-  List<ChatBot> get chatbots => _chatbots;
-  bool get isLoading => _isLoading.value;
-  String? get error => _error.value;
+  // Observables
+  final RxList<types.Message> messages = <types.Message>[].obs;
+  final RxList<types.User> typingUsers = <types.User>[].obs;
+  final RxBool isDataLoadingForFirstTime = true.obs;
+
+  // State
+  ChatBot? chatbot;
+  String? chatBotId;
+  types.User? user;
+  final ChatBotCommand chatBotCommand = ChatBotCommand();
+  final FirestoreService _firestoreService = FirestoreService();
 
   @override
   void onInit() {
     super.onInit();
-    getChatbots();
+    _loadInitialMessages();
   }
 
-  Future<void> getChatbots({bool forceRefresh = false}) async {
-    // Don't fetch if loading
-    if (_isLoading.value) return;
+  @override
+  void onClose() {
+    messageController.dispose();
+    super.onClose();
+  }
 
-    // Check cache if not force refresh
-    // if (!forceRefresh) {
-    //   final cached = GetStorage().read(FirebasePaths.chatBots);
-    //   if (cached != null) {
-    //     _chatbots.assignAll(List<ChatBot>.from((cached as List).map((x) => ChatBot.fromJson(x))));
-    //     return;
-    //   }
-    // }
-
-    _isLoading.value = true;
-    _error.value = null;
-
+  Future<void> _loadInitialMessages() async {
     try {
-      // Get fresh data
-      final snapshot = await chatService.fetchChatbots();
-
-      final data =
-          snapshot.docs.map((doc) => ChatBot.fromFirestore(doc)).toList();
-
-      // Update state and cache
-      _chatbots.assignAll(data);
-      await GetStorage()
-          .write(FirebasePaths.chatBots, data.map((x) => x.toJson()).toList());
+      if (chatBotId != null) {
+        // final historicalMessages = await _firestoreService.getChatHistory(chatBotId!);
+        // messages.assignAll(historicalMessages);
+      }
+      isDataLoadingForFirstTime.value = false;
     } catch (e) {
-      _error.value = e.toString();
-    } finally {
-      _isLoading.value = false;
+      log('Error loading messages: $e');
+      isDataLoadingForFirstTime.value = false;
     }
   }
 
-  void clearCache() {
-    GetStorage().remove(FirebasePaths.chatBots);
-    _chatbots.clear();
+  void handleSendPressed(types.PartialText message) {
+    final textMessage = types.TextMessage(
+      author: user!,
+      createdAt: DateTime.now().millisecondsSinceEpoch,
+      id: const Uuid().v4(),
+      text: message.text,
+    );
+    _addMessage(textMessage);
+    _processBotResponse(message.text);
   }
 
-  // Chat Content
-  List<types.Message> messages = [];
-  RxBool isDataLoadingForFirstTime = true.obs;
+  Future<void> _processBotResponse(String userMessage) async {
+    try {
+      _showTypingIndicator();
+      await Future.delayed(const Duration(seconds: 4));
+      // final response = await _firestoreService.getBotResponse(
+      //   chatBotId!,
+      //   chatBotCommand.copyWith(message: userMessage),
+      // );
 
-  void handleSendPressed(types.PartialText message, {String? remoteId}) {}
+      // if (response != null) {
+      //   final botMessage = types.TextMessage(
+      //     author: types.User(
+      //       id: "bot",
+      //       firstName: chatbot?.botName,
+      //     ),
+      //     id: const Uuid().v4(),
+      //     text: response,
+      //     createdAt: DateTime.now().millisecondsSinceEpoch,
+      //   );
+      //   _addMessage(botMessage);
+      // }
+    } catch (e) {
+      log('Error processing bot response: $e');
+    } finally {
+      _removeTypingIndicator();
+    }
+  }
 
-  void addMessage(types.Message message) {
+  void _addMessage(types.Message message) {
     messages.insert(0, message);
-    isDataLoadingForFirstTime.value = false;
+    // _firestoreService.saveMessage(chatBotId!, message);
   }
 
-  void sendMessage() {}
+  void sendMessage() {
+    log(messageController.text);
+    if (messageController.text.isEmpty) return;
+    if (user == null || chatBotId == null) return;
+    log(">>>>>>>>>>>");
+    final message = types.PartialText(text: messageController.text);
+    messageController.clear();
+    handleSendPressed(message);
+  }
+
+  void _showTypingIndicator() {
+    if (chatbot?.botName == null) return;
+    typingUsers.insert(
+      0,
+      types.User(id: "bot", firstName: chatbot?.botName),
+    );
+  }
+
+  void _removeTypingIndicator() {
+    typingUsers.removeWhere((user) => user.id == "bot");
+  }
+
+  void clearChatContext() {
+    messages.clear();
+    typingUsers.clear();
+    messageController.clear();
+    chatBotCommand.prompt = null;
+    user = null;
+    chatbot = null;
+    chatBotId = null;
+  }
 }

@@ -11,7 +11,7 @@ class ChatbotCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Get.toNamed(AppRoutes.chatContentView, arguments: chatbot),
+      onTap: () => Get.toNamed(AppRoutes.chatContentView, arguments: {"chatbot": chatbot}),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
