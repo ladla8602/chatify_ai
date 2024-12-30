@@ -98,9 +98,9 @@ class GetPrimeWigets extends StatelessWidget {
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
               colors: [
-                ColorConstant.primaryColor.withOpacity(0.6),
-                ColorConstant.primaryColor,
-                ColorConstant.primaryColor.withOpacity(0.7),
+                Theme.of(context).primaryColor.withOpacity(0.6),
+                Theme.of(context).primaryColor,
+                Theme.of(context).primaryColor.withOpacity(0.7),
               ]),
         ),
         child: Row(

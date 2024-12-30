@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
 
-import '../../constants/constants.dart';
-import '../common/button_wigets.dart';
+import '../../../constants/constants.dart';
+import '../../common/button_wigets.dart';
 
 class ForgotPasswordView extends StatelessWidget {
   ForgotPasswordView({super.key});
@@ -83,7 +83,7 @@ class ForgotPasswordView extends StatelessWidget {
               onClick: () {
                 Get.toNamed('/otpaccess');
               },
-              backgroundColor: ColorConstant.primaryColor,
+              backgroundColor: Theme.of(context).primaryColor,
             )
           ],
         ),

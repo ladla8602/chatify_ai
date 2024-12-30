@@ -72,7 +72,7 @@ class DrawerWigets extends StatelessWidget {
                 margin: EdgeInsets.symmetric(horizontal: 10),
                 padding: EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                    color: ColorConstant.primaryColor,
+                    color: Theme.of(context).primaryColor,
                     borderRadius: BorderRadius.circular(8)),
                 child: Row(
                   children: [
@@ -218,7 +218,7 @@ class DrawerWigets extends StatelessWidget {
             ),
             onTap: () {
               // Handle item tap
-              Get.toNamed('/history');
+              Get.toNamed(AppRoutes.history);
             },
           ),
           ListTile(

@@ -1,11 +1,69 @@
+import 'package:chatify_ai/views/chat/chat_content_view.dart';
+import 'package:chatify_ai/views/chat/chat_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
+import 'package:hugeicons/hugeicons.dart';
 
-class DashboardView extends StatelessWidget {
+import '../controllers/dashboard_controller.dart';
+import 'audio/audio_view.dart';
+import 'history/history_view.dart';
+import 'image/image_generate_view.dart';
+import 'settings/setting_view.dart';
+
+class DashboardView extends StatefulWidget {
   const DashboardView({super.key});
 
   @override
+  State<DashboardView> createState() => _DashboardViewState();
+}
+
+class _DashboardViewState extends State<DashboardView> {
+  final controller = Get.put(DashboardController());
+  final List<Widget> pages = [
+    const ChatView(),
+    const ImageGenerateView(),
+    const AudioGenerateView(),
+    const HistoryView(),
+    const SettingView(),
+  ];
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      body: Obx(
+        () => pages[controller.selectedIndex],
+      ),
+      bottomNavigationBar: Obx(
+        () => BottomNavigationBar(
+          backgroundColor: Colors.white,
+          currentIndex: controller.selectedIndex,
+          selectedItemColor: Theme.of(context).primaryColor,
+          onTap: controller.changeIndex,
+          type: BottomNavigationBarType.fixed,
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(HugeIcons.strokeRoundedMessage02),
+              label: 'Chat',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(HugeIcons.strokeRoundedImage01),
+              label: 'Image',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(HugeIcons.strokeRoundedMic01),
+              label: 'Audio',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(HugeIcons.strokeRoundedClock04),
+              label: 'History',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(HugeIcons.strokeRoundedSettings02),
+              label: 'Settings',
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

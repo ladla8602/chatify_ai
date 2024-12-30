@@ -56,7 +56,7 @@ class _LanguageViewState extends State<LanguageView> {
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
                   color: selectedLanguage == language['name']
-                      ? ColorConstant.primaryColor
+                      ? Theme.of(context).primaryColor
                       : Colors.grey.shade300,
                   width: 1),
             ),

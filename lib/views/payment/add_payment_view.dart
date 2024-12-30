@@ -164,7 +164,7 @@ class AddPaymentView extends StatelessWidget {
             ElevatedButtonWigets(
               text: 'Save',
               onClick: () {},
-              backgroundColor: ColorConstant.primaryColor,
+              backgroundColor: Theme.of(context).primaryColor,
             ),
           ],
         ),

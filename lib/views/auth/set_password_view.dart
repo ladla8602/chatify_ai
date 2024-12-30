@@ -137,7 +137,7 @@ class SetPasswordView extends StatelessWidget {
                   }
                   // Get.toNamed('/otpaccess');
                 },
-                backgroundColor: ColorConstant.primaryColor,
+                backgroundColor: Theme.of(context).primaryColor,
               )
             ],
           ),

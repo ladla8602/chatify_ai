@@ -1,8 +1,10 @@
+import 'package:chatify_ai/routes/app_routes.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:pinput/pinput.dart';
 
-import '../../constants/constants.dart';
-import '../common/button_wigets.dart';
+import '../../../constants/constants.dart';
+import '../../common/button_wigets.dart';
 
 class OtpCodeView extends StatelessWidget {
   OtpCodeView({super.key});
@@ -10,7 +12,6 @@ class OtpCodeView extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
 
   @override
-
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -70,9 +71,9 @@ class OtpCodeView extends StatelessWidget {
                     textStyle:
                         const TextStyle(fontSize: 18, color: Colors.black),
                     decoration: BoxDecoration(
-                      color: ColorConstant.primaryColor.withOpacity(0.3),
+                      color: Theme.of(context).primaryColor.withOpacity(0.3),
                       borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: ColorConstant.primaryColor),
+                      border: Border.all(color: Theme.of(context).primaryColor),
                     ),
                   ),
                   submittedPinTheme: PinTheme(
@@ -120,8 +121,10 @@ class OtpCodeView extends StatelessWidget {
 
             ElevatedButtonWigets(
               text: 'Submit',
-              onClick: () {},
-              backgroundColor: ColorConstant.primaryColor,
+              onClick: () {
+                Get.toNamed(AppRoutes.createNewPassword);
+              },
+              backgroundColor: Theme.of(context).primaryColor,
             ),
           ],
         ),

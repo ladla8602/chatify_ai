@@ -1,7 +1,8 @@
 import 'package:chatify_ai/constants/constants.dart';
 import 'package:chatify_ai/models/chatbot.model.dart';
 import 'package:chatify_ai/services/chat_service.dart';
-import 'package:chatify_ai/library/flutter_chat/lib/src/types/types.dart' as types;
+import 'package:chatify_ai/library/flutter_chat/lib/src/types/types.dart'
+    as types;
 import 'package:get/state_manager.dart';
 import 'package:get_storage/get_storage.dart';
 
@@ -28,13 +29,13 @@ class ChatController extends GetxController {
     if (_isLoading.value) return;
 
     // Check cache if not force refresh
-    if (!forceRefresh) {
-      final cached = GetStorage().read(FirebasePaths.chatBots);
-      if (cached != null) {
-        _chatbots.assignAll(List<ChatBot>.from((cached as List).map((x) => ChatBot.fromJson(x))));
-        return;
-      }
-    }
+    // if (!forceRefresh) {
+    //   final cached = GetStorage().read(FirebasePaths.chatBots);
+    //   if (cached != null) {
+    //     _chatbots.assignAll(List<ChatBot>.from((cached as List).map((x) => ChatBot.fromJson(x))));
+    //     return;
+    //   }
+    // }
 
     _isLoading.value = true;
     _error.value = null;
@@ -43,11 +44,13 @@ class ChatController extends GetxController {
       // Get fresh data
       final snapshot = await chatService.fetchChatbots();
 
-      final data = snapshot.docs.map((doc) => ChatBot.fromFirestore(doc)).toList();
+      final data =
+          snapshot.docs.map((doc) => ChatBot.fromFirestore(doc)).toList();
 
       // Update state and cache
       _chatbots.assignAll(data);
-      await GetStorage().write(FirebasePaths.chatBots, data.map((x) => x.toJson()).toList());
+      await GetStorage()
+          .write(FirebasePaths.chatBots, data.map((x) => x.toJson()).toList());
     } catch (e) {
       _error.value = e.toString();
     } finally {

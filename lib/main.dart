@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 import 'bindings/initial_bindings.dart';
+import 'config/theme.dart';
 import 'controllers/auth_controller.dart';
 import 'routes/app_routes.dart';
 
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     // Get AuthController to determine the initial route
     final AuthController authController = Get.find<AuthController>();
+
     return GetMaterialApp(
       enableLog: true,
       debugShowCheckedModeBanner: false,
@@ -36,6 +38,7 @@ class MyApp extends StatelessWidget {
       supportedLocales: [
         Locale('en', 'US'),
       ],
+
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
@@ -43,6 +46,8 @@ class MyApp extends StatelessWidget {
       initialBinding: InitialBindings(),
       initialRoute: authController.initialRoute,
       getPages: AppRoutes.pages,
+      theme: lightTheme,
+      darkTheme: darkTheme,
     );
   }
 }

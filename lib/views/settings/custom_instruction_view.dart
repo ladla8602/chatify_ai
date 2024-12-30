@@ -106,7 +106,7 @@ class CustomInstructionView extends StatelessWidget {
                 Expanded(
                   child: ElevatedButtonWigets(
                       text: 'Save',
-                      backgroundColor: ColorConstant.primaryColor,
+                      backgroundColor: Theme.of(context).primaryColor,
                       foregroundColor: Colors.white,
                       onClick: () {}),
                 ),

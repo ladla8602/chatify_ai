@@ -5,9 +5,11 @@ import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:hugeicons/hugeicons.dart';
 
 import '../constants/constants.dart';
 import '../routes/app_routes.dart';
+import '../views/common/dialog_wigets.dart';
 
 class AuthController extends GetxController {
   RxBool isLoading = false.obs;
@@ -38,7 +40,7 @@ class AuthController extends GetxController {
   bool get isLoggedIn => firebaseUser.value != null;
 
   String get initialRoute {
-    return isLoggedIn ? AppRoutes.chatview : AppRoutes.login;
+    return isLoggedIn ? AppRoutes.dashboard : AppRoutes.login;
   }
 
   Future<void> signUpWithEmailPassword(String email, String password) async {
@@ -66,10 +68,15 @@ class AuthController extends GetxController {
             countryCode: deviceLocale?.countryCode ?? 'unknown',
           ),
         );
-        await _firestore.collection('users').doc(firebaseUser.uid).set(userModel.toFirestore());
+        await _firestore
+            .collection('users')
+            .doc(firebaseUser.uid)
+            .set(userModel.toFirestore());
 
         Get.snackbar("Success", "Account created successfully",
-            snackPosition: SnackPosition.BOTTOM, backgroundColor: ColorConstant.primaryColor, colorText: Colors.white);
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: ColorConstant.primaryColor,
+            colorText: Colors.white);
       }
     } on FirebaseAuthException catch (e) {
       Get.snackbar("Error", e.message ?? "An error occurred");
@@ -78,14 +85,28 @@ class AuthController extends GetxController {
     }
   }
 
-  Future<void> signIn(String email, String password) async {
+  Future<void> signIn(
+      String email, String password, BuildContext context) async {
     try {
       isLoading.value = true;
-
       await _auth.signInWithEmailAndPassword(email: email, password: password);
-      Get.toNamed(AppRoutes.chatview);
+      showCustomDialog(
+        context,
+        title: 'Log in\nSuccessful!',
+        icon: HugeIcons.strokeRoundedUserCircle02,
+        message: ' Please wait...\nYou will be directed to the homepage ',
+        widget: CircularProgressIndicator(
+          strokeCap: StrokeCap.round,
+          strokeWidth: 5,
+          color: Theme.of(context).primaryColor,
+        ),
+      );
+      await Future.delayed(const Duration(seconds: 4));
+      Navigator.pop(context);
+      Get.toNamed(AppRoutes.dashboard);
     } catch (e) {
-      Get.snackbar("Error", "Failed to sign in: $e");
+      Get.snackbar("Error", "Failed to sign in: $e",
+          snackPosition: SnackPosition.BOTTOM);
     } finally {
       isLoading.value = false; // Hide loader
     }
@@ -126,7 +147,7 @@ class AuthController extends GetxController {
 
   //     Get.snackbar("Success", "Logged in successfully",
   //         snackPosition: SnackPosition.BOTTOM,
-  //         backgroundColor: ColorConstant.primaryColor,
+  //         backgroundColor: Theme.of(context).primaryColor,
   //         colorText: Colors.white);
   //     Get.toNamed(AppRoutes.chatview);
   //   } catch (e) {
@@ -146,18 +167,23 @@ class AuthController extends GetxController {
         return; // User canceled the login
       }
 
-      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
       final AuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
 
       // Sign in to Firebase
-      final UserCredential userCredential = await _auth.signInWithCredential(credential);
+      final UserCredential userCredential =
+          await _auth.signInWithCredential(credential);
       final User? firebaseUser = userCredential.user;
 
       // Check if user already exists in Firestore
-      final docSnapshot = await _firestore.collection(AppConstant.usersCollection).doc(firebaseUser?.uid).get();
+      final docSnapshot = await _firestore
+          .collection(AppConstant.usersCollection)
+          .doc(firebaseUser?.uid)
+          .get();
 
       if (!docSnapshot.exists) {
         // New Google user -> Create in Firestore
@@ -167,9 +193,11 @@ class AuthController extends GetxController {
         Get.offNamed(AppRoutes.setPassword, arguments: firebaseUser);
       } else {
         Get.snackbar("Success", "Logged in as ${firebaseUser?.displayName}",
-            snackPosition: SnackPosition.BOTTOM, backgroundColor: ColorConstant.primaryColor, colorText: Colors.white);
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: ColorConstant.primaryColor,
+            colorText: Colors.white);
 
-        Get.offNamed(AppRoutes.chatview);
+        Get.offNamed(AppRoutes.dashboard);
       }
     } catch (e) {
       Get.printError(info: e.toString());
@@ -202,7 +230,7 @@ class AuthController extends GetxController {
       // Update password
       await user.updatePassword(password);
       Get.snackbar("Success", "Password set successfully");
-      Get.toNamed(AppRoutes.chatview);
+      Get.toNamed(AppRoutes.dashboard);
     } catch (e) {
       Get.snackbar("Error", "Failed to set password: $e");
     } finally {
@@ -223,7 +251,8 @@ class AuthController extends GetxController {
         throw Exception("Firebase user is null");
       }
 
-      final usersCollection = _firestore.collection(AppConstant.usersCollection);
+      final usersCollection =
+          _firestore.collection(AppConstant.usersCollection);
       final userDoc = usersCollection.doc(firebaseUser.uid);
 
       // Merge user data

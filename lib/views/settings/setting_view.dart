@@ -198,13 +198,14 @@ class SettingView extends StatelessWidget {
                                   alignment: Alignment.center,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(30),
-                                    color: ColorConstant.primaryColor
+                                    color: Theme.of(context)
+                                        .primaryColor
                                         .withOpacity(0.2),
                                   ),
                                   child: Text(
                                     'Cancel',
                                     style: TextStyle(
-                                        color: ColorConstant.primaryColor),
+                                        color: Theme.of(context).primaryColor),
                                   ),
                                 ),
                               ),
@@ -221,7 +222,7 @@ class SettingView extends StatelessWidget {
                                   alignment: Alignment.center,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(30),
-                                    color: ColorConstant.primaryColor,
+                                    color: Theme.of(context).primaryColor,
                                   ),
                                   child: const Text(
                                     'Yes,Logout',

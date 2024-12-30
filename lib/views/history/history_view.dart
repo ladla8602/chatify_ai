@@ -1,142 +1,55 @@
+import 'package:chatify_ai/constants/constants.dart';
 import 'package:chatify_ai/views/common/popup_menu_button.dart';
 import 'package:chatify_ai/views/common/wigets.dart';
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 
-class History extends StatelessWidget {
-  History({super.key});
-
-  final List<Map<String, dynamic>> chatdata = [
-    {
-      'title': 'Hello there, I need some help',
-      'subtitle': 'Are you here?',
-    },
-    {
-      'title': 'Good morning!',
-      'subtitle': 'How can I assist you?',
-    },
-    {
-      'title': 'Welcome to Flutter development',
-      'subtitle': 'Let\'s build something amazing!',
-    },
-    {
-      'title': 'Need assistance?',
-      'subtitle': 'Feel free to ask.',
-    },
-    {
-      'title': 'Learning ListView.builder',
-      'subtitle': 'It\'s a great widget for lists.',
-    },
-    {
-      'title': 'Customizing widgets',
-      'subtitle': 'Try adding colors and styles.',
-    },
-    {
-      'title': 'Did you know?',
-      'subtitle': 'ListView has multiple constructors.',
-    },
-    {
-      'title': 'Performance matters',
-      'subtitle': 'Use builder for large lists.',
-    },
-    {
-      'title': 'Hello there again!',
-      'subtitle': 'How is your progress?',
-    },
-    {
-      'title': 'Thank you!',
-      'subtitle': 'Happy coding!',
-    },
-  ];
-
-  final List<Map<String, dynamic>> pinneddata = [
-    {
-      'title': 'Hello there again!',
-      'subtitle': 'How is your progress?',
-    },
-    {
-      'title': 'Thank you!',
-      'subtitle': 'Happy coding!',
-    },
-    {
-      'title': 'Welcome to the team!',
-      'subtitle': 'Let’s achieve great things together.',
-    },
-    {
-      'title': 'Reminder',
-      'subtitle': 'Don’t forget to complete your task.',
-    },
-    {
-      'title': 'Update available',
-      'subtitle': 'Please update your app to the latest version.',
-    },
-    {
-      'title': 'Good job!',
-      'subtitle': 'Keep up the great work.',
-    },
-    {
-      'title': 'Let’s connect',
-      'subtitle': 'Can we discuss the project tomorrow?',
-    },
-    {
-      'title': 'Important Notice',
-      'subtitle': 'Server maintenance is scheduled for tonight.',
-    },
-    {
-      'title': 'Congratulations!',
-      'subtitle': 'You’ve reached a new milestone.',
-    },
-    {
-      'title': 'Hello Friend!',
-      'subtitle': 'Hope you are doing well today.',
-    },
-  ];
-
-  List<Map<String, dynamic>> sharedata = [
-    {
-      'title': 'Share Progress',
-      'subtitle': 'Let others know about your progress!',
-    },
-    {
-      'title': 'Thank You Note',
-      'subtitle': 'Send a thank you message to your team.',
-    },
-    {
-      'title': 'Welcome Message',
-      'subtitle': 'Welcome new members to the team.',
-    },
-    {
-      'title': 'Task Reminder',
-      'subtitle': 'Remind your team about pending tasks.',
-    },
-    {
-      'title': 'App Update',
-      'subtitle': 'Share the latest app updates with friends.',
-    },
-    {
-      'title': 'Motivational Message',
-      'subtitle': 'Send a motivational message to colleagues.',
-    },
-    {
-      'title': 'Project Discussion',
-      'subtitle': 'Plan the next steps for the project.',
-    },
-    {
-      'title': 'Server Notice',
-      'subtitle': 'Inform everyone about scheduled maintenance.',
-    },
-    {
-      'title': 'Celebrate Milestones',
-      'subtitle': 'Share achievements with your network.',
-    },
-    {
-      'title': 'Daily Greeting',
-      'subtitle': 'Send warm greetings to your friends.',
-    },
-  ];
-
+class HistoryView extends StatelessWidget {
+  const HistoryView({super.key});
   @override
   Widget build(BuildContext context) {
+    final List<Map<String, dynamic>> chatdata = [
+      {
+        'title': 'Hello there, I need some help',
+        'subtitle': 'Are you here?',
+      },
+      {
+        'title': 'Good morning!',
+        'subtitle': 'How can I assist you?',
+      },
+      {
+        'title': 'Welcome to Flutter development',
+        'subtitle': 'Let\'s build something amazing!',
+      },
+      {
+        'title': 'Need assistance?',
+        'subtitle': 'Feel free to ask.',
+      },
+      {
+        'title': 'Learning ListView.builder',
+        'subtitle': 'It\'s a great widget for lists.',
+      },
+      {
+        'title': 'Customizing widgets',
+        'subtitle': 'Try adding colors and styles.',
+      },
+      {
+        'title': 'Did you know?',
+        'subtitle': 'ListView has multiple constructors.',
+      },
+      {
+        'title': 'Performance matters',
+        'subtitle': 'Use builder for large lists.',
+      },
+      {
+        'title': 'Hello there again!',
+        'subtitle': 'How is your progress?',
+      },
+      {
+        'title': 'Thank you!',
+        'subtitle': 'Happy coding!',
+      },
+    ];
     return DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -150,60 +63,69 @@ class History extends StatelessWidget {
               child: Icon(HugeIcons.strokeRoundedSearch01),
             )
           ],
-        ),
-        body: Column(
-          children: [
-            Container(
+          bottom: PreferredSize(
+            preferredSize: Size.fromHeight(50),
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 16),
               width: double.infinity,
               height: 40,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
-                color: Colors.grey.shade300,
+                color: Colors.grey.shade200,
               ),
-              child: Expanded(
-                child: TabBar(
-                  isScrollable: false,
-                  indicator: BoxDecoration(
-                    color: Colors.green,
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  labelColor: Colors.white,
-                  unselectedLabelColor: Colors.black,
-                  indicatorSize: TabBarIndicatorSize.tab,
-                  tabs: [
-                    Tab(text: 'Chat'),
-                    Tab(text: 'Pinned'),
-                    Tab(text: 'Shared'),
-                  ],
+              child: TabBar(
+                isScrollable: false,
+                indicator: BoxDecoration(
+                  color: Theme.of(context).primaryColor,
+                  borderRadius: BorderRadius.circular(5),
                 ),
+                dividerColor: Colors.transparent,
+                labelColor: Colors.white,
+                unselectedLabelColor: Colors.black,
+                indicatorSize: TabBarIndicatorSize.tab,
+                tabs: [
+                  Tab(text: 'Chat'),
+                  Tab(text: 'Pinned'),
+                  Tab(text: 'Shared'),
+                ],
               ),
             ),
-            SizedBox(height: 10),
-            Expanded(
-              child: TabBarView(
+          ),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+          child: TabBarView(
+            children: [
+              ListView(
                 children: [
-                  //1
+                  SectionHeader(
+                    title: 'Today',
+                  ),
                   ListView.builder(
-                      itemCount: 10,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: 5,
+                      shrinkWrap: true,
                       itemBuilder: (context, index) {
                         final data = chatdata[index];
                         return ListTile(
+                          contentPadding: EdgeInsets.all(0),
                           leading: Container(
-                              height: 50,
-                              width: 50,
+                              height: 45,
+                              width: 45,
                               decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   border:
                                       Border.all(color: Colors.grey.shade200)),
                               child: Icon(
-                                HugeIcons.strokeRoundedLink01,
+                                HugeIcons.strokeRoundedMessage02,
                                 color: Colors.grey,
                               )),
                           title: Text(
                             data['title'],
                             overflow: TextOverflow.ellipsis,
-                            maxLines: 2,
-                            style: TextStyle(fontWeight: FontWeight.w600),
+                            maxLines: 1,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600, fontSize: 15),
                           ),
                           subtitle: Text(
                             data['subtitle'],
@@ -212,13 +134,18 @@ class History extends StatelessWidget {
                           trailing: ThemedPopupMenuButton(),
                         );
                       }),
-
-                  //2
+                  SizedBox(height: 20),
+                  SectionHeader(
+                    title: 'Yesterday',
+                  ),
                   ListView.builder(
-                      itemCount: 10,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: 5,
+                      shrinkWrap: true,
                       itemBuilder: (context, index) {
-                        final data = pinneddata[index];
+                        final data = chatdata[index];
                         return ListTile(
+                          contentPadding: EdgeInsets.all(0),
                           leading: Container(
                               height: 50,
                               width: 50,
@@ -227,44 +154,15 @@ class History extends StatelessWidget {
                                   border:
                                       Border.all(color: Colors.grey.shade200)),
                               child: Icon(
-                                HugeIcons.strokeRoundedPin,
+                                HugeIcons.strokeRoundedMessage02,
                                 color: Colors.grey,
                               )),
                           title: Text(
                             data['title'],
                             overflow: TextOverflow.ellipsis,
-                            maxLines: 2,
-                            style: TextStyle(fontWeight: FontWeight.w600),
-                          ),
-                          subtitle: Text(
-                            data['subtitle'],
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                          trailing: ThemedPopupMenuButton(),
-                        );
-                      }),
-                  //3
-                  ListView.builder(
-                      itemCount: 10,
-                      itemBuilder: (context, index) {
-                        final data = sharedata[index];
-                        return ListTile(
-                          leading: Container(
-                              height: 50,
-                              width: 50,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border:
-                                      Border.all(color: Colors.grey.shade200)),
-                              child: Icon(
-                                HugeIcons.strokeRoundedLink01,
-                                color: Colors.grey,
-                              )),
-                          title: Text(
-                            data['title'],
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 2,
-                            style: TextStyle(fontWeight: FontWeight.w600),
+                            maxLines: 1,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600, fontSize: 15),
                           ),
                           subtitle: Text(
                             data['subtitle'],
@@ -275,9 +173,272 @@ class History extends StatelessWidget {
                       }),
                 ],
               ),
-            ),
-          ],
+              //1
+
+              //2
+              ListView(
+                children: [
+                  SectionHeader(
+                    title: 'Today',
+                  ),
+                  ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: 5,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        final data = chatdata[index];
+                        return ListTile(
+                          contentPadding: EdgeInsets.all(0),
+                          leading: Container(
+                              height: 45,
+                              width: 45,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border:
+                                      Border.all(color: Colors.grey.shade200)),
+                              child: Icon(
+                                HugeIcons.strokeRoundedMessage02,
+                                color: Colors.grey,
+                              )),
+                          title: Text(
+                            data['title'],
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600, fontSize: 15),
+                          ),
+                          subtitle: Text(
+                            data['subtitle'],
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                          trailing: ThemedPopupMenuButton(),
+                        );
+                      }),
+                  SizedBox(height: 20),
+                  SectionHeader(
+                    title: 'Yesterday',
+                  ),
+                  ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: 5,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        final data = chatdata[index];
+                        return ListTile(
+                          contentPadding: EdgeInsets.all(0),
+                          leading: Container(
+                              height: 50,
+                              width: 50,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border:
+                                      Border.all(color: Colors.grey.shade200)),
+                              child: Icon(
+                                HugeIcons.strokeRoundedMessage02,
+                                color: Colors.grey,
+                              )),
+                          title: Text(
+                            data['title'],
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600, fontSize: 15),
+                          ),
+                          subtitle: Text(
+                            data['subtitle'],
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                          trailing: ThemedPopupMenuButton(),
+                        );
+                      }),
+                  SizedBox(height: 20),
+                  SectionHeader(
+                    title: 'Previous',
+                  ),
+                  ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: 5,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        final data = chatdata[index];
+                        return ListTile(
+                          contentPadding: EdgeInsets.all(0),
+                          leading: Container(
+                              height: 50,
+                              width: 50,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border:
+                                      Border.all(color: Colors.grey.shade200)),
+                              child: Icon(
+                                HugeIcons.strokeRoundedMessage02,
+                                color: Colors.grey,
+                              )),
+                          title: Text(
+                            data['title'],
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600, fontSize: 15),
+                          ),
+                          subtitle: Text(
+                            data['subtitle'],
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                          trailing: ThemedPopupMenuButton(),
+                        );
+                      }),
+                ],
+              ),
+              //3
+              ListView(
+                children: [
+                  SectionHeader(
+                    title: 'Today',
+                  ),
+                  ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: 5,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        final data = chatdata[index];
+                        return ListTile(
+                          contentPadding: EdgeInsets.all(0),
+                          leading: Container(
+                              height: 45,
+                              width: 45,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border:
+                                      Border.all(color: Colors.grey.shade200)),
+                              child: Icon(
+                                HugeIcons.strokeRoundedMessage02,
+                                color: Colors.grey,
+                              )),
+                          title: Text(
+                            data['title'],
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600, fontSize: 15),
+                          ),
+                          subtitle: Text(
+                            data['subtitle'],
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                          trailing: ThemedPopupMenuButton(),
+                        );
+                      }),
+                  SizedBox(height: 20),
+                  SectionHeader(
+                    title: 'Yesterday',
+                  ),
+                  ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: 5,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        final data = chatdata[index];
+                        return ListTile(
+                          contentPadding: EdgeInsets.all(0),
+                          leading: Container(
+                              height: 50,
+                              width: 50,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border:
+                                      Border.all(color: Colors.grey.shade200)),
+                              child: Icon(
+                                HugeIcons.strokeRoundedMessage02,
+                                color: Colors.grey,
+                              )),
+                          title: Text(
+                            data['title'],
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600, fontSize: 15),
+                          ),
+                          subtitle: Text(
+                            data['subtitle'],
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                          trailing: ThemedPopupMenuButton(),
+                        );
+                      }),
+                  SizedBox(height: 20),
+                  SectionHeader(
+                    title: 'Previous',
+                  ),
+                  ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: 5,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        final data = chatdata[index];
+                        return ListTile(
+                          contentPadding: EdgeInsets.all(0),
+                          leading: Container(
+                              height: 50,
+                              width: 50,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border:
+                                      Border.all(color: Colors.grey.shade200)),
+                              child: Icon(
+                                HugeIcons.strokeRoundedMessage02,
+                                color: Colors.grey,
+                              )),
+                          title: Text(
+                            data['title'],
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600, fontSize: 15),
+                          ),
+                          subtitle: Text(
+                            data['subtitle'],
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                          trailing: ThemedPopupMenuButton(),
+                        );
+                      }),
+                ],
+              ),
+            ],
+          ),
         ),
+      ),
+    );
+  }
+}
+
+class SectionHeader extends StatelessWidget {
+  final String title;
+
+  const SectionHeader({required this.title, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+      child: Row(
+        children: [
+          Text(
+            title,
+            style: const TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+          SizedBox(width: 16),
+          Expanded(
+            child: Divider(
+              color: Colors.grey.shade200,
+            ),
+          )
+        ],
       ),
     );
   }

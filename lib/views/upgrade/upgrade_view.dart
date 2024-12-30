@@ -100,7 +100,7 @@ class UpgradeWigets extends StatelessWidget {
               ElevatedButtonWigets(
                 text: 'Select Plan',
                 onClick: () {},
-                backgroundColor: ColorConstant.primaryColor,
+                backgroundColor: Theme.of(context).primaryColor,
               )
             ],
           ),
@@ -112,7 +112,7 @@ class UpgradeWigets extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 5, vertical: 3),
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  color: ColorConstant.primaryColor,
+                  color: Theme.of(context).primaryColor,
                   borderRadius: BorderRadius.only(
                       topRight: Radius.circular(14),
                       bottomLeft: Radius.circular(14)),

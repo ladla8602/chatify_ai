@@ -5,9 +5,10 @@ import 'package:chatify_ai/views/security/security_view.dart';
 import 'package:get/get.dart';
 
 import '../views/audio/audio_view.dart';
-import '../views/auth/forgot_password_view.dart';
+import '../views/auth/forgot_password/create_new_password_view.dart';
+import '../views/auth/forgot_password/forgot_password_view.dart';
 import '../views/auth/login_view.dart';
-import '../views/auth/otp_code_view.dart';
+import '../views/auth/forgot_password/otp_code_view.dart';
 import '../views/auth/set_password_view.dart';
 import '../views/auth/signin_view.dart';
 import '../views/auth/singup_view.dart';
@@ -28,6 +29,7 @@ class AppRoutes {
   static const signin = '/signin';
   static const signup = '/signup';
   static const forgotpassword = '/forgotpassword';
+  static const createNewPassword = '/createNewPassword';
   static const setPassword = '/setPassword';
   static const otpaccess = '/otpaccess';
   static const dashboard = '/dashboard';
@@ -55,6 +57,7 @@ class AppRoutes {
     GetPage(name: signup, page: () => SingupView()),
     GetPage(name: otpaccess, page: () => OtpCodeView()),
     GetPage(name: forgotpassword, page: () => ForgotPasswordView()),
+    GetPage(name: createNewPassword, page: () => CreateNewPasswordView()),
     GetPage(name: setPassword, page: () => SetPasswordView()),
     GetPage(name: chatview, page: () => ChatView()),
     GetPage(name: chatContentView, page: () => ChatContentView()),
@@ -66,10 +69,10 @@ class AppRoutes {
     GetPage(name: addPaymentMethods, page: () => AddPaymentView()),
     GetPage(name: languaeview, page: () => LanguageView()),
     GetPage(name: dashboard, page: () => DashboardView()),
-    GetPage(name: history, page: () => History()),
+    GetPage(name: history, page: () => HistoryView()),
     GetPage(name: linkedAccount, page: () => Linked_Account()),
     GetPage(name: personalInfo, page: () => PersonalInfo()),
-    GetPage(name: security, page: () => Security()),
+    GetPage(name: security, page: () => SecurityView()),
     GetPage(name: imageView, page: () => ImageGenerateView()),
     GetPage(name: audioView, page: () => AudioGenerateView()),
   ];

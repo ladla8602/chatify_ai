@@ -22,8 +22,9 @@ class PersonalInfo extends StatelessWidget {
         child: Column(
           children: [
             CircleAvatar(
+              backgroundColor: Colors.grey.shade200,
               backgroundImage: NetworkImage(
-                  'https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg?auto=compress&cs=tinysrgb&w=400'),
+                  'https://cdn-icons-png.flaticon.com/128/8984/8984545.png'),
               radius: 40,
             ),
             Column(
@@ -31,84 +32,17 @@ class PersonalInfo extends StatelessWidget {
               children: [
                 Text(
                   'Full Name',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
                 ),
                 SizedBox(height: 10),
                 TextField(
+                  readOnly: true,
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.symmetric(
-                        vertical: 20, horizontal: 28),
+                        vertical: 15, horizontal: 18),
                     hintText: "Andrew Ainsley",
                     hintStyle: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide.none),
-                    fillColor: Colors.grey.shade100,
-                    filled: true,
-                  ),
-                ),
-                SizedBox(height: 10),
-                Text(
-                  'Phone Number',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
-                ),
-                SizedBox(height: 10),
-                TextField(
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.symmetric(
-                        vertical: 20, horizontal: 28),
-                    hintText: "+1 11 467 378 399",
-                    hintStyle: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide.none),
-                    fillColor: Colors.grey.shade100,
-                    filled: true,
-                  ),
-                ),
-                SizedBox(height: 10),
-                Text(
-                  'Data of Birth',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
-                ),
-                SizedBox(height: 10),
-                TextField(
-                  decoration: InputDecoration(
-                    suffixIcon: Icon(HugeIcons.strokeRoundedCalendar01),
-                    contentPadding: const EdgeInsets.symmetric(
-                        vertical: 20, horizontal: 28),
-                    hintText: "12/01/1990",
-                    hintStyle: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide.none),
-                    fillColor: Colors.grey.shade100,
-                    filled: true,
-                  ),
-                ),
-                SizedBox(height: 10),
-                Text(
-                  'Gender',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
-                ),
-                SizedBox(height: 10),
-                TextField(
-                  decoration: InputDecoration(
-                    suffixIcon: Icon(HugeIcons.strokeRoundedArrowDown01),
-                    contentPadding: const EdgeInsets.symmetric(
-                        vertical: 20, horizontal: 28),
-                    hintText: "Male",
-                    hintStyle: TextStyle(
-                      fontSize: 16,
+                      fontSize: 14,
                       fontWeight: FontWeight.w600,
                     ),
                     border: OutlineInputBorder(
@@ -120,16 +54,51 @@ class PersonalInfo extends StatelessWidget {
                 ),
                 SizedBox(height: 15),
                 Text(
-                  'Street Address',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                  'Email Address',
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
                 ),
-                SizedBox(height: 30),
-                
-                ElevatedButtonWigets(
-                  text: 'Save',
-                  onClick: () {},
-                  backgroundColor: ColorConstant.primaryColor,
+                SizedBox(height: 10),
+                TextField(
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.symmetric(
+                        vertical: 15, horizontal: 18),
+                    hintText: "example@gmail.com",
+                    hintStyle: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide.none),
+                    fillColor: Colors.grey.shade100,
+                    filled: true,
+                  ),
                 ),
+                SizedBox(height: 15),
+                Text(
+                  'App Version',
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
+                ),
+                SizedBox(height: 10),
+                TextField(
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.symmetric(
+                        vertical: 15, horizontal: 18),
+                    hintText: "1.0.0",
+                    hintStyle: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide.none),
+                    fillColor: Colors.grey.shade100,
+                    filled: true,
+                  ),
+                ),
+                SizedBox(height: 10),
               ],
             )
           ],

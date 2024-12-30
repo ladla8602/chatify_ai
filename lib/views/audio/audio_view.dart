@@ -82,7 +82,7 @@ class AudioGenerateView extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
-                    color: ColorConstant.primaryColor,
+                    color: Theme.of(context).primaryColor,
                   ),
                 ),
               ),
@@ -98,7 +98,7 @@ class AudioGenerateView extends StatelessWidget {
                   focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16),
                       borderSide: BorderSide(
-                          color: ColorConstant.primaryColor, width: 1.5)),
+                          color: Theme.of(context).primaryColor, width: 1.5)),
                   hintText: "Enter your prompt",
                   hintStyle: TextStyle(color: Colors.black, fontSize: 14),
                   fillColor: Colors.grey.shade200,
@@ -108,7 +108,7 @@ class AudioGenerateView extends StatelessWidget {
               Spacer(),
               ElevatedButtonWigets(
                 text: 'Generate',
-                backgroundColor: ColorConstant.primaryColor,
+                backgroundColor: Theme.of(context).primaryColor,
                 foregroundColor: Colors.white,
                 onClick: () {
                   showDialog(
@@ -131,7 +131,7 @@ class AudioGenerateView extends StatelessWidget {
                                 child: Icon(
                                   HugeIcons
                                       .strokeRoundedMultiplicationSignCircle,
-                                  color: ColorConstant.primaryColor,
+                                  color: Theme.of(context).primaryColor,
                                 ),
                               ),
                             ),
@@ -146,13 +146,14 @@ class AudioGenerateView extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(16),
                                   color: Colors.grey.shade200,
                                   border: Border.all(
-                                      color: ColorConstant.primaryColor
+                                      color: Theme.of(context)
+                                          .primaryColor
                                           .withOpacity(0.5),
                                       width: 1.5)),
                             ),
                             SizedBox(height: 20),
                             ElevatedButtonWigets(
-                              backgroundColor: ColorConstant.primaryColor,
+                              backgroundColor: Theme.of(context).primaryColor,
                               text: 'Download',
                               onClick: () {},
                             ),
@@ -196,12 +197,12 @@ class AudioGenerateWigets extends StatelessWidget {
             height: 75,
             decoration: BoxDecoration(
                 color: isSelected
-                    ? ColorConstant.primaryColor
+                    ? Theme.of(context).primaryColor
                     : Colors.transparent,
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
                     color: isSelected
-                        ? ColorConstant.primaryColor
+                        ? Theme.of(context).primaryColor
                         : Colors.grey.shade300,
                     width: isSelected ? 2 : 1),
                 image: DecorationImage(
@@ -216,7 +217,7 @@ class AudioGenerateWigets extends StatelessWidget {
         Text(
           title,
           style: TextStyle(
-            color: isSelected ? ColorConstant.primaryColor : Colors.black,
+            color: isSelected ? Theme.of(context).primaryColor : Colors.black,
             fontSize: 12,
             fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
           ),

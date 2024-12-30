@@ -119,7 +119,7 @@ class SingupView extends StatelessWidget {
                           value: authController.checkbox.value,
                           onChanged: (value) =>
                               authController.toggleCheckbox(value),
-                          activeColor: ColorConstant.primaryColor,
+                          activeColor: Theme.of(context).primaryColor,
                         );
                       },
                     ),
@@ -128,7 +128,8 @@ class SingupView extends StatelessWidget {
                         style: TextStyle(fontSize: 13)),
                     Text("Terms & Conditions",
                         style: TextStyle(
-                            color: ColorConstant.primaryColor, fontSize: 13)),
+                            color: Theme.of(context).primaryColor,
+                            fontSize: 13)),
                   ],
                 ),
                 SizedBox(height: 26),
@@ -140,7 +141,8 @@ class SingupView extends StatelessWidget {
                     SizedBox(width: 5),
                     Text('Sign In',
                         style: TextStyle(
-                            fontSize: 13, color: ColorConstant.primaryColor)),
+                            fontSize: 13,
+                            color: Theme.of(context).primaryColor)),
                   ],
                 ),
                 SizedBox(height: 20),
@@ -159,7 +161,7 @@ class SingupView extends StatelessWidget {
                           email, password);
                     }
                   },
-                  backgroundColor: ColorConstant.primaryColor,
+                  backgroundColor: Theme.of(context).primaryColor,
                 ),
               ],
             ),

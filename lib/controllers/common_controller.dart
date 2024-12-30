@@ -1,12 +1,11 @@
 import 'package:get/get.dart';
 
 class CommonController extends GetxController {
-  var isDarkMode = false.obs;
   var enableForNewChats = false.obs;
   var chatHistory = true.obs;
   var dataTraining = true.obs;
   var dataEncryption = true.obs;
-
+  var isDarkMode = false.obs;
   void toggleDarkMode() {
     isDarkMode.value = !isDarkMode.value;
   }
