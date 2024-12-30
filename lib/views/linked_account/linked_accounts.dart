@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 class Linked_Account extends StatelessWidget {
   const Linked_Account({super.key});
 
@@ -23,8 +24,7 @@ class Linked_Account extends StatelessWidget {
       },
       {
         'title': 'X',
-        'imagePath':
-            'https://cdn-icons-png.flaticon.com/128/5969/5969020.png',
+        'imagePath': 'https://cdn-icons-png.flaticon.com/128/5969/5969020.png',
         'status': 'Connect',
       },
     ];
@@ -89,7 +89,10 @@ class LinkedAccountWigets extends StatelessWidget {
           Spacer(),
           Text(
             status,
-            style: TextStyle(fontSize: 13, color: status == 'Connected' ? Colors.black : Colors.green,),
+            style: TextStyle(
+              fontSize: 13,
+              color: status == 'Connected' ? Colors.black : Colors.green,
+            ),
           )
         ],
       ),

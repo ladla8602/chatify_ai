@@ -189,7 +189,7 @@ class DrawerWigets extends StatelessWidget {
             ),
             onTap: () {
               // Handle item tap
-              Navigator.pop(context); // Close the drawer
+              Get.toNamed(AppRoutes.imageView);
             },
           ),
           ListTile(
@@ -205,7 +205,7 @@ class DrawerWigets extends StatelessWidget {
             ),
             onTap: () {
               // Handle item tap
-              Navigator.pop(context); // Close the drawer
+              Get.toNamed(AppRoutes.audioView);
             },
           ),
           ListTile(
@@ -218,8 +218,7 @@ class DrawerWigets extends StatelessWidget {
             ),
             onTap: () {
               // Handle item tap
-               Get.toNamed('/history'); 
-            
+              Get.toNamed('/history');
             },
           ),
           ListTile(

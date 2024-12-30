@@ -4,6 +4,7 @@ import 'package:chatify_ai/views/personal_info/persnol_info.dart';
 import 'package:chatify_ai/views/security/security_view.dart';
 import 'package:get/get.dart';
 
+import '../views/audio/audio_view.dart';
 import '../views/auth/forgot_password_view.dart';
 import '../views/auth/login_view.dart';
 import '../views/auth/otp_code_view.dart';
@@ -13,6 +14,7 @@ import '../views/auth/singup_view.dart';
 import '../views/chat/chat_content_view.dart';
 import '../views/chat/chat_view.dart';
 import '../views/dashboard_view.dart';
+import '../views/image/image_generate_view.dart';
 import '../views/language/language_view.dart';
 import '../views/payment/add_payment_view.dart';
 import '../views/payment/payment_methods_view.dart';
@@ -42,8 +44,10 @@ class AppRoutes {
   static const personalInfo = '/personalInfo';
   static const security = '/scurity';
 
-  
   static const languaeview = '/languaeview';
+
+  static const imageView = '/imageView';
+  static const audioView = '/audioView';
 
   static final pages = [
     GetPage(name: login, page: () => LoginView()),
@@ -65,6 +69,8 @@ class AppRoutes {
     GetPage(name: history, page: () => History()),
     GetPage(name: linkedAccount, page: () => Linked_Account()),
     GetPage(name: personalInfo, page: () => PersonalInfo()),
-   GetPage(name: security,page:() => Security()),
+    GetPage(name: security, page: () => Security()),
+    GetPage(name: imageView, page: () => ImageGenerateView()),
+    GetPage(name: audioView, page: () => AudioGenerateView()),
   ];
 }

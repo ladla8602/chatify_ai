@@ -160,14 +160,14 @@ class AuthController extends GetxController {
         await _createUserInFirestore(firebaseUser);
 
         // Navigate to password setup screen
-        Get.toNamed(AppRoutes.setPassword, arguments: firebaseUser);
+        Get.offNamed(AppRoutes.setPassword, arguments: firebaseUser);
       } else {
         Get.snackbar("Success", "Logged in as ${firebaseUser?.displayName}",
             snackPosition: SnackPosition.BOTTOM,
             backgroundColor: ColorConstant.primaryColor,
             colorText: Colors.white);
 
-        Get.toNamed(AppRoutes.chatview);
+        Get.offNamed(AppRoutes.chatview);
       }
     } catch (e) {
       Get.printError(info: e.toString());
@@ -212,7 +212,7 @@ class AuthController extends GetxController {
     await _googleSignIn.signOut();
     await _auth.signOut();
 
-    Get.toNamed(AppRoutes.login);
+    Get.offNamed(AppRoutes.login);
   }
 
   Future<void> _createUserInFirestore(User? firebaseUser) async {

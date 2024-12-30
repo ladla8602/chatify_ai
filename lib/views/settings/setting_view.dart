@@ -1,3 +1,4 @@
+import 'package:chatify_ai/constants/constants.dart';
 import 'package:chatify_ai/controllers/auth_controller.dart';
 import 'package:chatify_ai/controllers/common_controller.dart';
 import 'package:flutter/material.dart';
@@ -151,7 +152,92 @@ class SettingView extends StatelessWidget {
               'Logout',
               style: TextStyle(color: Colors.red),
             ),
-            onTap: () => authController.logout(),
+            // onTap: () => authController.logout(),
+            onTap: () {
+              showModalBottomSheet(
+                backgroundColor: Colors.white,
+                context: context,
+                builder: (context) {
+                  return Padding(
+                    padding: const EdgeInsets.only(
+                        left: 14, right: 14, top: 10, bottom: 16),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          width: 28,
+                          height: 2,
+                          decoration:
+                              BoxDecoration(color: Colors.grey.shade400),
+                        ),
+                        const SizedBox(height: 16),
+                        const Text(
+                          'Logout',
+                          style: TextStyle(
+                              color: Colors.red,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15),
+                        ),
+                        const SizedBox(height: 16),
+                        Divider(
+                          color: Colors.grey.shade300,
+                        ),
+                        const SizedBox(height: 16),
+                        const Text('Are you sure you want to logout?'),
+                        const SizedBox(height: 16),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () {
+                                  Get.back();
+                                },
+                                child: Container(
+                                  height: 44,
+                                  width: MediaQuery.of(context).size.width,
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(30),
+                                    color: ColorConstant.primaryColor
+                                        .withOpacity(0.2),
+                                  ),
+                                  child: Text(
+                                    'Cancel',
+                                    style: TextStyle(
+                                        color: ColorConstant.primaryColor),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 14),
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () {
+                                  authController.logout();
+                                },
+                                child: Container(
+                                  height: 44,
+                                  width: MediaQuery.of(context).size.width,
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(30),
+                                    color: ColorConstant.primaryColor,
+                                  ),
+                                  child: const Text(
+                                    'Yes,Logout',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  );
+                },
+              );
+            },
           ),
         ],
       ),
