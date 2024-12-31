@@ -8,7 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
 
+import '../../widgets/drawer.dart';
 import '../common/wigets.dart';
+import 'image_history.dart';
 
 class ImageGenerateView extends StatelessWidget {
   const ImageGenerateView({super.key});
@@ -29,153 +31,186 @@ class ImageGenerateView extends StatelessWidget {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.white,
+      //
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        leading: Builder(builder: (context) {
+          return IconButton(
+            icon: Icon(
+              HugeIcons.strokeRoundedMenuSquare,
+              color: Theme.of(context).iconTheme.color,
+            ),
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+            },
+          );
+        }),
         title: Text(
           'Image Generate',
-          style: TextStyle(fontSize: 20),
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         actions: [GetPrimeWigets(), SizedBox(width: 16)],
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
-        child: Obx(() {
-          final selectedIndex = imageGeneratorController.isSelected.value;
-          final selectedItem =
-              imageGeneratorController.imageGenerate[selectedIndex];
-          playAudio(selectedItem['audioPath']);
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: List.generate(
-                  imageGeneratorController.imageGenerate.length,
-                  (index) {
-                    return GestureDetector(
-                      onTap: () {
-                        imageGeneratorController.changeSelected(index);
-                        print('Selected index: $index');
-                      },
-                      child: ImageGenerateWigets(
-                        title: imageGeneratorController.imageGenerate[index]
-                            ['title'],
-                        color: imageGeneratorController.imageGenerate[index]
-                            ['color'],
-                        isSelected:
-                            imageGeneratorController.isSelected == index,
-                        imagePath: imageGeneratorController.imageGenerate[index]
-                            ['imagePath'],
-                        onClick: () {
+      drawer: DrawerWigets(),
+      endDrawer: ImageGeneratedHistory(),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
+          child: Obx(() {
+            final selectedIndex = imageGeneratorController.isSelected.value;
+            final selectedItem =
+                imageGeneratorController.imageGenerate[selectedIndex];
+            playAudio(selectedItem['audioPath']);
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: List.generate(
+                    imageGeneratorController.imageGenerate.length,
+                    (index) {
+                      return GestureDetector(
+                        onTap: () {
                           imageGeneratorController.changeSelected(index);
+                          print('Selected index: $index');
                         },
-                      ),
-                    );
-                  },
-                ),
-              ),
-              SizedBox(height: 25),
-              Padding(
-                padding: const EdgeInsets.only(left: 8),
-                child: Text(
-                  "Prompt",
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                ),
-              ),
-              SizedBox(height: 12),
-              TextFormField(
-                maxLines: 6,
-                maxLength: 460,
-                style: TextStyle(),
-                decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(16),
-                      borderSide: BorderSide(color: Colors.grey.shade300)),
-                  focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(16),
-                      borderSide: BorderSide(
-                          color: Theme.of(context).primaryColor, width: 1.5)),
-                  hintText: "Enter your prompt...",
-                  hintStyle: TextStyle(color: Colors.black, fontSize: 14),
-                  fillColor: Colors.grey.shade200,
-                  filled: true,
-                ),
-              ),
-              Spacer(),
-              ElevatedButtonWigets(
-                text: 'Generate',
-                backgroundColor: Theme.of(context).primaryColor,
-                foregroundColor: Colors.white,
-                onClick: () {
-                  showDialog(
-                    barrierDismissible: false,
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16)),
-                        backgroundColor: Colors.white,
-                        content: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Align(
-                              alignment: Alignment.topRight,
-                              child: GestureDetector(
-                                onTap: () {
-                                  Get.back();
-                                },
-                                child: Icon(
-                                  HugeIcons
-                                      .strokeRoundedMultiplicationSignCircle,
-                                  color: Theme.of(context).primaryColor,
-                                ),
-                              ),
-                            ),
-                            Text(
-                              'Image Generate',
-                              style: TextStyle(fontSize: 17),
-                            ),
-                            SizedBox(height: 20),
-                            Container(
-                              height: 250,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(16),
-                                  color: Colors.grey.shade200,
-                                  border: Border.all(
-                                      color: Theme.of(context)
-                                          .primaryColor
-                                          .withOpacity(0.5),
-                                      width: 1.5)),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(16),
-                                child: Image.network(
-                                    'https://img.freepik.com/premium-vector/vector-young-man-anime-style-character-vector-illustration-design-manga-anime-boy_147933-12445.jpg?uid=R118908268&ga=GA1.1.1519694566.1696227085&semt=ais_hybrid'),
-                              ),
-                            ),
-                            SizedBox(height: 20),
-                            ElevatedButtonWigets(
-                              backgroundColor: Theme.of(context).primaryColor,
-                              text: 'Download',
-                              onClick: () {},
-                            ),
-                          ],
+                        child: ImageGenerateWigets(
+                          title: imageGeneratorController.imageGenerate[index]
+                              ['title'],
+                          color: imageGeneratorController.imageGenerate[index]
+                              ['color'],
+                          isSelected:
+                              imageGeneratorController.isSelected == index,
+                          imagePath: imageGeneratorController
+                              .imageGenerate[index]['imagePath'],
+                          onClick: () {
+                            imageGeneratorController.changeSelected(index);
+                          },
                         ),
                       );
                     },
-                  );
-                },
-              ),
-              SizedBox(height: 20),
-            ],
-          );
-        }),
+                  ),
+                ),
+                SizedBox(height: 25),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Prompt",
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                      ),
+                      InkWell(
+                          onTap: () {
+                            Get.snackbar(
+                              'information',
+                              "Swipe Right to See Image History",
+                              snackPosition: SnackPosition.BOTTOM,
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.surface,
+                              duration: Duration(seconds: 3),
+                            );
+                          },
+                          child: Icon(
+                            HugeIcons.strokeRoundedInformationCircle,
+                            color: Theme.of(context).primaryColor,
+                          ))
+                    ],
+                  ),
+                ),
+                SizedBox(height: 12),
+                TextFormField(
+                  maxLines: 6,
+                  maxLength: 460,
+                  style:
+                      TextStyle(color: Theme.of(context).colorScheme.onSurface),
+                  decoration: InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(16),
+                        borderSide: BorderSide(color: Colors.grey.shade300)),
+                    focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(16),
+                        borderSide: BorderSide(
+                            color: Theme.of(context).primaryColor, width: 1.5)),
+                    hintText: "Enter your prompt...",
+                    hintStyle: TextStyle(fontSize: 14),
+                  ),
+                ),
+                SizedBox(height: 20),
+              ],
+            );
+          }),
+        ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(14),
+        child: ElevatedButtonWigets(
+          text: 'Generate',
+          backgroundColor: Theme.of(context).primaryColor,
+          foregroundColor: Colors.white,
+          onClick: () {
+            showDialog(
+              barrierDismissible: false,
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16)),
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: GestureDetector(
+                          onTap: () {
+                            Get.back();
+                          },
+                          child: Icon(
+                            HugeIcons.strokeRoundedMultiplicationSignCircle,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        'Image Generate',
+                        style: TextStyle(fontSize: 17),
+                      ),
+                      SizedBox(height: 20),
+                      Container(
+                        height: 250,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(16),
+                            color: Colors.grey.shade200,
+                            border: Border.all(
+                                color: Theme.of(context)
+                                    .primaryColor
+                                    .withOpacity(0.5),
+                                width: 1.5)),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(16),
+                          child: Image.network(
+                              'https://img.freepik.com/premium-vector/vector-young-man-anime-style-character-vector-illustration-design-manga-anime-boy_147933-12445.jpg?uid=R118908268&ga=GA1.1.1519694566.1696227085&semt=ais_hybrid'),
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                      ElevatedButtonWigets(
+                        backgroundColor: Theme.of(context).primaryColor,
+                        text: 'Download',
+                        onClick: () {},
+                      ),
+                    ],
+                  ),
+                );
+              },
+            );
+          },
+        ),
       ),
     );
   }

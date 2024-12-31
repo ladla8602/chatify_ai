@@ -14,10 +14,7 @@ class OtpCodeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-      ),
-      backgroundColor: Colors.white,
+      appBar: AppBar(),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20),
         child: Column(
@@ -29,7 +26,6 @@ class OtpCodeView extends StatelessWidget {
               style: TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
-                color: Colors.black,
               ),
             ),
             const SizedBox(height: 8),

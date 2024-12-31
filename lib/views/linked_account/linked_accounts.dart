@@ -29,13 +29,11 @@ class Linked_Account extends StatelessWidget {
       },
     ];
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(
           'Linked Accounts',
           style: TextStyle(fontSize: 20),
         ),
-        backgroundColor: Colors.white,
         centerTitle: true,
       ),
       body: ListView.separated(
@@ -84,14 +82,17 @@ class LinkedAccountWigets extends StatelessWidget {
           SizedBox(width: 12),
           Text(
             title,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+            style: TextStyle(
+                fontWeight: FontWeight.bold, fontSize: 13, color: Colors.black),
           ),
           Spacer(),
           Text(
             status,
             style: TextStyle(
               fontSize: 13,
-              color: status == 'Connected' ? Colors.black : Colors.green,
+              color: status == 'Connected'
+                  ? Colors.black
+                  : Theme.of(context).primaryColor,
             ),
           )
         ],

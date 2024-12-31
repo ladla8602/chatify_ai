@@ -13,10 +13,8 @@ class UpgradeView extends StatelessWidget {
   Widget build(BuildContext context) {
     final PlanController _planController = Get.put(PlanController());
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
         surfaceTintColor: Colors.white,
-        backgroundColor: Colors.white,
         title: Text('Upgrade to PRO!', style: TextStyle(fontSize: 17)),
       ),
       body: ListView.separated(
@@ -59,7 +57,7 @@ class UpgradeWigets extends StatelessWidget {
       margin: EdgeInsets.all(20),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(14),
-        color: Colors.grey.shade200,
+        color: Theme.of(context).colorScheme.surface,
       ),
       child: Stack(
         clipBehavior: Clip.none,

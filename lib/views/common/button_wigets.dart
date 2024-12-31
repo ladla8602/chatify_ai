@@ -169,7 +169,7 @@ class OutlinebuttonWigets extends StatelessWidget {
       required this.text,
       this.onClick,
       this.isLoading = false,
-      this.color = Colors.black,
+      this.color,
       required this.logo});
 
   @override
@@ -196,7 +196,7 @@ class OutlinebuttonWigets extends StatelessWidget {
                   text,
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: color,
+                    // color: ,
                     fontSize: 13,
                     fontWeight: FontWeight.w700,
                   ),

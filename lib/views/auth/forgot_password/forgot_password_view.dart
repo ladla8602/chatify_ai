@@ -14,10 +14,7 @@ class ForgotPasswordView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-      ),
-      backgroundColor: Colors.white,
+      appBar: AppBar(),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20),
         child: Column(
@@ -29,7 +26,6 @@ class ForgotPasswordView extends StatelessWidget {
               style: TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
-                color: Colors.black,
               ),
             ),
             const SizedBox(height: 8),
@@ -71,8 +67,6 @@ class ForgotPasswordView extends StatelessWidget {
                   borderRadius: BorderRadius.all(Radius.circular(14)),
                   borderSide: BorderSide.none,
                 ),
-                fillColor: Colors.grey.shade100,
-                filled: true,
               ),
             ),
 

@@ -16,9 +16,7 @@ class AddPaymentView extends StatelessWidget {
     final TextEditingController expiryCtlr = TextEditingController();
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
         leading: IconButton(
           icon: Icon(
             HugeIcons.strokeRoundedCancel01,

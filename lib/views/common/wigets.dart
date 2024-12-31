@@ -25,11 +25,13 @@ class BuildTileWigets extends StatelessWidget {
       contentPadding: EdgeInsets.all(0),
       leading: Icon(
         icon,
-        color: Colors.black,
+        color: Theme.of(context).iconTheme.color,
         size: 20,
       ),
       title: Text(title,
-          style: const TextStyle(color: Colors.black, fontSize: 15)),
+          style: TextStyle(
+              color: Theme.of(context).textTheme.bodyMedium!.color,
+              fontSize: 15)),
       trailing: trailing ??
           const Icon(
             HugeIcons.strokeRoundedArrowRight01,
@@ -56,7 +58,9 @@ class CustomSwitchButtonWigets extends StatelessWidget {
         height: 26,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(18),
-          color: isSwitched ? Colors.green : Colors.grey.shade300,
+          color: isSwitched
+              ? Theme.of(context).primaryColor
+              : Colors.grey.shade300,
         ),
         child: Stack(
           alignment: Alignment.center,

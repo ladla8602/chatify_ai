@@ -1,4 +1,5 @@
 import 'package:chatify_ai/controllers/auth_controller.dart';
+import 'package:chatify_ai/controllers/dashboard_controller.dart';
 import 'package:chatify_ai/routes/app_routes.dart';
 import 'package:chatify_ai/views/history/history_view.dart';
 import 'package:flutter/material.dart';
@@ -14,21 +15,24 @@ class DrawerWigets extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AuthController authController = Get.find<AuthController>();
+    final DashboardController dashboardController =
+        Get.find<DashboardController>();
     return Drawer(
-      backgroundColor: Colors.white,
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
           SizedBox(
             height: 110,
             child: DrawerHeader(
-              decoration: BoxDecoration(),
+              decoration:
+                  BoxDecoration(border: Border(bottom: BorderSide.none)),
               child: Obx(() {
                 final user = authController.firebaseUser.value;
                 return Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     CircleAvatar(
+                      backgroundColor: Theme.of(context).colorScheme.onPrimary,
                       radius: 30,
                       backgroundImage: NetworkImage(
                         user?.photoURL ??
@@ -47,13 +51,17 @@ class DrawerWigets extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
+                                color:
+                                    Theme.of(context).colorScheme.onBackground,
                               ),
                             ),
                             Text(
                               user?.email ?? '',
                               style: TextStyle(
-                                fontSize: 12,
-                              ),
+                                  fontSize: 12,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onBackground),
                             )
                           ],
                         ),
@@ -90,48 +98,48 @@ class DrawerWigets extends StatelessWidget {
                           top: -6,
                           left: 0,
                           child: CircleAvatar(
-                            radius: 3,
                             backgroundColor: Colors.white,
+                            radius: 3,
                           ),
                         ),
                         Positioned(
                           top: -4,
                           left: 10,
                           child: CircleAvatar(
-                            radius: 1,
                             backgroundColor: Colors.white,
+                            radius: 1,
                           ),
                         ),
                         Positioned(
                           top: -4,
                           right: 0,
                           child: CircleAvatar(
-                            radius: 2,
                             backgroundColor: Colors.white,
+                            radius: 2,
                           ),
                         ),
                         Positioned(
                           bottom: -4,
                           left: 0,
                           child: CircleAvatar(
-                            radius: 2,
                             backgroundColor: Colors.white,
+                            radius: 2,
                           ),
                         ),
                         Positioned(
                           bottom: 0,
                           left: 10,
                           child: CircleAvatar(
-                            radius: 1,
                             backgroundColor: Colors.white,
+                            radius: 1,
                           ),
                         ),
                         Positioned(
                           bottom: 0,
                           right: 0,
                           child: CircleAvatar(
-                            radius: 1,
                             backgroundColor: Colors.white,
+                            radius: 1,
                           ),
                         ),
                       ],
@@ -176,6 +184,7 @@ class DrawerWigets extends StatelessWidget {
             ),
             onTap: () {
               // Handle item tap
+              dashboardController.changeIndex(0);
               Navigator.pop(context); // Close the drawer
             },
           ),
@@ -189,7 +198,8 @@ class DrawerWigets extends StatelessWidget {
             ),
             onTap: () {
               // Handle item tap
-              Get.toNamed(AppRoutes.imageView);
+              dashboardController.changeIndex(1);
+              Get.to(AppRoutes.imageView, preventDuplicates: false);
             },
           ),
           ListTile(
@@ -205,7 +215,8 @@ class DrawerWigets extends StatelessWidget {
             ),
             onTap: () {
               // Handle item tap
-              Get.toNamed(AppRoutes.audioView);
+              dashboardController.changeIndex(2);
+              Get.to(AppRoutes.audioView, preventDuplicates: false);
             },
           ),
           ListTile(
@@ -218,7 +229,9 @@ class DrawerWigets extends StatelessWidget {
             ),
             onTap: () {
               // Handle item tap
-              Get.toNamed(AppRoutes.history);
+              dashboardController.changeIndex(3);
+
+              Get.to(AppRoutes.history, preventDuplicates: false);
             },
           ),
           ListTile(
@@ -230,7 +243,8 @@ class DrawerWigets extends StatelessWidget {
               ),
             ),
             onTap: () {
-              Get.toNamed(AppRoutes.setting);
+              dashboardController.changeIndex(4);
+              Get.to(AppRoutes.setting, preventDuplicates: false);
             },
           ),
         ],

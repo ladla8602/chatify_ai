@@ -4,7 +4,8 @@ import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chatify_ai/library/flutter_chat/lib/flutter_chat.dart';
-import 'package:chatify_ai/library/flutter_chat/lib/src/types/types.dart' as types;
+import 'package:chatify_ai/library/flutter_chat/lib/src/types/types.dart'
+    as types;
 import 'package:chatify_ai/models/chatbot.model.dart';
 import 'package:chatify_ai/widgets/not_found_widget.dart';
 import 'package:chatify_ai/widgets/typing_loader.dart';
@@ -54,13 +55,11 @@ class _ChatContentViewState extends State<ChatContentView> {
   @override
   Widget build(BuildContext context) => Scaffold(
         resizeToAvoidBottomInset: true,
-        backgroundColor: Colors.white,
         appBar: _buildAppBar(context),
         body: _buildChatBody(context),
       );
 
   PreferredSizeWidget _buildAppBar(BuildContext context) => AppBar(
-        backgroundColor: Colors.white,
         surfaceTintColor: Colors.white,
         automaticallyImplyLeading: true,
         centerTitle: false,
@@ -80,7 +79,8 @@ class _ChatContentViewState extends State<ChatContentView> {
         radius: 18,
         backgroundColor: Theme.of(context).primaryColor,
         child: CachedNetworkImage(
-          imageUrl: _chatController.chatbot?.botAvatar ?? "http://via.placeholder.com/200x150",
+          imageUrl: _chatController.chatbot?.botAvatar ??
+              "http://via.placeholder.com/200x150",
           imageBuilder: (context, imageProvider) => CircleAvatar(
             radius: 16,
             child: Container(
@@ -111,12 +111,13 @@ class _ChatContentViewState extends State<ChatContentView> {
         customBottomWidget: _buildMessageInput(context),
       ));
 
-  Widget _buildEmptyState() => Obx(() => _chatController.isDataLoadingForFirstTime.value
-      ? const Center(child: TypingLoaderWidget())
-      : NotFoundWidget(
-          title: 'no_chat'.tr,
-          onButtonClick: () => Navigator.of(context).pop(),
-        ));
+  Widget _buildEmptyState() =>
+      Obx(() => _chatController.isDataLoadingForFirstTime.value
+          ? const Center(child: TypingLoaderWidget())
+          : NotFoundWidget(
+              title: 'no_chat'.tr,
+              onButtonClick: () => Navigator.of(context).pop(),
+            ));
 
   Widget _buildMessageInput(BuildContext context) => Container(
         width: MediaQuery.of(context).size.width,
@@ -170,7 +171,8 @@ class _ChatContentViewState extends State<ChatContentView> {
         )
       : const Icon(Icons.close);
 
-  OutlineInputBorder _buildInputBorder(BuildContext context) => OutlineInputBorder(
+  OutlineInputBorder _buildInputBorder(BuildContext context) =>
+      OutlineInputBorder(
         borderRadius: const BorderRadius.all(Radius.circular(28)),
         borderSide: BorderSide(color: Theme.of(context).colorScheme.surface),
       );

@@ -20,10 +20,7 @@ class SigninView extends StatelessWidget {
     final _formKey = GlobalKey<FormState>();
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-        ),
+        appBar: AppBar(),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 40),
           child: Obx(() {
@@ -61,8 +58,6 @@ class SigninView extends StatelessWidget {
                         borderRadius: BorderRadius.all(Radius.circular(14)),
                         borderSide: BorderSide.none,
                       ),
-                      fillColor: Colors.grey.shade100,
-                      filled: true,
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -93,8 +88,6 @@ class SigninView extends StatelessWidget {
                         borderRadius: BorderRadius.all(Radius.circular(14)),
                         borderSide: BorderSide.none,
                       ),
-                      fillColor: Colors.grey.shade100,
-                      filled: true,
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
