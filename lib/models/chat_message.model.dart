@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Message {
+class ChatMessage {
   final String id;
   final String content;
   final DateTime timestamp;
@@ -8,9 +8,10 @@ class Message {
   final String senderType;
   final String status;
   final String type;
+  final VisionChatMessage? vision;
   final MessageMetadata metadata;
 
-  Message({
+  ChatMessage({
     required this.id,
     required this.content,
     required this.timestamp,
@@ -19,6 +20,7 @@ class Message {
     required this.status,
     required this.type,
     required this.metadata,
+    this.vision,
   });
 
   Map<String, dynamic> toMap() {
@@ -31,6 +33,7 @@ class Message {
       'status': status,
       'type': type,
       'metadata': metadata.toMap(),
+      'vision': vision?.toJson(),
     };
   }
 
@@ -46,9 +49,9 @@ class Message {
     };
   }
 
-  factory Message.fromFirestore(DocumentSnapshot doc) {
+  factory ChatMessage.fromFirestore(DocumentSnapshot doc) {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-    return Message(
+    return ChatMessage(
       id: doc.id,
       content: data['content'] ?? '',
       timestamp: (data['timestamp'] as Timestamp).toDate(),
@@ -56,11 +59,12 @@ class Message {
       senderType: data['senderType'] ?? 'user',
       status: data['status'] ?? 'sent',
       type: data['type'] ?? 'text',
+      vision: data['vision'] != null ? VisionChatMessage.fromJson(data['vision']) : null,
       metadata: MessageMetadata.fromMap(data['metadata'] ?? {}),
     );
   }
 
-  Message copyWith({
+  ChatMessage copyWith({
     String? id,
     String? content,
     DateTime? timestamp,
@@ -70,7 +74,7 @@ class Message {
     String? type,
     MessageMetadata? metadata,
   }) {
-    return Message(
+    return ChatMessage(
       id: id ?? this.id,
       content: content ?? this.content,
       timestamp: timestamp ?? this.timestamp,
@@ -83,12 +87,45 @@ class Message {
   }
 }
 
+class VisionChatMessage {
+  String? id;
+  String? messageId;
+  String? mimeType;
+  String? uri;
+  String? size;
+  String? fileName;
+
+  VisionChatMessage({this.id, this.messageId, this.mimeType, this.uri, this.size, this.fileName});
+
+  VisionChatMessage.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    messageId = json['message_id'];
+    mimeType = json['mime_type'];
+    uri = json['uri'];
+    size = json['size'];
+    fileName = json['file_name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = {};
+    data['id'] = id;
+    data['message_id'] = messageId;
+    data['mime_type'] = mimeType;
+    data['uri'] = uri;
+    data['size'] = size;
+    data['file_name'] = fileName;
+    return data;
+  }
+}
+
 class MessageMetadata {
+  final String? mimeType;
   final int? tokens;
   final String? model;
   final String? error;
 
   MessageMetadata({
+    this.mimeType,
     this.tokens,
     this.model,
     this.error,
@@ -96,6 +133,7 @@ class MessageMetadata {
 
   Map<String, dynamic> toMap() {
     return {
+      'mimeType': mimeType,
       'tokens': tokens,
       'model': model,
       'error': error,
@@ -106,6 +144,7 @@ class MessageMetadata {
 
   factory MessageMetadata.fromMap(Map<String, dynamic> map) {
     return MessageMetadata(
+      mimeType: map['mimeType'],
       tokens: map['tokens'],
       model: map['model'],
       error: map['error'],

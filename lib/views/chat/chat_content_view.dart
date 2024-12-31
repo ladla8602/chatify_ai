@@ -34,18 +34,20 @@ class _ChatContentViewState extends State<ChatContentView> {
 
     _chatController
       ..chatbot = chatbot
-      ..chatBotId = chatbot.botId
+      ..chatRoomId = Get.arguments['chatRoomId']
       ..chatBotCommand.prompt = chatbot.botPrompt
       ..user = types.User(
         id: _currentUser!.uid,
         firstName: _currentUser.displayName,
         role: types.Role.user,
       );
+    _chatController.loadInitialMessages();
   }
 
   @override
   void dispose() {
     _focusNode.dispose();
+    _chatController.clearChatContext();
     super.dispose();
   }
 

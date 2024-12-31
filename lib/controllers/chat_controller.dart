@@ -1,4 +1,6 @@
 import 'dart:developer';
+import 'package:chatify_ai/models/chat_message.model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:uuid/uuid.dart';
@@ -18,15 +20,16 @@ class ChatController extends GetxController {
 
   // State
   ChatBot? chatbot;
-  String? chatBotId;
+  String? chatRoomId;
   types.User? user;
-  final ChatBotCommand chatBotCommand = ChatBotCommand();
+  ChatBotCommand chatBotCommand = ChatBotCommand();
+  DocumentSnapshot? lastDocument;
   final FirestoreService _firestoreService = FirestoreService();
 
   @override
   void onInit() {
     super.onInit();
-    _loadInitialMessages();
+    loadInitialMessages();
   }
 
   @override
@@ -35,17 +38,105 @@ class ChatController extends GetxController {
     super.onClose();
   }
 
-  Future<void> _loadInitialMessages() async {
+  Future<void> loadInitialMessages() async {
     try {
-      if (chatBotId != null) {
+      if (chatRoomId != null) {
         // final historicalMessages = await _firestoreService.getChatHistory(chatBotId!);
         // messages.assignAll(historicalMessages);
+        await _handleEndReached();
+      } else {
+        final message = types.Message.fromJson({
+          "author": {"firstName": chatbot?.botName, "id": "0", "lastName": ""},
+          "createdAt": DateTime.now().millisecondsSinceEpoch,
+          "id": "0",
+          "remoteId": "0",
+          "text": chatbot?.botMessage ?? 'Hi there! How can I help you?',
+          "type": "text"
+        });
+        _addMessage(message);
       }
       isDataLoadingForFirstTime.value = false;
     } catch (e) {
       log('Error loading messages: $e');
       isDataLoadingForFirstTime.value = false;
     }
+  }
+
+  Future<void> _handleEndReached() async {
+    if (chatBotCommand.chatRoomId == null) {
+      return;
+    }
+    //Fetch messages from Firestore with pagination
+    QuerySnapshot<Map<String, dynamic>> snapshot;
+    if (lastDocument == null) {
+      snapshot = await _firestoreService.fetchChatRoomMessages(chatBotCommand.chatRoomId!);
+    } else {
+      snapshot = await _firestoreService.fetchChatRoomMessages(chatBotCommand.chatRoomId!, lastDocument);
+    }
+    if (snapshot.docs.isNotEmpty) {
+      List<ChatMessage> data = snapshot.docs.map((doc) {
+        // Assuming ChatMessage has a constructor from a map
+        return ChatMessage.fromFirestore(doc);
+      }).toList();
+
+      List<types.Message> messages = [];
+      for (var message in data) {
+        if (message.vision != null) {
+          final textMsg = types.Message.fromJson({
+            "author": {"firstName": chatbot?.botName, "id": message.senderType == 'user' ? message.senderId.toString() : "0", "lastName": ""},
+            "createdAt": message.timestamp.millisecondsSinceEpoch,
+            "id": message.id.toString(),
+            "text": message.content,
+            "type": "text",
+          });
+          messages.add(textMsg);
+          if (message.vision!.mimeType == 'application/pdf' || message.vision!.mimeType == 'application/octet-stream') {
+            final visionMsg = types.FileMessage(
+              author: user!,
+              createdAt: message.timestamp.millisecondsSinceEpoch,
+              id: message.vision!.id!,
+              remoteId: message.id,
+              name: message.vision!.fileName ?? "PDF File",
+              size: num.parse(message.vision!.size!),
+              uri: message.vision!.uri.toString(),
+            );
+            messages.add(visionMsg);
+          } else {
+            final visionMsg = types.ImageMessage(
+              author: user!,
+              createdAt: message.timestamp.millisecondsSinceEpoch,
+              id: message.vision!.id!,
+              remoteId: message.id,
+              name: "Vision Message",
+              size: num.parse(message.vision!.size!),
+              uri: message.vision!.uri.toString(),
+            );
+            messages.add(visionMsg);
+          }
+        } else {
+          final textMsg = types.Message.fromJson({
+            "author": {"firstName": chatbot?.botName, "id": message.senderType == 'user' ? message.senderId.toString() : "0", "lastName": ""},
+            "createdAt": message.timestamp.millisecondsSinceEpoch,
+            "id": message.id.toString(),
+            "text": message.content,
+            "type": "text",
+          });
+          messages.add(textMsg);
+        }
+      }
+
+      // if (isMessageUnique(message)) {
+      if (data.isNotEmpty) {
+        messages = [...messages, ...messages];
+        // _page = _page + 1;
+        lastDocument = snapshot.docs.last;
+      }
+      isDataLoadingForFirstTime.value = false;
+      // }
+    } else {
+      // unawaited(Fluttertoast.showToast(msg: Trans.current.something_went_wrong));
+    }
+    isDataLoadingForFirstTime.value = false;
   }
 
   void handleSendPressed(types.PartialText message) {
@@ -95,7 +186,7 @@ class ChatController extends GetxController {
   void sendMessage() {
     log(messageController.text);
     if (messageController.text.isEmpty) return;
-    if (user == null || chatBotId == null) return;
+    if (user == null) return;
     log(">>>>>>>>>>>");
     final message = types.PartialText(text: messageController.text);
     messageController.clear();
@@ -118,9 +209,9 @@ class ChatController extends GetxController {
     messages.clear();
     typingUsers.clear();
     messageController.clear();
-    chatBotCommand.prompt = null;
+    chatBotCommand = ChatBotCommand();
     user = null;
     chatbot = null;
-    chatBotId = null;
+    chatRoomId = null;
   }
 }
