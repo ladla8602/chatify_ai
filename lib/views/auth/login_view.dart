@@ -24,7 +24,6 @@ class LoginView extends StatelessWidget {
         //   child: Image.asset("assets/images/Splash.png", height: double.infinity, fit: BoxFit.cover),
         // ),
         Scaffold(
-          backgroundColor: Colors.white,
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
             child: Column(

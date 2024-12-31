@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
 import '../../constants/constants.dart';
 import '../../widgets/drawer.dart';
+import '../common/wigets.dart';
 import 'widgets/chat_bot_loading_effect.dart';
 
 class ChatView extends StatefulWidget {
@@ -16,7 +17,8 @@ class ChatView extends StatefulWidget {
   State<ChatView> createState() => _ChatViewState();
 }
 
-class _ChatViewState extends State<ChatView> with SingleTickerProviderStateMixin {
+class _ChatViewState extends State<ChatView>
+    with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<Offset> _offsetAnimation;
   TextEditingController _messageController = TextEditingController();
@@ -46,13 +48,14 @@ class _ChatViewState extends State<ChatView> with SingleTickerProviderStateMixin
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
         surfaceTintColor: Colors.white,
         leading: Builder(
           builder: (context) => IconButton(
-            icon: Icon(HugeIcons.strokeRoundedMenuSquare, color: Colors.black),
+            icon: Icon(
+              HugeIcons.strokeRoundedMenuSquare,
+              color: Theme.of(context).iconTheme.color,
+            ),
             onPressed: () {
               Scaffold.of(context).openDrawer();
             },
@@ -91,8 +94,10 @@ class _ChatViewState extends State<ChatView> with SingleTickerProviderStateMixin
                     child: ListView.separated(
                       scrollDirection: Axis.horizontal,
                       itemCount: controller.chatbots.length,
-                      itemBuilder: (_, i) => ChatbotCardWidget(chatbot: controller.chatbots[i]),
-                      separatorBuilder: (context, id) => const SizedBox(width: 8),
+                      itemBuilder: (_, i) =>
+                          ChatbotCardWidget(chatbot: controller.chatbots[i]),
+                      separatorBuilder: (context, id) =>
+                          const SizedBox(width: 8),
                     ),
                   );
                 }),
@@ -123,7 +128,8 @@ class _ChatViewState extends State<ChatView> with SingleTickerProviderStateMixin
                     SizedBox(height: 30),
                     Text(
                       "These are just a few examples of what I can do.",
-                      style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
+                      style:
+                          TextStyle(color: Colors.grey.shade600, fontSize: 13),
                     ),
                   ],
                 ),
@@ -131,69 +137,82 @@ class _ChatViewState extends State<ChatView> with SingleTickerProviderStateMixin
             ),
           ),
           Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: SlideTransition(
-                position: _offsetAnimation,
-                child: Container(
-                  padding: EdgeInsets.all(10),
-                  color: Colors.white,
-                  child: Column(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          if (controller.chatbots.isNotEmpty) {
-                            Get.toNamed(AppRoutes.chatContentView, arguments: {"chatbot": controller.chatbots[0]});
-                          } else {
-                            Get.snackbar("Error", "No chatbots available");
-                          }
-                        },
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 14),
-                                decoration: BoxDecoration(
-                                  color: Colors.grey.shade100,
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      HugeIcons.strokeRoundedAdd01,
-                                      size: 20,
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: SlideTransition(
+              position: _offsetAnimation,
+              child: Container(
+                padding: EdgeInsets.all(10),
+                color: Theme.of(context).scaffoldBackgroundColor,
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        if (controller.chatbots.isNotEmpty) {
+                          Get.toNamed(AppRoutes.chatContentView,
+                              arguments: {"chatbot": controller.chatbots[0]});
+                        } else {
+                          Get.snackbar("Error", "No chatbots available");
+                        }
+                      },
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8, vertical: 14),
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).colorScheme.surface,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    HugeIcons.strokeRoundedAdd01,
+                                    size: 20,
+                                    color: Theme.of(context).iconTheme.color,
+                                  ),
+                                  SizedBox(width: 10),
+                                  Text(
+                                    'Ask me anything...',
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium
+                                          ?.color, // Dynamic text color based on theme
                                     ),
-                                    SizedBox(width: 10),
-                                    Text(
-                                      'Ask me anything...',
-                                      style: TextStyle(fontSize: 13),
-                                    ),
-                                    Spacer(),
-                                    Icon(
-                                      HugeIcons.strokeRoundedMic01,
-                                      size: 20,
-                                    ),
-                                  ],
-                                ),
+                                  ),
+                                  Spacer(),
+                                  Icon(
+                                    HugeIcons.strokeRoundedMic01,
+                                    size: 20,
+                                    color: Theme.of(context)
+                                        .iconTheme
+                                        .color, // Icon color based on theme
+                                  ),
+                                ],
                               ),
                             ),
-                            SizedBox(width: 10),
-                            CircleAvatar(
-                              backgroundColor: Theme.of(context).primaryColor,
-                              child: Icon(
-                                HugeIcons.strokeRoundedSent,
-                                color: Colors.white,
-                                size: 18,
-                              ),
-                            )
-                          ],
-                        ),
+                          ),
+                          SizedBox(width: 10),
+                          CircleAvatar(
+                            backgroundColor: Theme.of(context).primaryColor,
+                            child: Icon(
+                              HugeIcons.strokeRoundedSent,
+                              color: Colors.white,
+                              size: 18,
+                            ),
+                          )
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              )),
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -204,7 +223,8 @@ class CapabilityCard extends StatelessWidget {
   final String title;
   final String subtitle;
 
-  const CapabilityCard({super.key, required this.title, required this.subtitle});
+  const CapabilityCard(
+      {super.key, required this.title, required this.subtitle});
 
   @override
   Widget build(BuildContext context) {
@@ -212,7 +232,7 @@ class CapabilityCard extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.grey.shade100,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(10),
         ),
         child: Padding(

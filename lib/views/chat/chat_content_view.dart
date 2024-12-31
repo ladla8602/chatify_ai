@@ -40,6 +40,7 @@ class _ChatContentViewState extends State<ChatContentView> {
       ..chatBotCommand.roomExist = Get.arguments['chatRoomId'] != null
       ..chatBotCommand.chatBotId = chatbot.botId
       ..chatBotCommand.chatBotName = chatbot.botName
+      ..chatBotCommand.chatBotAvatar = chatbot.botAvatar
       ..chatBotCommand.prompt = chatbot.botPrompt
       ..user = types.User(
         id: _currentUser!.uid,
@@ -59,17 +60,13 @@ class _ChatContentViewState extends State<ChatContentView> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: true,
-      backgroundColor: Colors.white,
-      appBar: _buildAppBar(context),
-      body: _buildChatBody(context),
-    );
-  }
+  Widget build(BuildContext context) => Scaffold(
+        resizeToAvoidBottomInset: true,
+        appBar: _buildAppBar(context),
+        body: _buildChatBody(context),
+      );
 
   PreferredSizeWidget _buildAppBar(BuildContext context) => AppBar(
-        backgroundColor: Colors.white,
         surfaceTintColor: Colors.white,
         automaticallyImplyLeading: true,
         centerTitle: false,

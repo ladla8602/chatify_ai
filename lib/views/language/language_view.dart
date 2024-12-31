@@ -1,5 +1,7 @@
 import 'package:chatify_ai/constants/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:hugeicons/hugeicons.dart';
 
 class LanguageView extends StatefulWidget {
   const LanguageView({super.key});
@@ -27,9 +29,7 @@ class _LanguageViewState extends State<LanguageView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
         title: Text(
           'Language',
           style: TextStyle(fontSize: 20),
@@ -41,6 +41,13 @@ class _LanguageViewState extends State<LanguageView> {
           },
         ),
         centerTitle: true,
+        actions: [
+          IconButton(
+              onPressed: () {
+                Get.back();
+              },
+              icon: Icon(HugeIcons.strokeRoundedTick01)),
+        ],
       ),
       body: ListView.separated(
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
@@ -51,7 +58,6 @@ class _LanguageViewState extends State<LanguageView> {
         itemBuilder: (context, index) {
           final language = languages[index];
           return Container(
-            padding: EdgeInsets.symmetric(horizontal: 10),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
@@ -61,7 +67,7 @@ class _LanguageViewState extends State<LanguageView> {
                   width: 1),
             ),
             child: ListTile(
-              contentPadding: EdgeInsets.all(0),
+              contentPadding: EdgeInsets.symmetric(horizontal: 10),
               leading: Text(
                 language['flag']!,
                 style: TextStyle(fontSize: 24),
@@ -71,7 +77,8 @@ class _LanguageViewState extends State<LanguageView> {
                 style: TextStyle(fontSize: 14),
               ),
               trailing: selectedLanguage == language['name']
-                  ? Icon(Icons.check, color: Colors.green)
+                  ? Icon(HugeIcons.strokeRoundedCheckmarkCircle02,
+                      color: Theme.of(context).primaryColor)
                   : null,
               onTap: () {
                 setState(() {

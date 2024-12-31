@@ -8,13 +8,11 @@ class PersonalInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(
           'Personal Info',
           style: TextStyle(fontSize: 20),
         ),
-        backgroundColor: Colors.white,
         centerTitle: true,
       ),
       body: Padding(
@@ -32,7 +30,9 @@ class PersonalInfo extends StatelessWidget {
               children: [
                 Text(
                   'Full Name',
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
+                  style: TextStyle(
+                    fontSize: 15,
+                  ),
                 ),
                 SizedBox(height: 10),
                 TextField(
@@ -48,14 +48,14 @@ class PersonalInfo extends StatelessWidget {
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                         borderSide: BorderSide.none),
-                    fillColor: Colors.grey.shade100,
-                    filled: true,
                   ),
                 ),
                 SizedBox(height: 15),
                 Text(
                   'Email Address',
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
+                  style: TextStyle(
+                    fontSize: 15,
+                  ),
                 ),
                 SizedBox(height: 10),
                 TextField(
@@ -71,14 +71,14 @@ class PersonalInfo extends StatelessWidget {
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                         borderSide: BorderSide.none),
-                    fillColor: Colors.grey.shade100,
-                    filled: true,
                   ),
                 ),
                 SizedBox(height: 15),
                 Text(
                   'App Version',
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
+                  style: TextStyle(
+                    fontSize: 15,
+                  ),
                 ),
                 SizedBox(height: 10),
                 TextField(
@@ -94,8 +94,6 @@ class PersonalInfo extends StatelessWidget {
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                         borderSide: BorderSide.none),
-                    fillColor: Colors.grey.shade100,
-                    filled: true,
                   ),
                 ),
                 SizedBox(height: 10),

@@ -6,93 +6,150 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class FirestoreService {
   final FirebaseFirestore _firestore;
+  final FirebaseAuth _auth;
 
-  FirestoreService() : _firestore = FirebaseFirestore.instance;
+  FirestoreService({
+    FirebaseFirestore? firestore,
+    FirebaseAuth? auth,
+  })  : _firestore = firestore ?? FirebaseFirestore.instance,
+        _auth = auth ?? FirebaseAuth.instance;
 
-  Future<QuerySnapshot<Map<String, dynamic>>> fetchChatbots() async {
-    return await _firestore.collection(FirebasePaths.chatBotsName).get();
+  User? get currentUser => _auth.currentUser;
+
+  Future<QuerySnapshot<Map<String, dynamic>>> fetchChatbots() {
+    return _firestore.collection(FirebasePaths.chatBotsName).get();
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> fetchChatRoomMessages(String chatRoomId, [DocumentSnapshot? startAfter]) async {
-    Query<Map<String, dynamic>> query = _firestore.collection(FirebasePaths.chatRoomMessages(chatRoomId));
+  Future<QuerySnapshot<Map<String, dynamic>>> fetchChatRoomMessages(
+    String chatRoomId, [
+    DocumentSnapshot? startAfter,
+  ]) {
+    final CollectionReference<Map<String, dynamic>> collection = _firestore.collection(FirebasePaths.chatRoomMessages(chatRoomId));
+
+    Query<Map<String, dynamic>> query = collection;
+
     if (startAfter != null) {
       query = query.startAfterDocument(startAfter);
     }
-    return await query.limit(10).get();
+
+    return query.limit(10).get();
   }
 
-  Stream<QuerySnapshot<Map<String, dynamic>>> fetchChatRooms([DocumentSnapshot? startAfter]) {
-    Query<Map<String, dynamic>> query = _firestore.collection(FirebasePaths.chatRoomsName);
+  Stream<QuerySnapshot<Map<String, dynamic>>> fetchChatRooms([
+    DocumentSnapshot? startAfter,
+  ]) {
+    if (currentUser == null) {
+      throw UnauthorizedException();
+    }
+
+    var query = _firestore.collection(FirebasePaths.chatRoomsName).where("userId", isEqualTo: currentUser!.uid).limit(10);
+
     if (startAfter != null) {
       query = query.startAfterDocument(startAfter);
     }
-    return query.where("userId", isEqualTo: FirebaseAuth.instance.currentUser!.uid).limit(10).snapshots();
+
+    return query.snapshots();
   }
 
-  Future<void> createChatRoom(ChatBotCommand chatBotCommand) async {
+  Future<void> createChatRoom(ChatBotCommand command) async {
+    if (currentUser == null) {
+      throw UnauthorizedException();
+    }
+
     try {
-      final user = FirebaseAuth.instance.currentUser;
-      if (user == null) {
-        throw Exception("No user is currently authenticated.");
-      }
-
-      await _firestore.collection(FirebasePaths.chatRoomsName).doc(chatBotCommand.chatRoomId).set({
-        'userId': user.uid,
-        'botId': chatBotCommand.chatBotId,
-        'botName': chatBotCommand.chatBotName,
-        'createdAt': DateTime.now(),
-      });
-      print("Chatroom successfully written!");
+      await _firestore.collection(FirebasePaths.chatRoomsName).doc(command.chatRoomId).set(_createChatRoomData(command));
     } catch (e) {
-      print("Error writing Chatroom: $e");
+      throw FirestoreException('Error creating chat room: $e');
     }
   }
 
-  Future<void> updateChatRoomLastMessage(ChatBotCommand chatBotCommand, String botMessageResponse) async {
-    try {
-      final user = FirebaseAuth.instance.currentUser;
-      if (user == null) {
-        throw Exception("No user is currently authenticated.");
-      }
+  Map<String, dynamic> _createChatRoomData(ChatBotCommand command) {
+    return {
+      'userId': currentUser!.uid,
+      'botId': command.chatBotId,
+      'botName': command.chatBotName,
+      'botAvatar': command.chatBotAvatar,
+      'createdAt': DateTime.now(),
+    };
+  }
 
-      await _firestore.collection(FirebasePaths.chatRoomsName).doc(chatBotCommand.chatRoomId).update({
+  Future<void> updateChatRoomLastMessage(
+    ChatBotCommand command,
+    String botResponse,
+  ) async {
+    if (currentUser == null) {
+      throw UnauthorizedException();
+    }
+
+    try {
+      await _firestore.collection(FirebasePaths.chatRoomsName).doc(command.chatRoomId).update({
         'lastMessage': {
-          "senderId": chatBotCommand.chatBotId,
-          "content": botMessageResponse,
+          "senderId": command.chatBotId,
+          "content": botResponse,
           "timestamp": DateTime.now(),
         },
       });
-      print("updateChatRoomLastMessage successfully written!");
     } catch (e) {
-      print("Error writing updateChatRoomLastMessage: $e");
+      throw FirestoreException('Error updating last message: $e');
     }
   }
 
-  // Store chat room messages
-  Future<void> storeChatRoomMessage(ChatBotCommand chatBotCommand, String botMessageResponse) async {
-    if (chatBotCommand.roomExist == false) {
-      // Chatroom not exists so create new chatroom
-      await createChatRoom(chatBotCommand);
+  Future<void> storeChatRoomMessage(
+    ChatBotCommand command,
+    String botResponse,
+  ) async {
+    if (currentUser == null) {
+      throw UnauthorizedException();
     }
-    final userMessage = ChatMessage(
-      content: chatBotCommand.message!,
+
+    try {
+      if (command.roomExist == false) {
+        await createChatRoom(command);
+      }
+
+      final messagesCollection = _firestore.collection(
+        FirebasePaths.chatRoomMessages(command.chatRoomId.toString()),
+      );
+
+      await Future.wait([
+        messagesCollection.add(_createUserMessage(command).toFirestore()),
+        messagesCollection.add(_createBotMessage(command, botResponse).toFirestore()),
+        updateChatRoomLastMessage(command, botResponse),
+      ]);
+    } catch (e) {
+      throw FirestoreException('Error storing chat messages: $e');
+    }
+  }
+
+  ChatMessage _createUserMessage(ChatBotCommand command) {
+    return ChatMessage(
+      content: command.message!,
       timestamp: DateTime.now(),
-      senderId: FirebaseAuth.instance.currentUser!.uid,
+      senderId: currentUser!.uid,
       senderType: "user",
       status: "delivered",
       type: "text",
     );
-    final botMessage = ChatMessage(
-      content: botMessageResponse,
+  }
+
+  ChatMessage _createBotMessage(ChatBotCommand command, String response) {
+    return ChatMessage(
+      content: response,
       timestamp: DateTime.now().add(Duration(seconds: 1)),
-      senderId: chatBotCommand.chatBotId ?? "bot",
+      senderId: command.chatBotId ?? "bot",
       senderType: "bot",
       status: "delivered",
       type: "text",
     );
-    _firestore.collection(FirebasePaths.chatRoomMessages(chatBotCommand.chatRoomId.toString()))
-      ..add(userMessage.toFirestore())
-      ..add(botMessage.toFirestore());
-    updateChatRoomLastMessage(chatBotCommand, botMessageResponse);
   }
+}
+
+class UnauthorizedException implements Exception {
+  final String message;
+  UnauthorizedException([this.message = 'User not authenticated']);
+}
+
+class FirestoreException implements Exception {
+  final String message;
+  FirestoreException(this.message);
 }

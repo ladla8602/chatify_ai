@@ -32,9 +32,7 @@ class PaymentMethodsView extends StatelessWidget {
       }
     ]; // List<Map<String, dynamic>>
     return Scaffold(
-        backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: Colors.white,
           title: Text(
             'Payment Methods',
             style: TextStyle(fontSize: 20),
@@ -76,7 +74,7 @@ class PaymentMethodsWigets extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: Colors.white,
-        border: Border.all(color: Colors.grey.shade200),
+        border: Border.all(color: Theme.of(context).colorScheme.onSurface),
       ),
       child: Row(
         children: [
@@ -87,12 +85,13 @@ class PaymentMethodsWigets extends StatelessWidget {
           SizedBox(width: 12),
           Text(
             title,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+            style: TextStyle(
+                fontWeight: FontWeight.bold, fontSize: 13, color: Colors.black),
           ),
           Spacer(),
           Text(
             'Connected',
-            style: TextStyle(fontSize: 13),
+            style: TextStyle(fontSize: 13, color: Colors.black),
           )
         ],
       ),

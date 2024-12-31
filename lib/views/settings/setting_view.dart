@@ -4,7 +4,9 @@ import 'package:chatify_ai/controllers/common_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
+import '../../controllers/theme_controller.dart';
 import '../../routes/app_routes.dart';
+import '../../widgets/drawer.dart';
 import '../common/wigets.dart';
 
 class SettingView extends StatelessWidget {
@@ -14,18 +16,29 @@ class SettingView extends StatelessWidget {
   Widget build(BuildContext context) {
     final CommonController commonController = Get.put(CommonController());
     final AuthController authController = Get.find<AuthController>();
+    final ThemeController themeController = Get.put(ThemeController());
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
         surfaceTintColor: Colors.white,
         elevation: 0,
+        leading: Builder(builder: (context) {
+          return IconButton(
+            icon: Icon(
+              HugeIcons.strokeRoundedMenuSquare,
+              color: Theme.of(context).iconTheme.color,
+            ),
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+            },
+          );
+        }),
         title: const Text(
           'Settings',
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
         ),
         centerTitle: true,
       ),
+      drawer: DrawerWigets(),
       body: ListView(
         padding: EdgeInsets.symmetric(horizontal: 16),
         children: [
@@ -103,8 +116,8 @@ class SettingView extends StatelessWidget {
                 icon: HugeIcons.strokeRoundedDarkMode,
                 title: 'Dark Mode',
                 trailing: CustomSwitchButtonWigets(
-                  isSwitched: commonController.isDarkMode.value,
-                  onClick: () => commonController.toggleDarkMode(),
+                  isSwitched: themeController.themeMode.value == ThemeMode.dark,
+                  onClick: () => themeController.toggleTheme(),
                 ),
               );
             },
@@ -155,7 +168,6 @@ class SettingView extends StatelessWidget {
             // onTap: () => authController.logout(),
             onTap: () {
               showModalBottomSheet(
-                backgroundColor: Colors.white,
                 context: context,
                 builder: (context) {
                   return Padding(

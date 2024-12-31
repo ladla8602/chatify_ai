@@ -20,10 +20,7 @@ class CreateNewPasswordView extends StatelessWidget {
     final _formKey = GlobalKey<FormState>();
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-        ),
+        appBar: AppBar(),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 40),
           child: Form(
@@ -59,8 +56,6 @@ class CreateNewPasswordView extends StatelessWidget {
                       borderRadius: BorderRadius.all(Radius.circular(14)),
                       borderSide: BorderSide.none,
                     ),
-                    fillColor: Colors.grey.shade100,
-                    filled: true,
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -91,8 +86,6 @@ class CreateNewPasswordView extends StatelessWidget {
                       borderRadius: BorderRadius.all(Radius.circular(14)),
                       borderSide: BorderSide.none,
                     ),
-                    fillColor: Colors.grey.shade100,
-                    filled: true,
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -105,32 +98,28 @@ class CreateNewPasswordView extends StatelessWidget {
                 ),
                 SizedBox(height: 20),
                 Spacer(),
-                Obx(() {
-                  return authController.isLoading.value
-                      ? Center(child: CircularProgressIndicator())
-                      : ElevatedButtonWigets(
-                          text: 'Save New Password',
-                          onClick: () async {
-                            // if (_formKey.currentState!.validate()) {
-                            //   // Show loader
+                ElevatedButtonWigets(
+                  text: 'Save New Password',
+                  onClick: () async {
+                    // if (_formKey.currentState!.validate()) {
+                    //   // Show loader
 
-                            // }
-                            showCustomDialog(
-                              context,
-                              title: 'Reset Password\nSuccessful!',
-                              icon: HugeIcons.strokeRoundedSquareLock02,
-                              message:
-                                  ' Please wait...\nYou will be directed to the homepage ',
-                              widget: CircularProgressIndicator(
-                                strokeCap: StrokeCap.round,
-                                strokeWidth: 5,
-                                color: Theme.of(context).primaryColor,
-                              ),
-                            );
-                          },
-                          backgroundColor: Theme.of(context).primaryColor,
-                        );
-                }),
+                    // }
+                    showCustomDialog(
+                      context,
+                      title: 'Reset Password\nSuccessful!',
+                      icon: HugeIcons.strokeRoundedSquareLock02,
+                      message:
+                          ' Please wait...\nYou will be directed to the homepage ',
+                      widget: CircularProgressIndicator(
+                        strokeCap: StrokeCap.round,
+                        strokeWidth: 5,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    );
+                  },
+                  backgroundColor: Theme.of(context).primaryColor,
+                ),
               ],
             ),
           ),

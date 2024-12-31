@@ -45,10 +45,7 @@ class SetPasswordView extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-      ),
-      backgroundColor: Colors.white,
+      appBar: AppBar(),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20),
         child: Form(

@@ -2,6 +2,7 @@ class ChatBotCommand {
   String? chatRoomId;
   String? chatBotId;
   String? chatBotName;
+  String? chatBotAvatar;
   bool? roomExist;
   String? title;
   String? message;
@@ -15,6 +16,7 @@ class ChatBotCommand {
     this.chatRoomId,
     this.chatBotId,
     this.chatBotName,
+    this.chatBotAvatar,
     this.roomExist,
     this.title = "New Conversation",
     this.message,
@@ -30,6 +32,7 @@ class ChatBotCommand {
     data['chatRoomId'] = chatRoomId;
     data['chatBotId'] = chatBotId;
     data['chatBotName'] = chatBotName;
+    data['chatBotAvatar'] = chatBotAvatar;
     data['roomExist'] = roomExist ?? false;
     data['title'] = title;
     data['message'] = message;

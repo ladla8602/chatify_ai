@@ -12,13 +12,11 @@ class SecurityView extends StatelessWidget {
     final CommonController commonController = Get.put(CommonController());
 
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(
           'Security',
           style: TextStyle(fontSize: 20),
         ),
-        backgroundColor: Colors.white,
         centerTitle: true,
       ),
       body: Obx(() {
@@ -65,7 +63,7 @@ class SecurityView extends StatelessWidget {
               BuildTileWigets(
                 title: 'Device Management',
               ),
-              SizedBox(height: 10),
+              SizedBox(height: 16),
               SizedBox(
                 width: double.infinity,
                 height: 46,
@@ -73,7 +71,6 @@ class SecurityView extends StatelessWidget {
                     onPressed: () {},
                     style: ElevatedButton.styleFrom(
                       elevation: 0,
-                      backgroundColor: Colors.white,
                       side: BorderSide(
                         color: Theme.of(context).primaryColor,
                         width: 1,
@@ -84,7 +81,6 @@ class SecurityView extends StatelessWidget {
                     ),
                     child: Text(
                       'Change Password',
-                      style: TextStyle(color: Colors.green),
                     )),
               )
             ],

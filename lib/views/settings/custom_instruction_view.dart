@@ -19,14 +19,12 @@ class CustomInstructionView extends StatelessWidget {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text(
           'Custom Instructions',
           style: TextStyle(fontSize: 20),
         ),
         elevation: 0,
-        backgroundColor: Colors.white,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -39,6 +37,7 @@ class CustomInstructionView extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             TextFormField(
+              style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
               controller: firstAnswerController,
               maxLines: 5,
               decoration: InputDecoration(
@@ -47,17 +46,16 @@ class CustomInstructionView extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8.0),
                   borderSide: BorderSide.none,
                 ),
-                filled: true,
-                fillColor: Colors.grey.shade100,
               ),
             ),
             const SizedBox(height: 24),
             const Text(
               'How would you like Chatify to respond?',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
             ),
             const SizedBox(height: 8),
             TextFormField(
+              style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
               controller: secondAnswerController,
               maxLines: 5,
               decoration: InputDecoration(
@@ -65,8 +63,6 @@ class CustomInstructionView extends StatelessWidget {
                 border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.0),
                     borderSide: BorderSide.none),
-                filled: true,
-                fillColor: Colors.grey.shade100,
               ),
             ),
             const SizedBox(height: 24),
@@ -75,7 +71,7 @@ class CustomInstructionView extends StatelessWidget {
               children: [
                 const Text(
                   'Enable for new chats',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
                 ),
                 Obx(
                   () {
@@ -93,13 +89,23 @@ class CustomInstructionView extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                  child: ElevatedButtonWigets(
-                    text: 'Cancel',
-                    backgroundColor: Colors.green.shade50,
-                    foregroundColor: Colors.green,
-                    onClick: () {
+                  child: GestureDetector(
+                    onTap: () {
                       Get.back();
                     },
+                    child: Container(
+                      height: 48,
+                      width: MediaQuery.of(context).size.width,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30),
+                        color: Theme.of(context).primaryColor.withOpacity(0.2),
+                      ),
+                      child: Text(
+                        'Cancel',
+                        style: TextStyle(color: Theme.of(context).primaryColor),
+                      ),
+                    ),
                   ),
                 ),
                 const SizedBox(width: 16),

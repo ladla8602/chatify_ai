@@ -5,37 +5,32 @@ import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
 
 import '../controllers/dashboard_controller.dart';
+import '../widgets/drawer.dart';
 import 'audio/audio_view.dart';
 import 'history/history_view.dart';
 import 'image/image_generate_view.dart';
 import 'settings/setting_view.dart';
 
-class DashboardView extends StatefulWidget {
+class DashboardView extends StatelessWidget {
   const DashboardView({super.key});
 
   @override
-  State<DashboardView> createState() => _DashboardViewState();
-}
-
-class _DashboardViewState extends State<DashboardView> {
-  final controller = Get.put(DashboardController());
-  final List<Widget> pages = [
-    const ChatView(),
-    const ImageGenerateView(),
-    const AudioGenerateView(),
-    const HistoryView(),
-    const SettingView(),
-  ];
-
-  @override
   Widget build(BuildContext context) {
+    final controller = Get.put(DashboardController());
+
+    final List<Widget> pages = [
+      const ChatView(),
+      const ImageGenerateView(),
+      const AudioGenerateView(),
+      const HistoryView(),
+      const SettingView(),
+    ];
     return Scaffold(
       body: Obx(
         () => pages[controller.selectedIndex],
       ),
       bottomNavigationBar: Obx(
         () => BottomNavigationBar(
-          backgroundColor: Colors.white,
           currentIndex: controller.selectedIndex,
           selectedItemColor: Theme.of(context).primaryColor,
           onTap: controller.changeIndex,

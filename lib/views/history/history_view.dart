@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
 
+import '../../widgets/drawer.dart';
+
 class HistoryView extends StatelessWidget {
   const HistoryView({super.key});
   @override
@@ -58,10 +60,23 @@ class HistoryView extends StatelessWidget {
     return DefaultTabController(
       length: 3,
       child: Scaffold(
-        backgroundColor: Colors.white,
         appBar: AppBar(
-          title: Center(child: Text('History')),
-          backgroundColor: Colors.white,
+          leading: Builder(builder: (context) {
+            return IconButton(
+              icon: Icon(
+                HugeIcons.strokeRoundedMenuSquare,
+                color: Theme.of(context).iconTheme.color,
+              ),
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+            );
+          }),
+          title: Center(
+              child: Text(
+            'History',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          )),
           actions: [
             Padding(
               padding: const EdgeInsets.all(10.0),
@@ -73,16 +88,16 @@ class HistoryView extends StatelessWidget {
             child: Container(
               margin: EdgeInsets.symmetric(horizontal: 16),
               width: double.infinity,
-              height: 40,
+              height: 52,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
+                borderRadius: BorderRadius.circular(18),
                 color: Colors.grey.shade200,
               ),
               child: TabBar(
                 isScrollable: false,
                 indicator: BoxDecoration(
                   color: Theme.of(context).primaryColor,
-                  borderRadius: BorderRadius.circular(5),
+                  borderRadius: BorderRadius.circular(18),
                 ),
                 dividerColor: Colors.transparent,
                 labelColor: Colors.white,
@@ -97,64 +112,63 @@ class HistoryView extends StatelessWidget {
             ),
           ),
         ),
+        drawer: DrawerWigets(),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
           child: TabBarView(
             children: [
               ListView(
                 children: [
-                  SectionHeader(
-                    title: 'Today',
-                  ),
                   StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                      stream: _firestoreService.fetchChatRooms(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
-                          return const CircularProgressIndicator();
-                        }
+                    stream: _firestoreService.fetchChatRooms(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const CircularProgressIndicator();
+                      }
 
-                        if (snapshot.hasError) {
-                          return Text('Error: ${snapshot.error}');
-                        }
+                      if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      }
 
-                        if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                          return const Text('No chat rooms found.');
-                        }
+                      if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                        return const Text('No chat rooms found.');
+                      }
 
-                        final chatRooms = snapshot.data!.docs.map((e) => ChatRoom.fromFirestore(e)).toList();
-                        return ListView.builder(
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: chatRooms.length,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            final chatRoom = chatRooms[index];
-                            return ListTile(
-                              onTap: () => Get.toNamed(AppRoutes.chatContentView,
-                                  arguments: {"chatbot": ChatBot(botId: chatRoom.botId, botName: chatRoom.botName), "chatRoomId": chatRoom.id}),
-                              contentPadding: EdgeInsets.all(0),
-                              leading: Container(
-                                  height: 45,
-                                  width: 45,
-                                  decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.grey.shade200)),
-                                  child: Icon(
-                                    HugeIcons.strokeRoundedMessage02,
-                                    color: Colors.grey,
-                                  )),
-                              title: Text(
-                                chatRoom.lastMessage.content,
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 1,
-                                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
-                              ),
-                              subtitle: Text(
-                                chatRoom.botId,
-                                style: TextStyle(color: Colors.grey),
-                              ),
-                              trailing: ThemedPopupMenuButton(),
-                            );
-                          },
-                        );
-                      }),
+                      final chatRooms = snapshot.data!.docs.map((e) => ChatRoom.fromFirestore(e)).toList();
+                      return ListView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: chatRooms.length,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          final chatRoom = chatRooms[index];
+                          return ListTile(
+                            onTap: () => Get.toNamed(AppRoutes.chatContentView,
+                                arguments: {"chatbot": ChatBot(botId: chatRoom.botId, botName: chatRoom.botName), "chatRoomId": chatRoom.id}),
+                            contentPadding: EdgeInsets.all(0),
+                            leading: Container(
+                                height: 45,
+                                width: 45,
+                                decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.grey.shade200)),
+                                child: Icon(
+                                  HugeIcons.strokeRoundedMessage02,
+                                  color: Colors.grey,
+                                )),
+                            title: Text(
+                              chatRoom.lastMessage.content,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
+                            ),
+                            subtitle: Text(
+                              chatRoom.botId,
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                            trailing: ThemedPopupMenuButton(),
+                          );
+                        },
+                      );
+                    },
+                  ),
                 ],
               ),
               //1
@@ -174,8 +188,8 @@ class HistoryView extends StatelessWidget {
                         return ListTile(
                           contentPadding: EdgeInsets.all(0),
                           leading: Container(
-                              height: 45,
-                              width: 45,
+                              height: 42,
+                              width: 42,
                               decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.grey.shade200)),
                               child: Icon(
                                 HugeIcons.strokeRoundedMessage02,
@@ -185,81 +199,16 @@ class HistoryView extends StatelessWidget {
                             data['title'],
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
-                            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
+                            style: TextStyle(fontSize: 15),
                           ),
                           subtitle: Text(
                             data['subtitle'],
-                            style: TextStyle(color: Colors.grey),
+                            style: TextStyle(color: Colors.grey, fontSize: 13),
                           ),
                           trailing: ThemedPopupMenuButton(),
                         );
                       }),
                   SizedBox(height: 20),
-                  SectionHeader(
-                    title: 'Yesterday',
-                  ),
-                  ListView.builder(
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: 5,
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        final data = chatdata[index];
-                        return ListTile(
-                          contentPadding: EdgeInsets.all(0),
-                          leading: Container(
-                              height: 50,
-                              width: 50,
-                              decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.grey.shade200)),
-                              child: Icon(
-                                HugeIcons.strokeRoundedMessage02,
-                                color: Colors.grey,
-                              )),
-                          title: Text(
-                            data['title'],
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
-                          ),
-                          subtitle: Text(
-                            data['subtitle'],
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                          trailing: ThemedPopupMenuButton(),
-                        );
-                      }),
-                  SizedBox(height: 20),
-                  SectionHeader(
-                    title: 'Previous',
-                  ),
-                  ListView.builder(
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: 5,
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        final data = chatdata[index];
-                        return ListTile(
-                          contentPadding: EdgeInsets.all(0),
-                          leading: Container(
-                              height: 50,
-                              width: 50,
-                              decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.grey.shade200)),
-                              child: Icon(
-                                HugeIcons.strokeRoundedMessage02,
-                                color: Colors.grey,
-                              )),
-                          title: Text(
-                            data['title'],
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
-                          ),
-                          subtitle: Text(
-                            data['subtitle'],
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                          trailing: ThemedPopupMenuButton(),
-                        );
-                      }),
                 ],
               ),
               //3
@@ -269,100 +218,36 @@ class HistoryView extends StatelessWidget {
                     title: 'Today',
                   ),
                   ListView.builder(
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: 5,
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        final data = chatdata[index];
-                        return ListTile(
-                          contentPadding: EdgeInsets.all(0),
-                          leading: Container(
-                              height: 45,
-                              width: 45,
-                              decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.grey.shade200)),
-                              child: Icon(
-                                HugeIcons.strokeRoundedMessage02,
-                                color: Colors.grey,
-                              )),
-                          title: Text(
-                            data['title'],
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
-                          ),
-                          subtitle: Text(
-                            data['subtitle'],
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                          trailing: ThemedPopupMenuButton(),
-                        );
-                      }),
-                  SizedBox(height: 20),
-                  SectionHeader(
-                    title: 'Yesterday',
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: 5,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      final data = chatdata[index];
+                      return ListTile(
+                        contentPadding: EdgeInsets.all(0),
+                        leading: Container(
+                            height: 42,
+                            width: 42,
+                            decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.grey.shade200)),
+                            child: Icon(
+                              HugeIcons.strokeRoundedMessage02,
+                              color: Colors.grey,
+                            )),
+                        title: Text(
+                          data['title'],
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          style: TextStyle(fontSize: 15),
+                        ),
+                        subtitle: Text(
+                          data['subtitle'],
+                          style: TextStyle(color: Colors.grey, fontSize: 13),
+                        ),
+                        trailing: ThemedPopupMenuButton(),
+                      );
+                    },
                   ),
-                  ListView.builder(
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: 5,
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        final data = chatdata[index];
-                        return ListTile(
-                          contentPadding: EdgeInsets.all(0),
-                          leading: Container(
-                              height: 50,
-                              width: 50,
-                              decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.grey.shade200)),
-                              child: Icon(
-                                HugeIcons.strokeRoundedMessage02,
-                                color: Colors.grey,
-                              )),
-                          title: Text(
-                            data['title'],
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
-                          ),
-                          subtitle: Text(
-                            data['subtitle'],
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                          trailing: ThemedPopupMenuButton(),
-                        );
-                      }),
                   SizedBox(height: 20),
-                  SectionHeader(
-                    title: 'Previous',
-                  ),
-                  ListView.builder(
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: 5,
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        final data = chatdata[index];
-                        return ListTile(
-                          contentPadding: EdgeInsets.all(0),
-                          leading: Container(
-                              height: 50,
-                              width: 50,
-                              decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.grey.shade200)),
-                              child: Icon(
-                                HugeIcons.strokeRoundedMessage02,
-                                color: Colors.grey,
-                              )),
-                          title: Text(
-                            data['title'],
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
-                          ),
-                          subtitle: Text(
-                            data['subtitle'],
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                          trailing: ThemedPopupMenuButton(),
-                        );
-                      }),
                 ],
               ),
             ],
@@ -386,10 +271,10 @@ class SectionHeader extends StatelessWidget {
         children: [
           Text(
             title,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.bold,
-              color: Colors.black,
+              color: Colors.grey.shade600,
             ),
           ),
           SizedBox(width: 16),

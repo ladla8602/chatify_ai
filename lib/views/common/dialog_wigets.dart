@@ -9,7 +9,6 @@ showCustomDialog(BuildContext context,
     context: context,
     builder: (context) {
       return AlertDialog(
-        backgroundColor: Colors.white,
         surfaceTintColor: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         // title: Text('Password has been changed'),
