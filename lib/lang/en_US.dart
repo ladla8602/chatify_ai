@@ -17,5 +17,6 @@ final Map<String, String> enUS = {
   "image_generate": "Image generate",
   "audio_generate": "Audio generate",
   "history": "History",
-  "settings": "Settings"
+  "settings": "Settings",
+  "ask_anything": "Ask anything",
 };

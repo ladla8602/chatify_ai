@@ -1,7 +1,8 @@
 class ChatBotCommand {
   String? chatRoomId;
   String? chatBotId;
-  String? remoteId;
+  String? chatBotName;
+  bool? roomExist;
   String? title;
   String? message;
   String? prompt;
@@ -13,7 +14,8 @@ class ChatBotCommand {
   ChatBotCommand({
     this.chatRoomId,
     this.chatBotId,
-    this.remoteId,
+    this.chatBotName,
+    this.roomExist,
     this.title = "New Conversation",
     this.message,
     this.prompt,
@@ -27,7 +29,8 @@ class ChatBotCommand {
     final Map<String, dynamic> data = {};
     data['chatRoomId'] = chatRoomId;
     data['chatBotId'] = chatBotId;
-    data['remoteId'] = remoteId;
+    data['chatBotName'] = chatBotName;
+    data['roomExist'] = roomExist ?? false;
     data['title'] = title;
     data['message'] = message;
     data['prompt'] = prompt;

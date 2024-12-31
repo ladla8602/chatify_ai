@@ -28,7 +28,7 @@ class ChatbotController extends GetxController {
 
     // Check cache if not force refresh
     if (!forceRefresh) {
-      final cached = GetStorage().read(FirebasePaths.chatBots);
+      final cached = GetStorage().read(FirebasePaths.chatBotsName);
       if (cached != null) {
         _chatbots.assignAll(List<ChatBot>.from((cached as List).map((x) => ChatBot.fromJson(x))));
         return;
@@ -46,7 +46,7 @@ class ChatbotController extends GetxController {
 
       // Update state and cache
       _chatbots.assignAll(data);
-      await GetStorage().write(FirebasePaths.chatBots, data.map((x) => x.toJson()).toList());
+      await GetStorage().write(FirebasePaths.chatBotsName, data.map((x) => x.toJson()).toList());
     } catch (e) {
       _error.value = e.toString();
     } finally {
@@ -55,7 +55,7 @@ class ChatbotController extends GetxController {
   }
 
   void clearCache() {
-    GetStorage().remove(FirebasePaths.chatBots);
+    GetStorage().remove(FirebasePaths.chatBotsName);
     _chatbots.clear();
   }
 }

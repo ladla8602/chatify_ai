@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'package:chatify_ai/models/chat_message.model.dart';
+import 'package:chatify_ai/services/firebase_functions_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -20,17 +22,11 @@ class ChatController extends GetxController {
 
   // State
   ChatBot? chatbot;
-  String? chatRoomId;
   types.User? user;
   ChatBotCommand chatBotCommand = ChatBotCommand();
   DocumentSnapshot? lastDocument;
   final FirestoreService _firestoreService = FirestoreService();
-
-  @override
-  void onInit() {
-    super.onInit();
-    loadInitialMessages();
-  }
+  final FirebaseFunctionsService _firebaseFunctionsService = FirebaseFunctionsService();
 
   @override
   void onClose() {
@@ -40,13 +36,13 @@ class ChatController extends GetxController {
 
   Future<void> loadInitialMessages() async {
     try {
-      if (chatRoomId != null) {
+      if (chatBotCommand.roomExist == true) {
         // final historicalMessages = await _firestoreService.getChatHistory(chatBotId!);
         // messages.assignAll(historicalMessages);
         await _handleEndReached();
       } else {
         final message = types.Message.fromJson({
-          "author": {"firstName": chatbot?.botName, "id": "0", "lastName": ""},
+          "author": {"firstName": chatbot?.botName, "id": chatbot?.botId ?? "bot", "lastName": ""},
           "createdAt": DateTime.now().millisecondsSinceEpoch,
           "id": "0",
           "remoteId": "0",
@@ -66,6 +62,7 @@ class ChatController extends GetxController {
     if (chatBotCommand.chatRoomId == null) {
       return;
     }
+
     //Fetch messages from Firestore with pagination
     QuerySnapshot<Map<String, dynamic>> snapshot;
     if (lastDocument == null) {
@@ -75,21 +72,22 @@ class ChatController extends GetxController {
     }
     if (snapshot.docs.isNotEmpty) {
       List<ChatMessage> data = snapshot.docs.map((doc) {
+        log("????????????????????${doc.id}");
         // Assuming ChatMessage has a constructor from a map
         return ChatMessage.fromFirestore(doc);
       }).toList();
 
-      List<types.Message> messages = [];
+      List<types.Message> newMessages = [];
       for (var message in data) {
         if (message.vision != null) {
           final textMsg = types.Message.fromJson({
-            "author": {"firstName": chatbot?.botName, "id": message.senderType == 'user' ? message.senderId.toString() : "0", "lastName": ""},
+            "author": {"firstName": chatbot?.botName, "id": message.senderId.toString(), "lastName": ""},
             "createdAt": message.timestamp.millisecondsSinceEpoch,
             "id": message.id.toString(),
             "text": message.content,
             "type": "text",
           });
-          messages.add(textMsg);
+          newMessages.add(textMsg);
           if (message.vision!.mimeType == 'application/pdf' || message.vision!.mimeType == 'application/octet-stream') {
             final visionMsg = types.FileMessage(
               author: user!,
@@ -100,7 +98,7 @@ class ChatController extends GetxController {
               size: num.parse(message.vision!.size!),
               uri: message.vision!.uri.toString(),
             );
-            messages.add(visionMsg);
+            newMessages.add(visionMsg);
           } else {
             final visionMsg = types.ImageMessage(
               author: user!,
@@ -111,23 +109,23 @@ class ChatController extends GetxController {
               size: num.parse(message.vision!.size!),
               uri: message.vision!.uri.toString(),
             );
-            messages.add(visionMsg);
+            newMessages.add(visionMsg);
           }
         } else {
           final textMsg = types.Message.fromJson({
-            "author": {"firstName": chatbot?.botName, "id": message.senderType == 'user' ? message.senderId.toString() : "0", "lastName": ""},
+            "author": {"firstName": message.senderType == 'user' ? user?.firstName : chatbot?.botName, "id": message.senderId.toString(), "lastName": ""},
             "createdAt": message.timestamp.millisecondsSinceEpoch,
             "id": message.id.toString(),
             "text": message.content,
             "type": "text",
           });
-          messages.add(textMsg);
+          newMessages.add(textMsg);
         }
       }
 
       // if (isMessageUnique(message)) {
       if (data.isNotEmpty) {
-        messages = [...messages, ...messages];
+        messages.assignAll(newMessages); // messages = [...newMessages];
         // _page = _page + 1;
         lastDocument = snapshot.docs.last;
       }
@@ -144,6 +142,7 @@ class ChatController extends GetxController {
       author: user!,
       createdAt: DateTime.now().millisecondsSinceEpoch,
       id: const Uuid().v4(),
+      roomId: chatBotCommand.chatRoomId,
       text: message.text,
     );
     _addMessage(textMessage);
@@ -153,24 +152,18 @@ class ChatController extends GetxController {
   Future<void> _processBotResponse(String userMessage) async {
     try {
       _showTypingIndicator();
-      await Future.delayed(const Duration(seconds: 4));
-      // final response = await _firestoreService.getBotResponse(
-      //   chatBotId!,
-      //   chatBotCommand.copyWith(message: userMessage),
-      // );
+      final response = await _firebaseFunctionsService.generateAiResponse(chatBotCommand);
 
-      // if (response != null) {
-      //   final botMessage = types.TextMessage(
-      //     author: types.User(
-      //       id: "bot",
-      //       firstName: chatbot?.botName,
-      //     ),
-      //     id: const Uuid().v4(),
-      //     text: response,
-      //     createdAt: DateTime.now().millisecondsSinceEpoch,
-      //   );
-      //   _addMessage(botMessage);
-      // }
+      final botMessage = types.TextMessage(
+        author: types.User(
+          id: chatbot?.botId ?? "bot",
+          firstName: chatbot?.botName,
+        ),
+        id: const Uuid().v4(),
+        text: response,
+        createdAt: DateTime.now().millisecondsSinceEpoch,
+      );
+      _addMessage(botMessage);
     } catch (e) {
       log('Error processing bot response: $e');
     } finally {
@@ -184,10 +177,6 @@ class ChatController extends GetxController {
   }
 
   void sendMessage() {
-    log(messageController.text);
-    if (messageController.text.isEmpty) return;
-    if (user == null) return;
-    log(">>>>>>>>>>>");
     final message = types.PartialText(text: messageController.text);
     messageController.clear();
     handleSendPressed(message);
@@ -212,6 +201,5 @@ class ChatController extends GetxController {
     chatBotCommand = ChatBotCommand();
     user = null;
     chatbot = null;
-    chatRoomId = null;
   }
 }

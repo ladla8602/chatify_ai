@@ -4,6 +4,7 @@ class ChatRoom {
   final String id;
   final String userId;
   final String botId;
+  final String botName;
   final DateTime createdAt;
   final LastMessage lastMessage;
   final ChatRoomMetadata metadata;
@@ -12,6 +13,7 @@ class ChatRoom {
     required this.id,
     required this.userId,
     required this.botId,
+    required this.botName,
     required this.createdAt,
     required this.lastMessage,
     required this.metadata,
@@ -22,6 +24,7 @@ class ChatRoom {
       'id': id,
       'userId': userId,
       'botId': botId,
+      'botName': botName,
       'createdAt': createdAt,
       'lastMessage': lastMessage.toMap(),
       'metadata': metadata.toMap(),
@@ -32,6 +35,7 @@ class ChatRoom {
     return {
       'userId': userId,
       'botId': botId,
+      'botName': botName,
       'createdAt': Timestamp.fromDate(createdAt),
       'lastMessage': lastMessage.toFirestore(),
       'metadata': metadata.toFirestore(),
@@ -44,6 +48,7 @@ class ChatRoom {
       id: doc.id,
       userId: data['userId'] ?? '',
       botId: data['botId'] ?? '',
+      botName: data['botName'] ?? '',
       createdAt: (data['createdAt'] as Timestamp).toDate(),
       lastMessage: LastMessage.fromMap(data['lastMessage'] ?? {}),
       metadata: ChatRoomMetadata.fromMap(data['metadata'] ?? {}),

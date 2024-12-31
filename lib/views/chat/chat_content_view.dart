@@ -9,6 +9,7 @@ import 'package:chatify_ai/models/chatbot.model.dart';
 import 'package:chatify_ai/widgets/not_found_widget.dart';
 import 'package:chatify_ai/widgets/typing_loader.dart';
 import 'package:chatify_ai/controllers/chat_controller.dart';
+import 'package:uuid/uuid.dart';
 
 class ChatContentView extends StatefulWidget {
   const ChatContentView({super.key});
@@ -19,12 +20,13 @@ class ChatContentView extends StatefulWidget {
 
 class _ChatContentViewState extends State<ChatContentView> {
   final _focusNode = FocusNode();
-  final _chatController = Get.find<ChatController>();
+  late ChatController _chatController;
   late final User? _currentUser;
 
   @override
   void initState() {
     super.initState();
+    _chatController = Get.put(ChatController());
     _initializeChat();
   }
 
@@ -34,13 +36,17 @@ class _ChatContentViewState extends State<ChatContentView> {
 
     _chatController
       ..chatbot = chatbot
-      ..chatRoomId = Get.arguments['chatRoomId']
+      ..chatBotCommand.chatRoomId = Get.arguments['chatRoomId'] ?? Uuid().v4()
+      ..chatBotCommand.roomExist = Get.arguments['chatRoomId'] != null
+      ..chatBotCommand.chatBotId = chatbot.botId
+      ..chatBotCommand.chatBotName = chatbot.botName
       ..chatBotCommand.prompt = chatbot.botPrompt
       ..user = types.User(
         id: _currentUser!.uid,
         firstName: _currentUser.displayName,
         role: types.Role.user,
       );
+
     _chatController.loadInitialMessages();
   }
 
@@ -48,16 +54,19 @@ class _ChatContentViewState extends State<ChatContentView> {
   void dispose() {
     _focusNode.dispose();
     _chatController.clearChatContext();
+    Get.delete<ChatController>();
     super.dispose();
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        resizeToAvoidBottomInset: true,
-        backgroundColor: Colors.white,
-        appBar: _buildAppBar(context),
-        body: _buildChatBody(context),
-      );
+  Widget build(BuildContext context) {
+    return Scaffold(
+      resizeToAvoidBottomInset: true,
+      backgroundColor: Colors.white,
+      appBar: _buildAppBar(context),
+      body: _buildChatBody(context),
+    );
+  }
 
   PreferredSizeWidget _buildAppBar(BuildContext context) => AppBar(
         backgroundColor: Colors.white,
@@ -142,7 +151,9 @@ class _ChatContentViewState extends State<ChatContentView> {
           maxLines: 50,
           minLines: 1,
           keyboardType: TextInputType.multiline,
-          onChanged: (value) {},
+          onChanged: (value) {
+            _chatController.chatBotCommand.message = value;
+          },
           decoration: _getInputDecoration(context),
         ),
       );
@@ -154,7 +165,7 @@ class _ChatContentViewState extends State<ChatContentView> {
         fillColor: Theme.of(context).colorScheme.surfaceDim,
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         suffixIcon: _buildSuffixIcon(),
-        hintText: 'enter_your_message'.tr,
+        hintText: 'ask_anything'.tr,
         border: _buildInputBorder(context),
         focusedBorder: _buildInputBorder(context),
         enabledBorder: _buildInputBorder(context),

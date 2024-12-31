@@ -11,13 +11,13 @@ class ColorConstant {
 }
 
 class FirebasePaths {
-  static const String chatBots = 'chatBots';
-  static const String chatRooms = 'chatRooms';
-  static const String users = 'users';
-  static const String messages = 'messages';
-  static const String settings = 'settings';
+  static const String chatBotsName = 'chatBots';
+  static const String chatRoomsName = 'chatRooms';
+  static const String usersName = 'users';
+  static const String messagesName = 'messages';
+  static const String settingsName = 'settings';
 
   // For nested collections
-  static String userChats(String userId) => 'users/$userId/chats';
+  static String chatRooms(String chatRoomId) => 'chatRooms/$chatRoomId';
   static String chatRoomMessages(String chatRoomId) => 'chatRooms/$chatRoomId/messages';
 }

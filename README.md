@@ -88,6 +88,7 @@ chatRooms/{chatRoomId}
 {
   userId: string,       // Reference to user who owns this chat
   botId: string,        // Identifier for the AI bot
+  botName: string,
   createdAt: timestamp,
   lastMessage: {
     content: string,

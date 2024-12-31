@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ChatMessage {
-  final String id;
+  final String? id;
   final String content;
   final DateTime timestamp;
   final String senderId;
@@ -9,17 +9,17 @@ class ChatMessage {
   final String status;
   final String type;
   final VisionChatMessage? vision;
-  final MessageMetadata metadata;
+  final MessageMetadata? metadata;
 
   ChatMessage({
-    required this.id,
+    this.id,
     required this.content,
     required this.timestamp,
     required this.senderId,
     required this.senderType,
     required this.status,
     required this.type,
-    required this.metadata,
+    this.metadata,
     this.vision,
   });
 
@@ -32,7 +32,7 @@ class ChatMessage {
       'senderType': senderType,
       'status': status,
       'type': type,
-      'metadata': metadata.toMap(),
+      'metadata': metadata?.toMap(),
       'vision': vision?.toJson(),
     };
   }
@@ -45,7 +45,7 @@ class ChatMessage {
       'senderType': senderType,
       'status': status,
       'type': type,
-      'metadata': metadata.toFirestore(),
+      'metadata': metadata?.toFirestore(),
     };
   }
 

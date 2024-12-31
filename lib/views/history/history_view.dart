@@ -1,13 +1,18 @@
-import 'package:chatify_ai/constants/constants.dart';
+import 'package:chatify_ai/models/chat_room.model.dart';
+import 'package:chatify_ai/models/chatbot.model.dart';
+import 'package:chatify_ai/routes/app_routes.dart';
+import 'package:chatify_ai/services/firestore_service.dart';
 import 'package:chatify_ai/views/common/popup_menu_button.dart';
-import 'package:chatify_ai/views/common/wigets.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
 
 class HistoryView extends StatelessWidget {
   const HistoryView({super.key});
   @override
   Widget build(BuildContext context) {
+    final FirestoreService _firestoreService = FirestoreService();
     final List<Map<String, dynamic>> chatdata = [
       {
         'title': 'Hello there, I need some help',
@@ -101,74 +106,53 @@ class HistoryView extends StatelessWidget {
                   SectionHeader(
                     title: 'Today',
                   ),
-                  ListView.builder(
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: 5,
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        final data = chatdata[index];
-                        return ListTile(
-                          contentPadding: EdgeInsets.all(0),
-                          leading: Container(
-                              height: 45,
-                              width: 45,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border:
-                                      Border.all(color: Colors.grey.shade200)),
-                              child: Icon(
-                                HugeIcons.strokeRoundedMessage02,
-                                color: Colors.grey,
-                              )),
-                          title: Text(
-                            data['title'],
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 15),
-                          ),
-                          subtitle: Text(
-                            data['subtitle'],
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                          trailing: ThemedPopupMenuButton(),
-                        );
-                      }),
-                  SizedBox(height: 20),
-                  SectionHeader(
-                    title: 'Yesterday',
-                  ),
-                  ListView.builder(
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: 5,
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        final data = chatdata[index];
-                        return ListTile(
-                          contentPadding: EdgeInsets.all(0),
-                          leading: Container(
-                              height: 50,
-                              width: 50,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border:
-                                      Border.all(color: Colors.grey.shade200)),
-                              child: Icon(
-                                HugeIcons.strokeRoundedMessage02,
-                                color: Colors.grey,
-                              )),
-                          title: Text(
-                            data['title'],
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 15),
-                          ),
-                          subtitle: Text(
-                            data['subtitle'],
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                          trailing: ThemedPopupMenuButton(),
+                  StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                      stream: _firestoreService.fetchChatRooms(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return const CircularProgressIndicator();
+                        }
+
+                        if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        }
+
+                        if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                          return const Text('No chat rooms found.');
+                        }
+
+                        final chatRooms = snapshot.data!.docs.map((e) => ChatRoom.fromFirestore(e)).toList();
+                        return ListView.builder(
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: chatRooms.length,
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            final chatRoom = chatRooms[index];
+                            return ListTile(
+                              onTap: () => Get.toNamed(AppRoutes.chatContentView,
+                                  arguments: {"chatbot": ChatBot(botId: chatRoom.botId, botName: chatRoom.botName), "chatRoomId": chatRoom.id}),
+                              contentPadding: EdgeInsets.all(0),
+                              leading: Container(
+                                  height: 45,
+                                  width: 45,
+                                  decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.grey.shade200)),
+                                  child: Icon(
+                                    HugeIcons.strokeRoundedMessage02,
+                                    color: Colors.grey,
+                                  )),
+                              title: Text(
+                                chatRoom.lastMessage.content,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
+                              ),
+                              subtitle: Text(
+                                chatRoom.botId,
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                              trailing: ThemedPopupMenuButton(),
+                            );
+                          },
                         );
                       }),
                 ],
@@ -192,10 +176,7 @@ class HistoryView extends StatelessWidget {
                           leading: Container(
                               height: 45,
                               width: 45,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border:
-                                      Border.all(color: Colors.grey.shade200)),
+                              decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.grey.shade200)),
                               child: Icon(
                                 HugeIcons.strokeRoundedMessage02,
                                 color: Colors.grey,
@@ -204,8 +185,7 @@ class HistoryView extends StatelessWidget {
                             data['title'],
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 15),
+                            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
                           ),
                           subtitle: Text(
                             data['subtitle'],
@@ -229,10 +209,7 @@ class HistoryView extends StatelessWidget {
                           leading: Container(
                               height: 50,
                               width: 50,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border:
-                                      Border.all(color: Colors.grey.shade200)),
+                              decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.grey.shade200)),
                               child: Icon(
                                 HugeIcons.strokeRoundedMessage02,
                                 color: Colors.grey,
@@ -241,8 +218,7 @@ class HistoryView extends StatelessWidget {
                             data['title'],
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 15),
+                            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
                           ),
                           subtitle: Text(
                             data['subtitle'],
@@ -266,10 +242,7 @@ class HistoryView extends StatelessWidget {
                           leading: Container(
                               height: 50,
                               width: 50,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border:
-                                      Border.all(color: Colors.grey.shade200)),
+                              decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.grey.shade200)),
                               child: Icon(
                                 HugeIcons.strokeRoundedMessage02,
                                 color: Colors.grey,
@@ -278,8 +251,7 @@ class HistoryView extends StatelessWidget {
                             data['title'],
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 15),
+                            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
                           ),
                           subtitle: Text(
                             data['subtitle'],
@@ -307,10 +279,7 @@ class HistoryView extends StatelessWidget {
                           leading: Container(
                               height: 45,
                               width: 45,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border:
-                                      Border.all(color: Colors.grey.shade200)),
+                              decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.grey.shade200)),
                               child: Icon(
                                 HugeIcons.strokeRoundedMessage02,
                                 color: Colors.grey,
@@ -319,8 +288,7 @@ class HistoryView extends StatelessWidget {
                             data['title'],
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 15),
+                            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
                           ),
                           subtitle: Text(
                             data['subtitle'],
@@ -344,10 +312,7 @@ class HistoryView extends StatelessWidget {
                           leading: Container(
                               height: 50,
                               width: 50,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border:
-                                      Border.all(color: Colors.grey.shade200)),
+                              decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.grey.shade200)),
                               child: Icon(
                                 HugeIcons.strokeRoundedMessage02,
                                 color: Colors.grey,
@@ -356,8 +321,7 @@ class HistoryView extends StatelessWidget {
                             data['title'],
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 15),
+                            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
                           ),
                           subtitle: Text(
                             data['subtitle'],
@@ -381,10 +345,7 @@ class HistoryView extends StatelessWidget {
                           leading: Container(
                               height: 50,
                               width: 50,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border:
-                                      Border.all(color: Colors.grey.shade200)),
+                              decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.grey.shade200)),
                               child: Icon(
                                 HugeIcons.strokeRoundedMessage02,
                                 color: Colors.grey,
@@ -393,8 +354,7 @@ class HistoryView extends StatelessWidget {
                             data['title'],
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 15),
+                            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
                           ),
                           subtitle: Text(
                             data['subtitle'],
