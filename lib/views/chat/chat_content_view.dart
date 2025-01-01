@@ -9,6 +9,7 @@ import 'package:chatify_ai/models/chatbot.model.dart';
 import 'package:chatify_ai/widgets/not_found_widget.dart';
 import 'package:chatify_ai/widgets/typing_loader.dart';
 import 'package:chatify_ai/controllers/chat_controller.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:uuid/uuid.dart';
 
 class ChatContentView extends StatefulWidget {
@@ -191,6 +192,7 @@ class _ChatContentViewState extends State<ChatContentView> {
           radius: 12,
           child: Center(
             child: SendButton(
+              icon: HugeIcons.strokeRoundedSent,
               onPressed: () {
                 if (_chatController.messageController.text.isNotEmpty) {
                   _chatController.sendMessage();

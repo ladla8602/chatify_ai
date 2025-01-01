@@ -3,6 +3,7 @@ import 'package:chatify_ai/models/chatbot.model.dart';
 import 'package:chatify_ai/routes/app_routes.dart';
 import 'package:chatify_ai/services/firestore_service.dart';
 import 'package:chatify_ai/views/common/popup_menu_button.dart';
+import 'package:chatify_ai/views/history/widgets/chat_history_effect.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -123,7 +124,7 @@ class HistoryView extends StatelessWidget {
                     stream: _firestoreService.fetchChatRooms(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const CircularProgressIndicator();
+                        return ChatHistoryLoadingEffect();
                       }
 
                       if (snapshot.hasError) {
