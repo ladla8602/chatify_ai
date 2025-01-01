@@ -19,9 +19,9 @@ class DashboardView extends StatelessWidget {
     final controller = Get.put(DashboardController());
 
     final List<Widget> pages = [
-      const ChatView(),
       const ImageGenerateView(),
       const AudioGenerateView(),
+      const ChatView(),
       const HistoryView(),
       const SettingView(),
     ];
@@ -37,16 +37,16 @@ class DashboardView extends StatelessWidget {
           type: BottomNavigationBarType.fixed,
           items: [
             BottomNavigationBarItem(
-              icon: Icon(HugeIcons.strokeRoundedMessage02),
-              label: 'Chat',
-            ),
-            BottomNavigationBarItem(
               icon: Icon(HugeIcons.strokeRoundedImage01),
               label: 'Image',
             ),
             BottomNavigationBarItem(
               icon: Icon(HugeIcons.strokeRoundedMic01),
               label: 'Audio',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(HugeIcons.strokeRoundedMessage02),
+              label: 'Chat',
             ),
             BottomNavigationBarItem(
               icon: Icon(HugeIcons.strokeRoundedClock04),

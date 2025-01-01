@@ -131,7 +131,7 @@ class HistoryView extends StatelessWidget {
                       }
 
                       if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                        return const Text('No chat rooms found.');
+                        return const Text('No chat history found.');
                       }
 
                       final chatRooms = snapshot.data!.docs.map((e) => ChatRoom.fromFirestore(e)).toList();
@@ -142,8 +142,10 @@ class HistoryView extends StatelessWidget {
                         itemBuilder: (context, index) {
                           final chatRoom = chatRooms[index];
                           return ListTile(
-                            onTap: () => Get.toNamed(AppRoutes.chatContentView,
-                                arguments: {"chatbot": ChatBot(botId: chatRoom.botId, botName: chatRoom.botName), "chatRoomId": chatRoom.id}),
+                            onTap: () => Get.toNamed(AppRoutes.chatContentView, arguments: {
+                              "chatbot": ChatBot(botId: chatRoom.botId, botName: chatRoom.botName, botAvatar: chatRoom.botAvatar),
+                              "chatRoomId": chatRoom.id
+                            }),
                             contentPadding: EdgeInsets.all(0),
                             leading: Container(
                                 height: 45,

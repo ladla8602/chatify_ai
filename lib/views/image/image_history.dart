@@ -44,11 +44,7 @@ class ImageGeneratedHistory extends StatelessWidget {
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(16),
                                 color: Colors.grey.shade200,
-                                border: Border.all(
-                                    color: Theme.of(context)
-                                        .primaryColor
-                                        .withOpacity(0.5),
-                                    width: 1.5)),
+                                border: Border.all(color: Theme.of(context).primaryColor.withOpacity(0.5), width: 1.5)),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(16),
                               child: Image.network(
@@ -60,8 +56,7 @@ class ImageGeneratedHistory extends StatelessWidget {
                               bottom: 2,
                               child: CircleAvatar(
                                   radius: 18,
-                                  backgroundColor:
-                                      Theme.of(context).primaryColor,
+                                  backgroundColor: Theme.of(context).primaryColor,
                                   child: Icon(
                                     HugeIcons.strokeRoundedDownloadCircle01,
                                     color: Colors.white,
@@ -69,8 +64,7 @@ class ImageGeneratedHistory extends StatelessWidget {
                         ],
                       ),
                       SizedBox(height: 10),
-                      Text('2024-12-29 10:00 AM',
-                          style: TextStyle(fontSize: 11)),
+                      Text('2024-12-29 10:00 AM', style: TextStyle(fontSize: 11)),
                     ],
                   );
                 },
