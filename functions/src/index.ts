@@ -5,7 +5,7 @@ import { initializeApp } from "firebase-admin/app";
 import { OpenAIService } from "./openai-service.js";
 // import { AuthService } from "./auth-service.js";
 import { RequestValidator } from "./validators.js";
-import type { ChatRequest, ChatResponse } from "./types.js";
+import type { ChatRequest, ChatResponse, ImageGenerateRequest, ImageGenerateResponse } from "./types.js";
 import { config } from "dotenv";
 import { getAuth, ListUsersResult } from "firebase-admin/auth";
 
@@ -25,7 +25,7 @@ initializeApp();
 
 export const askChatGPT = onCall<ChatRequest, Promise<ChatResponse>>({
   maxInstances: 2,
-  timeoutSeconds: 30,
+  timeoutSeconds: 120,
   memory: "128MiB",
 }, async (request) => {
   try {
@@ -89,7 +89,11 @@ export const askChatGPT = onCall<ChatRequest, Promise<ChatResponse>>({
   }
 });
 
-export const getUsers = onCall(async (request) => {
+export const getUsers = onCall({
+  maxInstances: 2,
+  timeoutSeconds: 120,
+  memory: "128MiB",
+}, async (request) => {
   try {
     const { auth } = request;
 
@@ -134,3 +138,44 @@ export const getUsers = onCall(async (request) => {
     };
   }
 });
+
+export const generateAIImage = onCall<ImageGenerateRequest, Promise<ImageGenerateResponse>>({
+  maxInstances: 2,
+  timeoutSeconds: 120,
+  memory: "128MiB",
+}, async (request) => {
+  try {
+    const { auth } = request;
+
+
+    if (!auth || !auth.uid) {
+      throw new Error("Authentication required");
+    }
+
+    // Get OpenAI service instance
+    const openAIService = OpenAIService.getInstance(OPENAI_API_KEY);
+
+    // Generate response with timeout
+    const timeoutPromise = new Promise<string>((_, reject) =>
+      setTimeout(() => reject(new Error("Request timeout")), 25000)
+    );
+
+    const response = await Promise.race<string>([
+      openAIService.generateImage(request.data),
+      timeoutPromise,
+    ]);
+
+    return {
+      success: true,
+      image: response,
+      timestamp: new Date().toISOString(),
+    };
+  } catch (error) {
+    logger.error("Error in generateAIImage:", error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "An unexpected error occurred",
+      timestamp: new Date().toISOString(),
+    };
+  }
+}); 
