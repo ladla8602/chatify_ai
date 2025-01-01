@@ -178,4 +178,4 @@ export const generateAIImage = onCall<ImageGenerateRequest, Promise<ImageGenerat
       timestamp: new Date().toISOString(),
     };
   }
-}); 
+});

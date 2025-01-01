@@ -15,7 +15,7 @@ export interface ImageGenerateRequest {
   model: string;
   quantity: number;
   size: "256x256" | "512x512" | "1024x1024" | "1792x1024" | "1024x1792" | null | undefined;
-  style?: 'vivid' | 'natural' | null;
+  style?: "vivid" | "natural" | null;
 }
 
 export interface ImageGenerateResponse {
