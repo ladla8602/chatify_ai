@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 import 'package:uuid/uuid.dart';
 import 'package:get/get.dart';
@@ -8,8 +9,7 @@ import 'package:chatify_ai/models/chat_bot_command.model.dart';
 import 'package:chatify_ai/models/chatbot.model.dart';
 import 'package:chatify_ai/services/firebase_functions_service.dart';
 import 'package:chatify_ai/services/firestore_service.dart';
-import 'package:chatify_ai/library/flutter_chat/lib/src/types/types.dart'
-    as types;
+import 'package:chatify_ai/library/flutter_chat/lib/src/types/types.dart' as types;
 
 class ChatController extends GetxController {
   // Dependencies
@@ -20,8 +20,7 @@ class ChatController extends GetxController {
     FirestoreService? firestoreService,
     FirebaseFunctionsService? firebaseFunctionsService,
   })  : _firestoreService = firestoreService ?? FirestoreService(),
-        _firebaseFunctionsService =
-            firebaseFunctionsService ?? FirebaseFunctionsService();
+        _firebaseFunctionsService = firebaseFunctionsService ?? FirebaseFunctionsService();
 
   // UI Controllers
   final messageController = TextEditingController();
@@ -71,12 +70,10 @@ class ChatController extends GetxController {
   Future<QuerySnapshot<Map<String, dynamic>>> _fetchMessages() {
     return lastDocument == null
         ? _firestoreService.fetchChatRoomMessages(chatBotCommand.chatRoomId!)
-        : _firestoreService.fetchChatRoomMessages(
-            chatBotCommand.chatRoomId!, lastDocument);
+        : _firestoreService.fetchChatRoomMessages(chatBotCommand.chatRoomId!, lastDocument);
   }
 
-  List<types.Message> _convertFirestoreToMessages(
-      List<QueryDocumentSnapshot<Map<String, dynamic>>> docs) {
+  List<types.Message> _convertFirestoreToMessages(List<QueryDocumentSnapshot<Map<String, dynamic>>> docs) {
     return docs.expand((doc) {
       final message = ChatMessage.fromFirestore(doc);
       return _createMessagesFromChatMessage(message);
@@ -96,12 +93,7 @@ class ChatController extends GetxController {
 
   types.Message _createTextMessage(ChatMessage message) {
     return types.Message.fromJson({
-      "author": {
-        "firstName":
-            message.senderType == 'user' ? user?.firstName : chatbot?.botName,
-        "id": message.senderId.toString(),
-        "lastName": ""
-      },
+      "author": {"firstName": message.senderType == 'user' ? user?.firstName : chatbot?.botName, "id": message.senderId.toString(), "lastName": ""},
       "createdAt": message.timestamp.millisecondsSinceEpoch,
       "id": message.id.toString(),
       "text": message.content,
@@ -111,8 +103,7 @@ class ChatController extends GetxController {
 
   types.Message _createMediaMessage(ChatMessage message) {
     final vision = message.vision!;
-    final isPdf = vision.mimeType == 'application/pdf' ||
-        vision.mimeType == 'application/octet-stream';
+    final isPdf = vision.mimeType == 'application/pdf' || vision.mimeType == 'application/octet-stream';
 
     return isPdf
         ? types.FileMessage(
@@ -137,11 +128,7 @@ class ChatController extends GetxController {
 
   void _addWelcomeMessage() {
     final welcomeMessage = types.Message.fromJson({
-      "author": {
-        "firstName": chatbot?.botName,
-        "id": chatbot?.botId ?? "bot",
-        "lastName": ""
-      },
+      "author": {"firstName": chatbot?.botName, "id": chatbot?.botId ?? "bot", "lastName": ""},
       "createdAt": DateTime.now().millisecondsSinceEpoch,
       "id": "0",
       "remoteId": "0",
@@ -170,9 +157,11 @@ class ChatController extends GetxController {
   Future<void> _processBotResponse(String userMessage) async {
     try {
       _showTypingIndicator();
-      final response = await _firebaseFunctionsService
-          .generateAiResponse(chatBotCommand as String);
+      log(_formatContextForOpenAI());
+      final response = await _firebaseFunctionsService.askChatGPT(chatBotCommand);
       _addMessage(_createBotMessage(response));
+      // Storing messge to firestore
+      unawaited(_firestoreService.storeChatRoomMessage(chatBotCommand, response));
     } catch (e) {
       log('Error processing bot response: $e');
     } finally {

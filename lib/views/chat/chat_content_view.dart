@@ -116,6 +116,12 @@ class _ChatContentViewState extends State<ChatContentView> {
           typingUsers: _chatController.typingUsers.toList(),
         ),
         customBottomWidget: _buildMessageInput(context),
+        theme: Theme.of(context).brightness == Brightness.dark
+            ? DarkChatTheme(
+                primaryColor: Theme.of(context).colorScheme.surface,
+                secondaryColor: Theme.of(context).colorScheme.surface,
+              )
+            : const DefaultChatTheme(),
       ));
 
   Widget _buildEmptyState() => Obx(() => _chatController.isDataLoadingForFirstTime.value
@@ -125,7 +131,7 @@ class _ChatContentViewState extends State<ChatContentView> {
           onButtonClick: () => Navigator.of(context).pop(),
         ));
 
-  Widget _buildMessageInput(BuildContext context) => Container(
+  Widget _buildMessageInput(BuildContext context) => SizedBox(
         width: MediaQuery.of(context).size.width,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -149,8 +155,11 @@ class _ChatContentViewState extends State<ChatContentView> {
           maxLines: 50,
           minLines: 1,
           keyboardType: TextInputType.multiline,
+          cursorHeight: 20,
+          style: TextStyle(fontSize: 16, color: Theme.of(context).colorScheme.onSurface),
           onChanged: (value) {
             _chatController.chatBotCommand.message = value;
+            setState(() {});
           },
           decoration: _getInputDecoration(context),
         ),
@@ -158,9 +167,10 @@ class _ChatContentViewState extends State<ChatContentView> {
 
   InputDecoration _getInputDecoration(BuildContext context) => InputDecoration(
         alignLabelWithHint: true,
-        floatingLabelBehavior: FloatingLabelBehavior.never,
-        filled: true,
-        fillColor: Theme.of(context).colorScheme.surfaceDim,
+        // floatingLabelBehavior: FloatingLabelBehavior.never,
+        // filled: true,
+        // fillColor: Theme.of(context).colorScheme.surface,
+        // labelStyle: TextStyle(color: Colors.red),
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         suffixIcon: _buildSuffixIcon(),
         hintText: 'ask_anything'.tr,
@@ -174,7 +184,7 @@ class _ChatContentViewState extends State<ChatContentView> {
 
   Widget _buildSuffixIcon() => _chatController.messageController.text.isEmpty
       ? IconButton(
-          onPressed: () {},
+          onPressed: () => _chatController.messageController.clear(),
           icon: const Icon(Icons.mic),
         )
       : const Icon(Icons.close);

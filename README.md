@@ -78,6 +78,7 @@ chatBots/[botId]
   botPrompt: string,
   botStatus: sring,  // active, inactive
   createdAt: timestamp,
+  userId: string, // Only meant for admin
 }
 ```
 
