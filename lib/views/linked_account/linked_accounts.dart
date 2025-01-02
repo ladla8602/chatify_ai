@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class Linked_Account extends StatelessWidget {
   const Linked_Account({super.key});
@@ -31,7 +32,7 @@ class Linked_Account extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Linked Accounts',
+          'linked_accounts'.tr,
           style: TextStyle(fontSize: 20),
         ),
         centerTitle: true,

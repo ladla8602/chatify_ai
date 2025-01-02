@@ -105,7 +105,7 @@ class HistoryView extends StatelessWidget {
                 unselectedLabelColor: Colors.black,
                 indicatorSize: TabBarIndicatorSize.tab,
                 tabs: [
-                  Tab(text: 'Chat'),
+                  Tab(text: 'chat'.tr),
                   Tab(text: 'Pinned'),
                   Tab(text: 'Shared'),
                 ],

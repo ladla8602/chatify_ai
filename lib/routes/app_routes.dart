@@ -25,6 +25,7 @@ import '../views/settings/custom_instruction_view.dart';
 import '../views/settings/data_controls_view.dart';
 import '../views/settings/setting_view.dart';
 import '../views/upgrade/upgrade_view.dart';
+import '../widgets/common_page.dart';
 
 class AppRoutes {
   static const login = '/login';
@@ -52,6 +53,7 @@ class AppRoutes {
 
   static const imageView = '/imageView';
   static const audioView = '/audioView';
+  static const commonpageView = '/commonpageView';
 
   static final pages = [
     GetPage(name: login, page: () => LoginView()),
@@ -70,12 +72,16 @@ class AppRoutes {
     GetPage(name: paymentMethods, page: () => PaymentMethodsView()),
     GetPage(name: addPaymentMethods, page: () => AddPaymentView()),
     GetPage(name: languaeview, page: () => LanguageView()),
-    GetPage(name: dashboard, page: () => DashboardView(), binding: DashboardBindings()),
+    GetPage(
+        name: dashboard,
+        page: () => DashboardView(),
+        binding: DashboardBindings()),
     GetPage(name: history, page: () => HistoryView()),
     GetPage(name: linkedAccount, page: () => Linked_Account()),
     GetPage(name: personalInfo, page: () => PersonalInfo()),
     GetPage(name: security, page: () => SecurityView()),
     GetPage(name: imageView, page: () => ImageGenerateView()),
     GetPage(name: audioView, page: () => AudioGenerateView()),
+    GetPage(name: commonpageView, page: () => CommonPageView()),
   ];
 }

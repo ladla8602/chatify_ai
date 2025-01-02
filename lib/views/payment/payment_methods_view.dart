@@ -34,7 +34,7 @@ class PaymentMethodsView extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            'Payment Methods',
+            'payment_methods'.tr,
             style: TextStyle(fontSize: 20),
           ),
           centerTitle: true,

@@ -145,22 +145,34 @@ class SettingView extends StatelessWidget {
           BuildTileWigets(
             icon: HugeIcons.strokeRoundedHelpCircle,
             title: 'help_center'.tr,
-            onTap: () {},
+            onTap: () {
+              Get.toNamed(AppRoutes.commonpageView,
+                  arguments: 'help_center'.tr);
+            },
           ),
           BuildTileWigets(
             icon: HugeIcons.strokeRoundedTask01,
             title: 'terms_of_use'.tr,
-            onTap: () {},
+            onTap: () {
+              Get.toNamed(AppRoutes.commonpageView,
+                  arguments: 'terms_of_use'.tr);
+            },
           ),
           BuildTileWigets(
             icon: HugeIcons.strokeRoundedSquareLock01,
             title: 'privacy_policy'.tr,
-            onTap: () {},
+            onTap: () {
+              Get.toNamed(AppRoutes.commonpageView,
+                  arguments: 'privacy_policy'.tr);
+            },
           ),
           BuildTileWigets(
             icon: HugeIcons.strokeRoundedInformationCircle,
             title: 'about_chatify'.tr,
-            onTap: () {},
+            onTap: () {
+              Get.toNamed(AppRoutes.commonpageView,
+                  arguments: 'about_chatify'.tr);
+            },
           ),
           ListTile(
             contentPadding: EdgeInsets.all(0),

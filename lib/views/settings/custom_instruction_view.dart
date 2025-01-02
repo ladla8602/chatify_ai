@@ -20,8 +20,8 @@ class CustomInstructionView extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text(
-          'Custom Instructions',
+        title: Text(
+          'custom_instruction'.tr,
           style: TextStyle(fontSize: 20),
         ),
         elevation: 0,
@@ -33,7 +33,7 @@ class CustomInstructionView extends StatelessWidget {
           children: [
             const Text(
               'What would you like Chatify to know about you to provide better responses?',
-              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+              style: TextStyle(fontSize: 15),
             ),
             const SizedBox(height: 8),
             TextFormField(
@@ -51,7 +51,7 @@ class CustomInstructionView extends StatelessWidget {
             const SizedBox(height: 24),
             const Text(
               'How would you like Chatify to respond?',
-              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+              style: TextStyle(fontSize: 15),
             ),
             const SizedBox(height: 8),
             TextFormField(
@@ -71,7 +71,9 @@ class CustomInstructionView extends StatelessWidget {
               children: [
                 const Text(
                   'Enable for new chats',
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+                  style: TextStyle(
+                    fontSize: 15,
+                  ),
                 ),
                 Obx(
                   () {

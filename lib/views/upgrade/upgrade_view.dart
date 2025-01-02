@@ -15,7 +15,7 @@ class UpgradeView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         surfaceTintColor: Colors.white,
-        title: Text('Upgrade to PRO!', style: TextStyle(fontSize: 17)),
+        title: Text('upgrade_to_pro'.tr, style: TextStyle(fontSize: 17)),
       ),
       body: ListView.separated(
         itemBuilder: (context, index) {
