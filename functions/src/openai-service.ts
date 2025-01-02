@@ -1,5 +1,6 @@
 // openai-service.ts
 import OpenAI from "openai";
+import { ImageGenerateRequest } from "./types";
 
 export class OpenAIService {
   private client: OpenAI;
@@ -58,5 +59,21 @@ export class OpenAIService {
     }
 
     return response;
+  }
+
+  async generateImage(payload: ImageGenerateRequest): Promise<any> {
+    const response = await this.client.images.generate({
+      model: payload.model,
+      prompt: payload.prompt,
+      n: payload.quantity ?? 1,
+      size: payload.size,
+      response_format: "url",
+      style: payload.style,
+    });
+    if (!response) {
+      throw new Error("No response generated");
+    }
+    console.log(response.data);
+    return response.data[0].url;
   }
 }

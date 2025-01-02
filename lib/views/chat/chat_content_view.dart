@@ -4,12 +4,13 @@ import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chatify_ai/library/flutter_chat/lib/flutter_chat.dart';
-import 'package:chatify_ai/library/flutter_chat/lib/src/types/types.dart'
-    as types;
+import 'package:chatify_ai/library/flutter_chat/lib/src/types/types.dart' as types;
 import 'package:chatify_ai/models/chatbot.model.dart';
 import 'package:chatify_ai/widgets/not_found_widget.dart';
 import 'package:chatify_ai/widgets/typing_loader.dart';
 import 'package:chatify_ai/controllers/chat_controller.dart';
+import 'package:hugeicons/hugeicons.dart';
+import 'package:uuid/uuid.dart';
 
 class ChatContentView extends StatefulWidget {
   const ChatContentView({super.key});
@@ -20,12 +21,13 @@ class ChatContentView extends StatefulWidget {
 
 class _ChatContentViewState extends State<ChatContentView> {
   final _focusNode = FocusNode();
-  final _chatController = Get.find<ChatController>();
+  late ChatController _chatController;
   late final User? _currentUser;
 
   @override
   void initState() {
     super.initState();
+    _chatController = Get.put(ChatController());
     _initializeChat();
   }
 
@@ -35,13 +37,18 @@ class _ChatContentViewState extends State<ChatContentView> {
 
     _chatController
       ..chatbot = chatbot
-      ..chatRoomId = Get.arguments['chatRoomId']
+      ..chatBotCommand.chatRoomId = Get.arguments['chatRoomId'] ?? Uuid().v4()
+      ..chatBotCommand.roomExist = Get.arguments['chatRoomId'] != null
+      ..chatBotCommand.chatBotId = chatbot.botId
+      ..chatBotCommand.chatBotName = chatbot.botName
+      ..chatBotCommand.chatBotAvatar = chatbot.botAvatar
       ..chatBotCommand.prompt = chatbot.botPrompt
       ..user = types.User(
         id: _currentUser!.uid,
         firstName: _currentUser.displayName,
         role: types.Role.user,
       );
+
     _chatController.loadInitialMessages();
   }
 
@@ -49,6 +56,7 @@ class _ChatContentViewState extends State<ChatContentView> {
   void dispose() {
     _focusNode.dispose();
     _chatController.clearChatContext();
+    // Get.delete<ChatController>();
     super.dispose();
   }
 
@@ -79,8 +87,7 @@ class _ChatContentViewState extends State<ChatContentView> {
         radius: 18,
         backgroundColor: Theme.of(context).primaryColor,
         child: CachedNetworkImage(
-          imageUrl: _chatController.chatbot?.botAvatar ??
-              "http://via.placeholder.com/200x150",
+          imageUrl: _chatController.chatbot?.botAvatar ?? "http://via.placeholder.com/200x150",
           imageBuilder: (context, imageProvider) => CircleAvatar(
             radius: 16,
             child: Container(
@@ -111,13 +118,12 @@ class _ChatContentViewState extends State<ChatContentView> {
         customBottomWidget: _buildMessageInput(context),
       ));
 
-  Widget _buildEmptyState() =>
-      Obx(() => _chatController.isDataLoadingForFirstTime.value
-          ? const Center(child: TypingLoaderWidget())
-          : NotFoundWidget(
-              title: 'no_chat'.tr,
-              onButtonClick: () => Navigator.of(context).pop(),
-            ));
+  Widget _buildEmptyState() => Obx(() => _chatController.isDataLoadingForFirstTime.value
+      ? const Center(child: TypingLoaderWidget())
+      : NotFoundWidget(
+          title: 'no_chat'.tr,
+          onButtonClick: () => Navigator.of(context).pop(),
+        ));
 
   Widget _buildMessageInput(BuildContext context) => Container(
         width: MediaQuery.of(context).size.width,
@@ -143,7 +149,9 @@ class _ChatContentViewState extends State<ChatContentView> {
           maxLines: 50,
           minLines: 1,
           keyboardType: TextInputType.multiline,
-          onChanged: (value) {},
+          onChanged: (value) {
+            _chatController.chatBotCommand.message = value;
+          },
           decoration: _getInputDecoration(context),
         ),
       );
@@ -155,7 +163,7 @@ class _ChatContentViewState extends State<ChatContentView> {
         fillColor: Theme.of(context).colorScheme.surfaceDim,
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         suffixIcon: _buildSuffixIcon(),
-        hintText: 'enter_your_message'.tr,
+        hintText: 'ask_anything'.tr,
         border: _buildInputBorder(context),
         focusedBorder: _buildInputBorder(context),
         enabledBorder: _buildInputBorder(context),
@@ -171,8 +179,7 @@ class _ChatContentViewState extends State<ChatContentView> {
         )
       : const Icon(Icons.close);
 
-  OutlineInputBorder _buildInputBorder(BuildContext context) =>
-      OutlineInputBorder(
+  OutlineInputBorder _buildInputBorder(BuildContext context) => OutlineInputBorder(
         borderRadius: const BorderRadius.all(Radius.circular(28)),
         borderSide: BorderSide(color: Theme.of(context).colorScheme.surface),
       );
@@ -185,6 +192,7 @@ class _ChatContentViewState extends State<ChatContentView> {
           radius: 12,
           child: Center(
             child: SendButton(
+              icon: HugeIcons.strokeRoundedSent,
               onPressed: () {
                 if (_chatController.messageController.text.isNotEmpty) {
                   _chatController.sendMessage();

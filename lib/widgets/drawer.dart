@@ -184,7 +184,7 @@ class DrawerWigets extends StatelessWidget {
             ),
             onTap: () {
               // Handle item tap
-              dashboardController.changeIndex(0);
+              dashboardController.changeIndex(2);
               Navigator.pop(context); // Close the drawer
             },
           ),
@@ -198,7 +198,7 @@ class DrawerWigets extends StatelessWidget {
             ),
             onTap: () {
               // Handle item tap
-              dashboardController.changeIndex(1);
+              dashboardController.changeIndex(0);
               Get.to(AppRoutes.imageView, preventDuplicates: false);
             },
           ),
@@ -215,7 +215,7 @@ class DrawerWigets extends StatelessWidget {
             ),
             onTap: () {
               // Handle item tap
-              dashboardController.changeIndex(2);
+              dashboardController.changeIndex(1);
               Get.to(AppRoutes.audioView, preventDuplicates: false);
             },
           ),

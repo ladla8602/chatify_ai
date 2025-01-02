@@ -12,6 +12,7 @@ import 'audio_history.dart';
 
 class AudioGenerateView extends StatelessWidget {
   const AudioGenerateView({super.key});
+
   @override
   Widget build(BuildContext context) {
     final AudioGenerateController audioGenerateController =
@@ -43,7 +44,7 @@ class AudioGenerateView extends StatelessWidget {
           );
         }),
         title: Text(
-          'Audio Generate',
+          'audio_generate'.tr,
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -55,14 +56,22 @@ class AudioGenerateView extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
         child: Obx(() {
           final selectedIndex = audioGenerateController.isSelected.value;
-          final selectedItem =
-              audioGenerateController.audioGenerate[selectedIndex];
-          playAudio(selectedItem['audioPath']);
+          // final selectedItem =
+          //     audioGenerateController.audioGenerate[selectedIndex];
+          // playAudio(selectedItem['audioPath']);
           return SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 20),
+                // SizedBox(height: 20),
+                Text(
+                  'voice_style'.tr,
+                  style: TextStyle(
+                      fontSize: 14,
+                      color: Theme.of(context).primaryColor,
+                      fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 12),
                 Wrap(
                   // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   spacing: 16,
@@ -97,7 +106,7 @@ class AudioGenerateView extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Prompt",
+                        "prompt".tr,
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
@@ -136,7 +145,7 @@ class AudioGenerateView extends StatelessWidget {
                         borderRadius: BorderRadius.circular(16),
                         borderSide: BorderSide(
                             color: Theme.of(context).primaryColor, width: 1.5)),
-                    hintText: "Enter your prompt",
+                    hintText: "enter_prompt".tr,
                     hintStyle: TextStyle(fontSize: 14),
                   ),
                 ),
@@ -149,7 +158,7 @@ class AudioGenerateView extends StatelessWidget {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(14),
         child: ElevatedButtonWigets(
-          text: 'Generate',
+          text: 'generate'.tr,
           backgroundColor: Theme.of(context).primaryColor,
           foregroundColor: Colors.white,
           onClick: () {
@@ -176,7 +185,7 @@ class AudioGenerateView extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        'Audio',
+                        'audio'.tr,
                         style: TextStyle(fontSize: 17),
                       ),
                       SizedBox(height: 20),
@@ -253,7 +262,9 @@ class AudioGenerateWigets extends StatelessWidget {
         Text(
           title,
           style: TextStyle(
-            color: isSelected ? Theme.of(context).primaryColor : Colors.black,
+            color: isSelected
+                ? Theme.of(context).primaryColor
+                : Theme.of(context).colorScheme.onSurface,
             fontSize: 12,
             fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
           ),

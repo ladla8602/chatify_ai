@@ -1,13 +1,10 @@
-import 'package:chatify_ai/controllers/chat_controller.dart';
 import 'package:chatify_ai/controllers/chatbot_controller.dart';
 import 'package:chatify_ai/routes/app_routes.dart';
 import 'package:chatify_ai/views/chat/widgets/chatbot_card_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
-import '../../constants/constants.dart';
 import '../../widgets/drawer.dart';
-import '../common/wigets.dart';
 import 'widgets/chat_bot_loading_effect.dart';
 
 class ChatView extends StatefulWidget {
@@ -21,8 +18,21 @@ class _ChatViewState extends State<ChatView>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<Offset> _offsetAnimation;
-  TextEditingController _messageController = TextEditingController();
   ChatbotController controller = Get.find();
+  List<Map<String, dynamic>> capabilities = [
+    {
+      "title": "Answer all your questions.",
+      "subtitle": "(Just ask me anything you like!)",
+    },
+    {
+      "title": "Generate all the text you want.",
+      "subtitle": "(essays, articles, reports, stories, & more)",
+    },
+    {
+      "title": "Conversational AI.",
+      "subtitle": "(I can talk to you like a natural human)",
+    }
+  ];
 
   @override
   void initState() {
@@ -33,7 +43,7 @@ class _ChatViewState extends State<ChatView>
     );
 
     _offsetAnimation = Tween<Offset>(
-      begin: const Offset(-1.0, 0.0), // Start off-screen to the left
+      begin: const Offset(0.0, 1.0), // Start off-screen to the left
       end: Offset.zero, // End at original position
     ).animate(CurvedAnimation(
       parent: _animationController,
@@ -113,17 +123,22 @@ class _ChatViewState extends State<ChatView>
                 SizedBox(height: 30),
                 Column(
                   children: [
-                    CapabilityCard(
-                      title: "Answer all your questions.",
-                      subtitle: "(Just ask me anything you like!)",
-                    ),
-                    CapabilityCard(
-                      title: "Generate all the text you want.",
-                      subtitle: "(essays, articles, reports, stories, & more)",
-                    ),
-                    CapabilityCard(
-                      title: "Conversational AI.",
-                      subtitle: "(I can talk to you like a natural human)",
+                    Column(
+                      children: List.generate(
+                        capabilities.length,
+                        (index) {
+                          return CapabilityCard(
+                            title: capabilities[index]["title"],
+                            subtitle: capabilities[index]["subtitle"],
+                            onTap: () {
+                              Get.toNamed(
+                                AppRoutes.chatContentView,
+                                arguments: {"chatbot": controller.chatbots[0]},
+                              );
+                            },
+                          );
+                        },
+                      ),
                     ),
                     SizedBox(height: 30),
                     Text(
@@ -158,45 +173,56 @@ class _ChatViewState extends State<ChatView>
                       },
                       child: Row(
                         children: [
-                          Expanded(
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 14),
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).colorScheme.surface,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    HugeIcons.strokeRoundedAdd01,
-                                    size: 20,
-                                    color: Theme.of(context).iconTheme.color,
+                          Flexible(
+                            child: ConstrainedBox(
+                              constraints: const BoxConstraints(
+                                  maxHeight: 90, minHeight: 36),
+                              child: TextFormField(
+                                enabled: false,
+                                keyboardType: TextInputType.multiline,
+                                decoration: InputDecoration(
+                                  alignLabelWithHint: true,
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.never,
+                                  filled: true,
+                                  fillColor:
+                                      Theme.of(context).colorScheme.surfaceDim,
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 16, vertical: 8),
+                                  hintText: '${'ask_anything'.tr}...',
+                                  border: OutlineInputBorder(
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(28)),
+                                    borderSide: BorderSide(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary),
                                   ),
-                                  SizedBox(width: 10),
-                                  Text(
-                                    'Ask me anything...',
-                                    style: TextStyle(
-                                      fontSize: 13,
-                                      color: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium
-                                          ?.color, // Dynamic text color based on theme
-                                    ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(28)),
+                                    borderSide: BorderSide(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .surface),
                                   ),
-                                  Spacer(),
-                                  Icon(
-                                    HugeIcons.strokeRoundedMic01,
-                                    size: 20,
-                                    color: Theme.of(context)
-                                        .iconTheme
-                                        .color, // Icon color based on theme
+                                  disabledBorder: OutlineInputBorder(
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(28)),
+                                    borderSide: BorderSide(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary),
                                   ),
-                                ],
+                                  errorBorder: const OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(28)),
+                                  ),
+                                ),
                               ),
                             ),
                           ),
-                          SizedBox(width: 10),
+                          SizedBox(width: 8),
                           CircleAvatar(
                             backgroundColor: Theme.of(context).primaryColor,
                             child: Icon(
@@ -222,39 +248,50 @@ class _ChatViewState extends State<ChatView>
 class CapabilityCard extends StatelessWidget {
   final String title;
   final String subtitle;
+  final VoidCallback? onTap;
 
   const CapabilityCard(
-      {super.key, required this.title, required this.subtitle});
+      {super.key, required this.title, required this.subtitle, this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                title,
-                style: TextStyle(
-                  fontSize: 14,
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surface,
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.25),
+                  spreadRadius: 2,
+                  blurRadius: 4,
+                  offset: const Offset(0, 2),
                 ),
-              ),
-              SizedBox(height: 5),
-              Text(
-                subtitle,
-                style: TextStyle(
-                  fontSize: 13,
-                  color: Colors.grey.shade600,
+              ]),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 14,
+                  ),
                 ),
-              ),
-            ],
+                SizedBox(height: 5),
+                Text(
+                  subtitle,
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: Colors.grey.shade600,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

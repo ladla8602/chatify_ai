@@ -1,23 +1,50 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:chatify_ai/constants/constants.dart';
-import 'package:chatify_ai/controllers/image_generator.dart';
-import 'package:chatify_ai/routes/app_routes.dart';
+import 'package:chatify_ai/controllers/image_gen_controller.dart';
+import 'package:chatify_ai/library/flutter_chat/lib/flutter_chat.dart';
 import 'package:chatify_ai/views/common/button_wigets.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:chatify_ai/widgets/floating_action_bubble.dart';
+import 'package:chatify_ai/widgets/not_found_widget.dart';
+import 'package:chatify_ai/widgets/typing_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
 
 import '../../widgets/drawer.dart';
 import '../common/wigets.dart';
-import 'image_history.dart';
 
-class ImageGenerateView extends StatelessWidget {
+class ImageGenerateView extends StatefulWidget {
   const ImageGenerateView({super.key});
+
+  @override
+  State<ImageGenerateView> createState() => _ImageGenerateViewState();
+}
+
+class _ImageGenerateViewState extends State<ImageGenerateView> {
+  late ImageGenController _imageGenController;
+  int _selectedChipIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _imageGenController = Get.find<ImageGenController>();
+    initializeImageGen();
+  }
+
+  initializeImageGen() {
+    _imageGenController
+      ..imageGenCommand.art = 'None'
+      ..imageGenCommand.lighting = 'None'
+      ..imageGenCommand.mood = 'None'
+      ..imageGenCommand.model = 'dall-e-2'
+      ..imageGenCommand.size = imageSizeOptionsDalle2.first
+      ..imageGenCommand.style = 'None';
+    _imageGenController.loadInitialMessages();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final ImageGeneratorController imageGeneratorController =
-        Get.put(ImageGeneratorController());
+    final ImageGenController imageGeneratorController = Get.find();
     final AudioPlayer audioPlayer = AudioPlayer();
     Future<void> playAudio(String path) async {
       try {
@@ -45,116 +72,230 @@ class ImageGenerateView extends StatelessWidget {
           );
         }),
         title: Text(
-          'Image Generate',
+          'image_generate'.tr,
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         actions: [GetPrimeWigets(), SizedBox(width: 16)],
       ),
       drawer: DrawerWigets(),
-      endDrawer: ImageGeneratedHistory(),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
+      endDrawer: Drawer(
+        width: 280,
+        child: SafeArea(
           child: Obx(() {
-            final selectedIndex = imageGeneratorController.isSelected.value;
-            final selectedItem =
-                imageGeneratorController.imageGenerate[selectedIndex];
-            playAudio(selectedItem['audioPath']);
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: List.generate(
-                    imageGeneratorController.imageGenerate.length,
-                    (index) {
-                      return GestureDetector(
-                        onTap: () {
-                          imageGeneratorController.changeSelected(index);
-                          print('Selected index: $index');
-                        },
-                        child: ImageGenerateWigets(
-                          title: imageGeneratorController.imageGenerate[index]
-                              ['title'],
-                          color: imageGeneratorController.imageGenerate[index]
-                              ['color'],
-                          isSelected:
-                              imageGeneratorController.isSelected == index,
-                          imagePath: imageGeneratorController
-                              .imageGenerate[index]['imagePath'],
-                          onClick: () {
-                            imageGeneratorController.changeSelected(index);
-                          },
-                        ),
-                      );
-                    },
-                  ),
-                ),
-                SizedBox(height: 25),
-                Padding(
-                  padding: const EdgeInsets.only(left: 8),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Prompt",
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                      ),
-                      InkWell(
-                          onTap: () {
-                            Get.snackbar(
-                              'information',
-                              "Swipe Right to See Image History",
-                              snackPosition: SnackPosition.BOTTOM,
-                              backgroundColor:
-                                  Theme.of(context).colorScheme.surface,
-                              duration: Duration(seconds: 3),
-                            );
-                          },
-                          child: Icon(
-                            HugeIcons.strokeRoundedInformationCircle,
-                            color: Theme.of(context).primaryColor,
-                          ))
-                    ],
-                  ),
-                ),
-                SizedBox(height: 12),
-                TextFormField(
-                  maxLines: 6,
-                  maxLength: 460,
-                  style:
-                      TextStyle(color: Theme.of(context).colorScheme.onSurface),
-                  decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(16),
-                        borderSide: BorderSide(color: Colors.grey.shade300)),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(16),
-                        borderSide: BorderSide(
-                            color: Theme.of(context).primaryColor, width: 1.5)),
-                    hintText: "Enter your prompt...",
-                    hintStyle: TextStyle(fontSize: 14),
-                  ),
-                ),
-                SizedBox(height: 20),
-              ],
+            return Chat(
+              messages: _imageGenController.messages.toList(),
+              onSendPressed: (v) {},
+              user: _imageGenController.user,
+              showUserAvatars: false,
+              showUserNames: true,
+              emptyState: _imageGenController.isDataLoadingForFirstTime.value
+                  ? const Center(child: TypingLoaderWidget())
+                  : NotFoundWidget(
+                      title: 'no_image_generate'.tr,
+                      buttonText: 'generate'.tr,
+                      onButtonClick: () =>
+                          Scaffold.of(context).closeEndDrawer(),
+                    ),
+              customBottomWidget: const SizedBox.shrink(),
+              onEndReached: _imageGenController.loadInitialMessages,
+              typingIndicatorOptions: TypingIndicatorOptions(
+                typingUsers: _imageGenController.typingUsers,
+                typingMode: TypingIndicatorMode.image,
+              ),
             );
           }),
         ),
       ),
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          SingleChildScrollView(
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
+              child: Obx(() {
+                final selectedIndex = imageGeneratorController.isSelected.value;
+                final selectedItem =
+                    imageGeneratorController.imageGenerate[selectedIndex];
+
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'art_style'.tr,
+                      style: TextStyle(
+                          fontSize: 14,
+                          color: Theme.of(context).primaryColor,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 12),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: List.generate(
+                        imageGeneratorController.imageGenerate.length,
+                        (index) {
+                          return GestureDetector(
+                            onTap: () {
+                              imageGeneratorController.changeSelected(index);
+                              print('Selected index: $index');
+                            },
+                            child: ImageGenerateWigets(
+                              title: imageGeneratorController
+                                  .imageGenerate[index]['title'],
+                              color: imageGeneratorController
+                                  .imageGenerate[index]['color'],
+                              isSelected:
+                                  imageGeneratorController.isSelected == index,
+                              imagePath: imageGeneratorController
+                                  .imageGenerate[index]['imagePath'],
+                              onClick: () {
+                                imageGeneratorController.changeSelected(index);
+                              },
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                    SizedBox(height: 25),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "prompt".tr,
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                          ),
+                          InkWell(
+                              onTap: () {
+                                Get.snackbar(
+                                  'information',
+                                  "Swipe Right to See Image History",
+                                  snackPosition: SnackPosition.BOTTOM,
+                                  backgroundColor:
+                                      Theme.of(context).colorScheme.surface,
+                                  duration: Duration(seconds: 3),
+                                );
+                              },
+                              child: Icon(
+                                HugeIcons.strokeRoundedInformationCircle,
+                                color: Theme.of(context).primaryColor,
+                              ))
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 12),
+                    TextFormField(
+                      maxLines: 6,
+                      maxLength: 460,
+                      onChanged: (value) => imageGeneratorController
+                          .imageGenCommand.prompt = value,
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.onSurface),
+                      decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide:
+                                BorderSide(color: Colors.grey.shade300)),
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: BorderSide(
+                                color: Theme.of(context).primaryColor,
+                                width: 1.5)),
+                        hintText: "enter_prompt".tr,
+                        hintStyle: TextStyle(fontSize: 14),
+                      ),
+                    ),
+                    SizedBox(height: 12),
+                    Text(
+                      'image_size'.tr,
+                      style: TextStyle(
+                          fontSize: 14,
+                          color: Theme.of(context).primaryColor,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 12),
+                    SizedBox(
+                      height: 45,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 14),
+                            child: ChoiceChip(
+                              backgroundColor: Colors.white,
+                              selectedColor: Theme.of(context).primaryColor,
+                              labelStyle: TextStyle(
+                                  color: _selectedChipIndex == index
+                                      ? Colors.white
+                                      : Theme.of(context).primaryColor,
+                                  fontSize: 12),
+                              showCheckmark: false,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                  side: BorderSide(
+                                      color: _selectedChipIndex == index
+                                          ? Theme.of(context).primaryColor
+                                          : Colors.grey.shade300,
+                                      width: 1.5)),
+                              label: Row(
+                                children: [
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    imageSizeOptionsDalle2[index].toString(),
+                                    style: const TextStyle(),
+                                  ),
+                                ],
+                              ),
+                              selected: _selectedChipIndex == index,
+                              onSelected: (bool selected) {
+                                setState(() {
+                                  _selectedChipIndex = selected ? index : 0;
+                                });
+                              },
+                            ),
+                          );
+                        },
+                        itemCount: imageSizeOptionsDalle2.length,
+                      ),
+                    ),
+                  ],
+                );
+              }),
+            ),
+          ),
+          Builder(
+            builder: (BuildContext context) => FloatingMenuPanel(
+              positionTop: MediaQuery.of(context).size.height * 0.6,
+              positionRight: -10,
+              size: 50,
+              panelOpenOffset: -10,
+              backgroundColor: Theme.of(context).colorScheme.primary,
+              panelIcon: Scaffold.of(context).isEndDrawerOpen
+                  ? Icons.chevron_right
+                  : Icons.chevron_left,
+              onPressed: (index) {},
+              onMainPressed: () {
+                Scaffold.of(context).openEndDrawer();
+              },
+              buttons: [],
+            ),
+          )
+        ],
+      ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(14),
         child: ElevatedButtonWigets(
-          text: 'Generate',
+          text: 'generate'.tr,
           backgroundColor: Theme.of(context).primaryColor,
           foregroundColor: Colors.white,
           onClick: () {
+            _imageGenController.handleSendPressed();
             showDialog(
               barrierDismissible: false,
               context: context,
@@ -178,7 +319,7 @@ class ImageGenerateView extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        'Image Generate',
+                        'image_generate'.tr,
                         style: TextStyle(fontSize: 17),
                       ),
                       SizedBox(height: 20),
@@ -201,7 +342,7 @@ class ImageGenerateView extends StatelessWidget {
                       SizedBox(height: 20),
                       ElevatedButtonWigets(
                         backgroundColor: Theme.of(context).primaryColor,
-                        text: 'Download',
+                        text: 'download'.tr,
                         onClick: () {},
                       ),
                     ],
@@ -261,7 +402,9 @@ class ImageGenerateWigets extends StatelessWidget {
         Text(
           title,
           style: TextStyle(
-            color: isSelected ? Theme.of(context).primaryColor : Colors.black,
+            color: isSelected
+                ? Theme.of(context).primaryColor
+                : Theme.of(context).colorScheme.onSurface,
             fontSize: 14,
             fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
           ),

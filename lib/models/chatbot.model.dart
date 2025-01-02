@@ -4,23 +4,23 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ChatBot {
   final String botId;
-  final String botName;
-  final String botAvatar;
-  final String botRole;
-  final String botMessage;
-  final String botPrompt;
-  final String botStatus;
-  final DateTime createdAt;
+  final String? botName;
+  final String? botAvatar;
+  final String? botRole;
+  final String? botMessage;
+  final String? botPrompt;
+  final String? botStatus;
+  final DateTime? createdAt;
 
   ChatBot({
     required this.botId,
     required this.botName,
-    required this.botAvatar,
-    required this.botRole,
-    required this.botMessage,
-    required this.botPrompt,
-    required this.botStatus,
-    required this.createdAt,
+    this.botAvatar,
+    this.botRole,
+    this.botMessage,
+    this.botPrompt,
+    this.botStatus,
+    this.createdAt,
   });
 
   // Create a copy of the object with updated fields
@@ -49,13 +49,14 @@ class ChatBot {
   // Convert to Map
   Map<String, dynamic> toMap() {
     return {
+      'botId': botId,
       'botName': botName,
       'botAvatar': botAvatar,
       'botRole': botRole,
       'botMessage': botMessage,
       'botPrompt': botPrompt,
       'botStatus': botStatus,
-      'createdAt': createdAt.millisecondsSinceEpoch,
+      'createdAt': createdAt?.millisecondsSinceEpoch,
     };
   }
 
@@ -88,7 +89,7 @@ class ChatBot {
       'botMessage': botMessage,
       'botPrompt': botPrompt,
       'botStatus': botStatus,
-      'createdAt': Timestamp.fromDate(createdAt),
+      'createdAt': createdAt != null ? Timestamp.fromDate(createdAt!) : null,
     };
   }
 

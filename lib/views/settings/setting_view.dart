@@ -1,6 +1,7 @@
 import 'package:chatify_ai/constants/constants.dart';
 import 'package:chatify_ai/controllers/auth_controller.dart';
 import 'package:chatify_ai/controllers/common_controller.dart';
+import 'package:chatify_ai/controllers/language_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
@@ -17,6 +18,8 @@ class SettingView extends StatelessWidget {
     final CommonController commonController = Get.put(CommonController());
     final AuthController authController = Get.find<AuthController>();
     final ThemeController themeController = Get.put(ThemeController());
+    final LanguageController languageController =
+        Get.find<LanguageController>();
     return Scaffold(
       appBar: AppBar(
         surfaceTintColor: Colors.white,
@@ -32,8 +35,8 @@ class SettingView extends StatelessWidget {
             },
           );
         }),
-        title: const Text(
-          'Settings',
+        title: Text(
+          'settings'.tr,
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
         ),
         centerTitle: true,
@@ -44,28 +47,28 @@ class SettingView extends StatelessWidget {
         children: [
           BuildTileWigets(
             icon: HugeIcons.strokeRoundedBubbleChat,
-            title: 'Custom Instructions',
+            title: 'custom_instruction'.tr,
             onTap: () {
               Get.toNamed(AppRoutes.customInstruction);
             },
           ),
           BuildTileWigets(
             icon: HugeIcons.strokeRoundedFilterHorizontal,
-            title: 'Data Controls',
+            title: 'data_controls'.tr,
             onTap: () {
               Get.toNamed(AppRoutes.dataControls);
             },
           ),
           BuildTileWigets(
             icon: HugeIcons.strokeRoundedCreditCard,
-            title: 'Payment Methods',
+            title: 'payment_methods'.tr,
             onTap: () {
               Get.toNamed(AppRoutes.paymentMethods);
             },
           ),
           BuildTileWigets(
             icon: HugeIcons.strokeRoundedLink01,
-            title: 'Linked Accounts',
+            title: 'linked_accounts'.tr,
             onTap: () {
               Get.toNamed(AppRoutes.linkedAccount);
             },
@@ -77,7 +80,7 @@ class SettingView extends StatelessWidget {
             child: Row(
               children: [
                 Text(
-                  'General',
+                  'general'.tr,
                   style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
                 ),
                 SizedBox(width: 10),
@@ -87,34 +90,36 @@ class SettingView extends StatelessWidget {
           ),
           BuildTileWigets(
             icon: HugeIcons.strokeRoundedUser,
-            title: 'Personal Info',
+            title: 'personal_info'.tr,
             onTap: () {
               Get.toNamed(AppRoutes.personalInfo);
             },
           ),
           BuildTileWigets(
             icon: HugeIcons.strokeRoundedSecurity,
-            title: 'Security',
+            title: 'security'.tr,
             onTap: () {
               Get.toNamed(AppRoutes.security);
             },
           ),
-          BuildTileWigets(
-            icon: HugeIcons.strokeRoundedGlobe02,
-            title: 'Language',
-            trailing: const Text(
-              'English (US)',
-              style: TextStyle(color: Colors.grey),
+          Obx(
+            () => BuildTileWigets(
+              icon: HugeIcons.strokeRoundedGlobe02,
+              title: 'language'.tr,
+              trailing: Text(
+                languageController.selectedLanguage.value,
+                style: TextStyle(color: Colors.grey),
+              ),
+              onTap: () {
+                Get.toNamed(AppRoutes.languaeview);
+              },
             ),
-            onTap: () {
-              Get.toNamed(AppRoutes.languaeview);
-            },
           ),
           Obx(
             () {
               return BuildTileWigets(
                 icon: HugeIcons.strokeRoundedDarkMode,
-                title: 'Dark Mode',
+                title: 'dark_mode'.tr,
                 trailing: CustomSwitchButtonWigets(
                   isSwitched: themeController.themeMode.value == ThemeMode.dark,
                   onClick: () => themeController.toggleTheme(),
@@ -129,7 +134,7 @@ class SettingView extends StatelessWidget {
             child: Row(
               children: [
                 Text(
-                  'About',
+                  'about'.tr,
                   style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
                 ),
                 SizedBox(width: 10),
@@ -139,30 +144,30 @@ class SettingView extends StatelessWidget {
           ),
           BuildTileWigets(
             icon: HugeIcons.strokeRoundedHelpCircle,
-            title: 'Help Center',
+            title: 'help_center'.tr,
             onTap: () {},
           ),
           BuildTileWigets(
             icon: HugeIcons.strokeRoundedTask01,
-            title: 'Terms of Use',
+            title: 'terms_of_use'.tr,
             onTap: () {},
           ),
           BuildTileWigets(
             icon: HugeIcons.strokeRoundedSquareLock01,
-            title: 'Privacy Policy',
+            title: 'privacy_policy'.tr,
             onTap: () {},
           ),
           BuildTileWigets(
             icon: HugeIcons.strokeRoundedInformationCircle,
-            title: 'About Chatify',
+            title: 'about_chatify'.tr,
             onTap: () {},
           ),
           ListTile(
             contentPadding: EdgeInsets.all(0),
             leading:
                 const Icon(HugeIcons.strokeRoundedLogout01, color: Colors.red),
-            title: const Text(
-              'Logout',
+            title: Text(
+              'logout'.tr,
               style: TextStyle(color: Colors.red),
             ),
             // onTap: () => authController.logout(),
@@ -183,8 +188,8 @@ class SettingView extends StatelessWidget {
                               BoxDecoration(color: Colors.grey.shade400),
                         ),
                         const SizedBox(height: 16),
-                        const Text(
-                          'Logout',
+                        Text(
+                          'logout'.tr,
                           style: TextStyle(
                               color: Colors.red,
                               fontWeight: FontWeight.bold,
@@ -195,7 +200,7 @@ class SettingView extends StatelessWidget {
                           color: Colors.grey.shade300,
                         ),
                         const SizedBox(height: 16),
-                        const Text('Are you sure you want to logout?'),
+                        Text('are_you_sure_logout'.tr),
                         const SizedBox(height: 16),
                         Row(
                           children: [
@@ -215,7 +220,7 @@ class SettingView extends StatelessWidget {
                                         .withOpacity(0.2),
                                   ),
                                   child: Text(
-                                    'Cancel',
+                                    'cancel'.tr,
                                     style: TextStyle(
                                         color: Theme.of(context).primaryColor),
                                   ),
@@ -236,8 +241,8 @@ class SettingView extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(30),
                                     color: Theme.of(context).primaryColor,
                                   ),
-                                  child: const Text(
-                                    'Yes,Logout',
+                                  child: Text(
+                                    'yes_logout'.tr,
                                     style: TextStyle(color: Colors.white),
                                   ),
                                 ),

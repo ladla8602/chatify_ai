@@ -41,7 +41,7 @@ Follow this doc - https://firebase.google.com/docs/flutter/setup?platform=androi
 
 ## 3. Firebase functions
 
-firebase emulators:start --import ./firebase-export-1735389641472PTCgSf --export-on-exit
+firebase emulators:start --import ./firebase-export-17353920669909mXqhx --export-on-exit
 
 firebase functions:delete myFunction
 
@@ -88,6 +88,7 @@ chatRooms/{chatRoomId}
 {
   userId: string,       // Reference to user who owns this chat
   botId: string,        // Identifier for the AI bot
+  botName: string,
   createdAt: timestamp,
   lastMessage: {
     content: string,
@@ -115,6 +116,23 @@ chatRooms/{chatRoomId}/messages/{messageId}
     tokens: number?,    // For tracking token usage
     model: string?,     // AI model used
     error: string?      // Error message if status is 'error'
+  }
+}
+```
+
+`generatedImages` Collection
+
+```js
+generatedImages/{generatedImageId}
+{
+  userId: string,
+  imgUrl: string,
+  createdAt: timestamp,
+  metadata: {
+    prompt: string,
+    model: string,
+    size: string,
+    quality: string,
   }
 }
 ```

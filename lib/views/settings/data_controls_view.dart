@@ -12,8 +12,8 @@ class DataControlsView extends StatelessWidget {
     final CommonController commonController = Get.put(CommonController());
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Data Controls',
+        title: Text(
+          'data_controls'.tr,
           style: TextStyle(fontSize: 20),
         ),
         centerTitle: true,

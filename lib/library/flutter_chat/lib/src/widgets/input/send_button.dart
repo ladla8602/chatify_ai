@@ -8,10 +8,12 @@ class SendButton extends StatelessWidget {
     super.key,
     required this.onPressed,
     this.iconColor,
+    this.icon,
     this.padding = EdgeInsets.zero,
   });
 
   final Color? iconColor;
+  final IconData? icon;
 
   /// Callback for send button tap event.
   final VoidCallback? onPressed;
@@ -26,9 +28,9 @@ class SendButton extends StatelessWidget {
           child: IconButton(
             enableFeedback: true,
             icon: Icon(
-              Icons.send,
+              icon ?? Icons.send,
               size: 22,
-              color: Colors.white.withOpacity(0.8),
+              color: Colors.white,
             ),
             onPressed: onPressed,
             padding: padding,

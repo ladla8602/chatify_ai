@@ -1,3 +1,5 @@
+import 'package:chatify_ai/bindings/dashboard_bindings.dart.dart';
+import 'package:chatify_ai/controllers/chatbot_controller.dart';
 import 'package:chatify_ai/views/history/history_view.dart';
 import 'package:chatify_ai/views/linked_account/linked_accounts.dart';
 import 'package:chatify_ai/views/personal_info/persnol_info.dart';
@@ -68,7 +70,7 @@ class AppRoutes {
     GetPage(name: paymentMethods, page: () => PaymentMethodsView()),
     GetPage(name: addPaymentMethods, page: () => AddPaymentView()),
     GetPage(name: languaeview, page: () => LanguageView()),
-    GetPage(name: dashboard, page: () => DashboardView()),
+    GetPage(name: dashboard, page: () => DashboardView(), binding: DashboardBindings()),
     GetPage(name: history, page: () => HistoryView()),
     GetPage(name: linkedAccount, page: () => Linked_Account()),
     GetPage(name: personalInfo, page: () => PersonalInfo()),

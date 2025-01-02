@@ -1,3 +1,4 @@
+import 'package:chatify_ai/controllers/language_controller.dart';
 import 'package:chatify_ai/firebase_options.dart';
 import 'package:chatify_ai/lang/app_translations.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -19,6 +20,7 @@ Future<void> main() async {
   );
   await GetStorage.init();
   Get.put(AuthController());
+  Get.put(ThemeController());
   runApp(MyApp());
 }
 
@@ -29,7 +31,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     // Get AuthController to determine the initial route
     final AuthController authController = Get.find<AuthController>();
-    final ThemeController themeController = Get.put(ThemeController());
+    final ThemeController themeController = Get.find<ThemeController>();
+    final LanguageController languageController = Get.put(LanguageController());
 
     return Obx(
       () => GetMaterialApp(
@@ -37,18 +40,26 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         translationsKeys: AppTranslations.translationsKeys,
         locale: Get.deviceLocale, // Set default language
+        // locale: languageController.getCurrentLanguage()?.locale,
         fallbackLocale: Locale('en', 'US'), // Fallback language
-        supportedLocales: [
+        supportedLocales: const [
           Locale('en', 'US'),
+          Locale('fr', 'FR'),
+          Locale('ja', 'JP'),
+          Locale('es', 'ES'),
+          Locale('ar', 'AR'),
+          Locale('ru', 'RU'),
         ],
 
         localizationsDelegates: [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate
         ],
         initialBinding: InitialBindings(),
         initialRoute: authController.initialRoute,
         getPages: AppRoutes.pages,
+
         theme: lightTheme,
         darkTheme: darkTheme,
         themeMode: themeController.themeMode.value,
