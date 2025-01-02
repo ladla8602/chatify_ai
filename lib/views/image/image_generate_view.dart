@@ -1,20 +1,48 @@
 import 'package:audioplayers/audioplayers.dart';
-import 'package:chatify_ai/controllers/image_generator.dart';
+import 'package:chatify_ai/constants/constants.dart';
+import 'package:chatify_ai/controllers/image_gen_controller.dart';
+import 'package:chatify_ai/library/flutter_chat/lib/flutter_chat.dart';
 import 'package:chatify_ai/views/common/button_wigets.dart';
 import 'package:chatify_ai/widgets/floating_action_bubble.dart';
+import 'package:chatify_ai/widgets/not_found_widget.dart';
+import 'package:chatify_ai/widgets/typing_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
 
 import '../../widgets/drawer.dart';
 import '../common/wigets.dart';
-import 'image_history.dart';
 
-class ImageGenerateView extends StatelessWidget {
+class ImageGenerateView extends StatefulWidget {
   const ImageGenerateView({super.key});
+
+  @override
+  State<ImageGenerateView> createState() => _ImageGenerateViewState();
+}
+
+class _ImageGenerateViewState extends State<ImageGenerateView> {
+  late ImageGenController _imageGenController;
+  @override
+  void initState() {
+    super.initState();
+    _imageGenController = Get.find<ImageGenController>();
+    initializeImageGen();
+  }
+
+  initializeImageGen() {
+    _imageGenController
+      ..imageGenCommand.art = 'None'
+      ..imageGenCommand.lighting = 'None'
+      ..imageGenCommand.mood = 'None'
+      ..imageGenCommand.model = 'dall-e-2'
+      ..imageGenCommand.size = imageSizeOptionsDalle2.first
+      ..imageGenCommand.style = 'None';
+    _imageGenController.loadInitialMessages();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final ImageGeneratorController imageGeneratorController = Get.put(ImageGeneratorController());
+    final ImageGenController imageGeneratorController = Get.find();
     final AudioPlayer audioPlayer = AudioPlayer();
     Future<void> playAudio(String path) async {
       try {
@@ -48,7 +76,33 @@ class ImageGenerateView extends StatelessWidget {
         actions: [GetPrimeWigets(), SizedBox(width: 16)],
       ),
       drawer: DrawerWigets(),
-      endDrawer: ImageGeneratedHistory(),
+      endDrawer: Drawer(
+        width: 280,
+        child: SafeArea(
+          child: Obx(() {
+            return Chat(
+              messages: _imageGenController.messages.toList(),
+              onSendPressed: (v) {},
+              user: _imageGenController.user,
+              showUserAvatars: false,
+              showUserNames: true,
+              emptyState: _imageGenController.isDataLoadingForFirstTime.value
+                  ? const Center(child: TypingLoaderWidget())
+                  : NotFoundWidget(
+                      title: 'no_image_generate'.tr,
+                      buttonText: 'generate'.tr,
+                      onButtonClick: () => Scaffold.of(context).closeEndDrawer(),
+                    ),
+              customBottomWidget: const SizedBox.shrink(),
+              onEndReached: _imageGenController.loadInitialMessages,
+              typingIndicatorOptions: TypingIndicatorOptions(
+                typingUsers: _imageGenController.typingUsers,
+                typingMode: TypingIndicatorMode.image,
+              ),
+            );
+          }),
+        ),
+      ),
       body: Stack(
         fit: StackFit.expand,
         children: [
@@ -58,7 +112,7 @@ class ImageGenerateView extends StatelessWidget {
               child: Obx(() {
                 final selectedIndex = imageGeneratorController.isSelected.value;
                 final selectedItem = imageGeneratorController.imageGenerate[selectedIndex];
-                playAudio(selectedItem['audioPath']);
+
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -121,6 +175,7 @@ class ImageGenerateView extends StatelessWidget {
                     TextFormField(
                       maxLines: 6,
                       maxLength: 460,
+                      onChanged: (value) => imageGeneratorController.imageGenCommand.prompt = value,
                       style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
                       decoration: InputDecoration(
                         enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide(color: Colors.grey.shade300)),
@@ -160,6 +215,7 @@ class ImageGenerateView extends StatelessWidget {
           backgroundColor: Theme.of(context).primaryColor,
           foregroundColor: Colors.white,
           onClick: () {
+            _imageGenController.handleSendPressed();
             showDialog(
               barrierDismissible: false,
               context: context,

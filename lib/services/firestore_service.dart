@@ -142,6 +142,24 @@ class FirestoreService {
       type: "text",
     );
   }
+
+  // Image Generation
+  Future<QuerySnapshot<Map<String, dynamic>>> fetchImageMessages([
+    DocumentSnapshot? startAfter,
+  ]) {
+    if (currentUser == null) {
+      throw UnauthorizedException();
+    }
+    final CollectionReference<Map<String, dynamic>> collection = _firestore.collection(FirebasePaths.generatedImageName);
+
+    Query<Map<String, dynamic>> query = collection.where("userId", isEqualTo: currentUser!.uid);
+
+    if (startAfter != null) {
+      query = query.startAfterDocument(startAfter);
+    }
+
+    return query.limit(10).get();
+  }
 }
 
 class UnauthorizedException implements Exception {

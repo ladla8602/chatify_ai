@@ -56,7 +56,7 @@ class _ChatContentViewState extends State<ChatContentView> {
   void dispose() {
     _focusNode.dispose();
     _chatController.clearChatContext();
-    Get.delete<ChatController>();
+    // Get.delete<ChatController>();
     super.dispose();
   }
 
