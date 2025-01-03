@@ -6,6 +6,7 @@ import 'package:chatify_ai/views/personal_info/persnol_info.dart';
 import 'package:chatify_ai/views/security/security_view.dart';
 import 'package:get/get.dart';
 
+import '../views/ai_podcast/podcast_view.dart';
 import '../views/audio/audio_view.dart';
 import '../views/auth/forgot_password/create_new_password_view.dart';
 import '../views/auth/forgot_password/forgot_password_view.dart';
@@ -54,6 +55,7 @@ class AppRoutes {
   static const imageView = '/imageView';
   static const audioView = '/audioView';
   static const commonpageView = '/commonpageView';
+  static const postcastview = '/postcastview';
 
   static final pages = [
     GetPage(name: login, page: () => LoginView()),
@@ -72,6 +74,7 @@ class AppRoutes {
     GetPage(name: paymentMethods, page: () => PaymentMethodsView()),
     GetPage(name: addPaymentMethods, page: () => AddPaymentView()),
     GetPage(name: languaeview, page: () => LanguageView()),
+    GetPage(name: postcastview, page: () => PodcastResearchView()),
     GetPage(
         name: dashboard,
         page: () => DashboardView(),

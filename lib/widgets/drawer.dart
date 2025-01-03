@@ -247,6 +247,18 @@ class DrawerWigets extends StatelessWidget {
               Get.to(AppRoutes.setting, preventDuplicates: false);
             },
           ),
+          ListTile(
+            leading: Icon(HugeIcons.strokeRoundedAiInnovation01, size: 18),
+            title: Text(
+              'Podcast AI Researcher',
+              style: TextStyle(
+                fontSize: 15,
+              ),
+            ),
+            onTap: () {
+              Get.toNamed(AppRoutes.postcastview);
+            },
+          ),
         ],
       ),
     );
