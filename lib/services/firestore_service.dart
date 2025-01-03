@@ -1,8 +1,14 @@
+import 'dart:io';
+
+import 'package:http/http.dart' as http;
 import 'package:chatify_ai/constants/constants.dart';
 import 'package:chatify_ai/models/chat_bot_command.model.dart';
 import 'package:chatify_ai/models/chat_message.model.dart';
+import 'package:chatify_ai/models/image_message.model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:path_provider/path_provider.dart';
 
 class FirestoreService {
   final FirebaseFirestore _firestore;
@@ -159,6 +165,34 @@ class FirestoreService {
     }
 
     return query.limit(10).get();
+  }
+
+  Future<void> storeImageMessage(ImageMessage imageMessage) async {
+    if (currentUser == null) {
+      throw UnauthorizedException();
+    }
+
+    // Upload to firebase storage
+    try {
+      final response = await http.get(Uri.parse(imageMessage.imgUrl));
+      final tempDir = await getTemporaryDirectory();
+      final tempFile = File('${tempDir.path}/temp_image.png');
+      await tempFile.writeAsBytes(response.bodyBytes);
+
+      final storageRef = FirebaseStorage.instance.ref();
+      final imageRef = storageRef.child('ai-images/${DateTime.now().millisecondsSinceEpoch}.png');
+      await imageRef.putFile(tempFile);
+      imageMessage.imgUrl = await imageRef.getDownloadURL();
+    } catch (e) {
+      throw FirestoreException('Error uploading image: ${e.toString()}');
+    }
+
+    // Store in firestore
+    try {
+      await _firestore.collection(FirebasePaths.generatedImageName).add(imageMessage.toFirestore());
+    } catch (e) {
+      throw FirestoreException('Error storing image message: $e');
+    }
   }
 }
 

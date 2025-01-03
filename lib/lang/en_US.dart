@@ -2,10 +2,8 @@ final Map<String, String> enUS = {
   "app_name": "Chatify AI",
   "get_start": "Get Start",
   "typewriter_animation_first": "Let's dive in into your account.",
-  "typewriter_animation_second":
-      "Turn ideas into reality with AI-powered magic and creativity.",
-  "typewriter_animation_third":
-      "Unleash creativity with AI for effortless content mastery.",
+  "typewriter_animation_second": "Turn ideas into reality with AI-powered magic and creativity.",
+  "typewriter_animation_third": "Unleash creativity with AI for effortless content mastery.",
   "create_google_account": "Create your account",
   "already_account": "Already have an account? ",
   "login_with_email": "Login with email",
@@ -52,4 +50,5 @@ final Map<String, String> enUS = {
   "logout": "Logout",
   "ask_anything": "Ask anything",
   "language": "Language",
+  "prompt_help": "e.g. Generate image of cat playing with football",
 };

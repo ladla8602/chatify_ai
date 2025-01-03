@@ -61,14 +61,11 @@ final lightTheme = ThemeData.light().copyWith(
     fillColor: Colors.grey[200], // Input field background
     filled: true,
     focusedBorder: OutlineInputBorder(
-      borderSide:
-          BorderSide(color: Color(0xff4CAF50)), // Border color when focused
+      borderSide: BorderSide(color: Color(0xff4CAF50)), // Border color when focused
     ),
     enabledBorder: OutlineInputBorder(
       borderSide: BorderSide(color: Colors.grey), // Border color when enabled
     ),
-    labelStyle: TextStyle(color: Colors.black), // Label text color
-    hintStyle: TextStyle(color: Colors.grey), // Hint text color
   ),
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
     backgroundColor: Colors.white,
@@ -134,8 +131,6 @@ final darkTheme = ThemeData.dark().copyWith(
     enabledBorder: OutlineInputBorder(
       borderSide: BorderSide(color: Colors.grey), // Border color when enabled
     ),
-    labelStyle: TextStyle(color: Colors.white70), // Label text color
-    hintStyle: TextStyle(color: Colors.grey), // Hint text color
   ),
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
     backgroundColor: Colors.black,

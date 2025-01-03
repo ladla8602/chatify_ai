@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class ImageMessage {
   final String? id;
   final String userId;
-  final String imgUrl;
+  String imgUrl;
   final DateTime createdAt;
   final ImageMetadata? metadata;
 

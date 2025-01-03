@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:chatify_ai/models/image_gen_command.dart';
 import 'package:chatify_ai/models/image_message.model.dart';
 import 'package:chatify_ai/services/firebase_functions_service.dart';
@@ -7,8 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/state_manager.dart';
-import 'package:chatify_ai/library/flutter_chat/lib/src/types/types.dart'
-    as types;
+import 'package:chatify_ai/library/flutter_chat/lib/src/types/types.dart' as types;
 
 import '../constants/constants.dart';
 
@@ -21,8 +22,7 @@ class ImageGenController extends GetxController {
     FirestoreService? firestoreService,
     FirebaseFunctionsService? firebaseFunctionsService,
   })  : _firestoreService = firestoreService ?? FirestoreService(),
-        _firebaseFunctionsService =
-            firebaseFunctionsService ?? FirebaseFunctionsService();
+        _firebaseFunctionsService = firebaseFunctionsService ?? FirebaseFunctionsService();
 
   // UI Controllers
   final messageController = TextEditingController();
@@ -31,39 +31,22 @@ class ImageGenController extends GetxController {
   final messages = <types.Message>[].obs;
   final typingUsers = <types.User>[].obs;
   final isDataLoadingForFirstTime = true.obs;
+  final isGenerating = false.obs;
   final user = types.User(id: FirebaseAuth.instance.currentUser!.uid);
   late GlobalKey<FormState> imageGenFormKey;
   ImageGenCommand imageGenCommand = ImageGenCommand();
   DocumentSnapshot? lastDocument;
+  final RxBool isDrawerOpen = false.obs;
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
-  List<Map<String, dynamic>> imageGenerate = [
-    {
-      'title': 'anime'.tr,
-      'color': ColorConstant.primaryColor,
-      'imagePath':
-          'https://img.freepik.com/free-photo/woman-with-bird-her-back-forest_23-2151835204.jpg?uid=R118908268&ga=GA1.1.1519694566.1696227085&semt=ais_hybrid',
-      'audioPath': 'voices/anime.mp3',
-    },
-    {
-      'title': 'low_poly'.tr,
-      'color': ColorConstant.primaryColor,
-      'imagePath':
-          'https://img.freepik.com/free-photo/3d-portrait-people_23-2150793921.jpg?uid=R118908268&ga=GA1.1.1519694566.1696227085&semt=ais_hybrid',
-      'audioPath': 'voices/loy-poly.mp3',
-    },
-    {
-      'title': 'fantastic'.tr,
-      'color': ColorConstant.primaryColor,
-      'imagePath':
-          'https://img.freepik.com/premium-photo/astral-ambassador-superhuman-diplomat-other-realms_839035-556669.jpg?uid=R118908268&ga=GA1.1.1519694566.1696227085&semt=ais_hybrid',
-      'audioPath': 'voices/Fantastic.mp3',
+  void toggleDrawer() {
+    if (scaffoldKey.currentState?.isEndDrawerOpen ?? false) {
+      Get.back();
+      isDrawerOpen.value = false;
+    } else {
+      scaffoldKey.currentState?.openEndDrawer();
+      isDrawerOpen.value = true;
     }
-  ];
-
-  var isSelected = 0.obs;
-
-  void changeSelected(int index) {
-    isSelected.value = index;
   }
 
   Future<void> loadInitialMessages() async {
@@ -86,13 +69,10 @@ class ImageGenController extends GetxController {
   }
 
   Future<QuerySnapshot<Map<String, dynamic>>> _fetchMessages() {
-    return lastDocument == null
-        ? _firestoreService.fetchImageMessages()
-        : _firestoreService.fetchImageMessages(lastDocument);
+    return lastDocument == null ? _firestoreService.fetchImageMessages() : _firestoreService.fetchImageMessages(lastDocument);
   }
 
-  List<types.Message> _convertFirestoreToMessages(
-      List<QueryDocumentSnapshot<Map<String, dynamic>>> docs) {
+  List<types.Message> _convertFirestoreToMessages(List<QueryDocumentSnapshot<Map<String, dynamic>>> docs) {
     return docs.expand((doc) {
       final message = ImageMessage.fromFirestore(doc);
       return _createMessagesFromChatMessage(message);
@@ -110,8 +90,7 @@ class ImageGenController extends GetxController {
   types.Message _createImageMessage(ImageMessage message) {
     return types.ImageMessage(
       author: user,
-      createdAt:
-          DateTime.parse(message.createdAt.toString()).millisecondsSinceEpoch,
+      createdAt: DateTime.parse(message.createdAt.toString()).millisecondsSinceEpoch,
       id: message.id.toString(),
       name: 'AI Generated Image',
       size: 1024,
@@ -122,6 +101,27 @@ class ImageGenController extends GetxController {
   }
 
   void handleSendPressed() {
-    //TODO: Implement api call here to get generated image
+    isGenerating.value = true;
+    imageGenCommand.style = 'natural';
+    _firebaseFunctionsService.generateAIImage(imageGenCommand).then((value) {
+      final imageMessage = ImageMessage(
+        userId: FirebaseAuth.instance.currentUser!.uid,
+        imgUrl: value,
+        createdAt: DateTime.now(),
+        metadata: ImageMetadata(
+          prompt: imageGenCommand.prompt!,
+          model: imageGenCommand.model!,
+          size: imageGenCommand.size!,
+          quality: imageGenCommand.quality!,
+        ),
+      );
+      messages.insert(0, _createImageMessage(imageMessage));
+      isGenerating.value = false;
+      toggleDrawer();
+      unawaited(_firestoreService.storeImageMessage(imageMessage));
+    }).catchError((e) {
+      isGenerating.value = false;
+      Get.snackbar('Error', e.toString());
+    });
   }
 }

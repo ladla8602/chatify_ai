@@ -14,8 +14,7 @@ class ChatView extends StatefulWidget {
   State<ChatView> createState() => _ChatViewState();
 }
 
-class _ChatViewState extends State<ChatView>
-    with SingleTickerProviderStateMixin {
+class _ChatViewState extends State<ChatView> with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<Offset> _offsetAnimation;
   ChatbotController controller = Get.find();
@@ -52,6 +51,12 @@ class _ChatViewState extends State<ChatView>
 
     // Start the animation
     _animationController.forward();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
   }
 
   @override
@@ -104,10 +109,8 @@ class _ChatViewState extends State<ChatView>
                     child: ListView.separated(
                       scrollDirection: Axis.horizontal,
                       itemCount: controller.chatbots.length,
-                      itemBuilder: (_, i) =>
-                          ChatbotCardWidget(chatbot: controller.chatbots[i]),
-                      separatorBuilder: (context, id) =>
-                          const SizedBox(width: 8),
+                      itemBuilder: (_, i) => ChatbotCardWidget(chatbot: controller.chatbots[i]),
+                      separatorBuilder: (context, id) => const SizedBox(width: 8),
                     ),
                   );
                 }),
@@ -143,8 +146,7 @@ class _ChatViewState extends State<ChatView>
                     SizedBox(height: 30),
                     Text(
                       "These are just a few examples of what I can do.",
-                      style:
-                          TextStyle(color: Colors.grey.shade600, fontSize: 13),
+                      style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
                     ),
                   ],
                 ),
@@ -165,8 +167,7 @@ class _ChatViewState extends State<ChatView>
                     GestureDetector(
                       onTap: () {
                         if (controller.chatbots.isNotEmpty) {
-                          Get.toNamed(AppRoutes.chatContentView,
-                              arguments: {"chatbot": controller.chatbots[0]});
+                          Get.toNamed(AppRoutes.chatContentView, arguments: {"chatbot": controller.chatbots[0]});
                         } else {
                           Get.snackbar("Error", "No chatbots available");
                         }
@@ -175,48 +176,31 @@ class _ChatViewState extends State<ChatView>
                         children: [
                           Flexible(
                             child: ConstrainedBox(
-                              constraints: const BoxConstraints(
-                                  maxHeight: 90, minHeight: 36),
+                              constraints: const BoxConstraints(maxHeight: 90, minHeight: 36),
                               child: TextFormField(
                                 enabled: false,
                                 keyboardType: TextInputType.multiline,
                                 decoration: InputDecoration(
                                   alignLabelWithHint: true,
-                                  floatingLabelBehavior:
-                                      FloatingLabelBehavior.never,
+                                  floatingLabelBehavior: FloatingLabelBehavior.never,
                                   filled: true,
-                                  fillColor:
-                                      Theme.of(context).colorScheme.surfaceDim,
-                                  contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 16, vertical: 8),
+                                  fillColor: Theme.of(context).colorScheme.surfaceDim,
+                                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                                   hintText: '${'ask_anything'.tr}...',
                                   border: OutlineInputBorder(
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(28)),
-                                    borderSide: BorderSide(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .primary),
+                                    borderRadius: const BorderRadius.all(Radius.circular(28)),
+                                    borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
                                   ),
                                   focusedBorder: OutlineInputBorder(
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(28)),
-                                    borderSide: BorderSide(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .surface),
+                                    borderRadius: const BorderRadius.all(Radius.circular(28)),
+                                    borderSide: BorderSide(color: Theme.of(context).colorScheme.surface),
                                   ),
                                   disabledBorder: OutlineInputBorder(
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(28)),
-                                    borderSide: BorderSide(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .primary),
+                                    borderRadius: const BorderRadius.all(Radius.circular(28)),
+                                    borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
                                   ),
                                   errorBorder: const OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(28)),
+                                    borderRadius: BorderRadius.all(Radius.circular(28)),
                                   ),
                                 ),
                               ),
@@ -250,8 +234,7 @@ class CapabilityCard extends StatelessWidget {
   final String subtitle;
   final VoidCallback? onTap;
 
-  const CapabilityCard(
-      {super.key, required this.title, required this.subtitle, this.onTap});
+  const CapabilityCard({super.key, required this.title, required this.subtitle, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -260,17 +243,14 @@ class CapabilityCard extends StatelessWidget {
       child: GestureDetector(
         onTap: onTap,
         child: Container(
-          decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surface,
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.25),
-                  spreadRadius: 2,
-                  blurRadius: 4,
-                  offset: const Offset(0, 2),
-                ),
-              ]),
+          decoration: BoxDecoration(color: Theme.of(context).colorScheme.surface, borderRadius: BorderRadius.circular(10), boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.25),
+              spreadRadius: 2,
+              blurRadius: 4,
+              offset: const Offset(0, 2),
+            ),
+          ]),
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(

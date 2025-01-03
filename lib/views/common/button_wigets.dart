@@ -8,12 +8,7 @@ class CommonElevatedButtonWidget extends StatelessWidget {
   final bool isLoading;
   final VoidCallback onClick;
   const CommonElevatedButtonWidget(
-      {super.key,
-      this.imagePath,
-      required this.text,
-      required this.onClick,
-      this.color = const Color(0xff6298F0),
-      this.isLoading = false});
+      {super.key, this.imagePath, required this.text, required this.onClick, this.color = const Color(0xff6298F0), this.isLoading = false});
 
   @override
   Widget build(BuildContext context) {
@@ -21,8 +16,7 @@ class CommonElevatedButtonWidget extends StatelessWidget {
     return ElevatedButton(
       onPressed: isLoading ? null : onClick,
       style: ButtonStyle(
-        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-            RoundedRectangleBorder(
+        shape: WidgetStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(24),
         )),
         // minimumSize: WidgetStateProperty.all(Size(buttonWidth, 48)),
@@ -43,9 +37,7 @@ class CommonElevatedButtonWidget extends StatelessWidget {
                   padding: const EdgeInsets.all(8),
                   decoration: const BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(24),
-                        bottomLeft: Radius.circular(24)),
+                    borderRadius: BorderRadius.only(topLeft: Radius.circular(24), bottomLeft: Radius.circular(24)),
                   ),
                   child: imagePath,
                 ),
@@ -80,8 +72,7 @@ class CommonElevatedButtonWidget extends StatelessWidget {
                             width: 48,
                             padding: const EdgeInsets.all(8.0),
                             child: const CircularProgressIndicator.adaptive(
-                              valueColor:
-                                  AlwaysStoppedAnimation<Color>(Colors.white),
+                              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                             ),
                           ),
                         ],
@@ -164,13 +155,7 @@ class OutlinebuttonWigets extends StatelessWidget {
   final String logo;
   final VoidCallback? onClick;
   final bool isLoading;
-  const OutlinebuttonWigets(
-      {super.key,
-      required this.text,
-      this.onClick,
-      this.isLoading = false,
-      this.color,
-      required this.logo});
+  const OutlinebuttonWigets({super.key, required this.text, this.onClick, this.isLoading = false, this.color, required this.logo});
 
   @override
   Widget build(BuildContext context) {
@@ -183,10 +168,7 @@ class OutlinebuttonWigets extends StatelessWidget {
           child: OutlinedButton(
             onPressed: onClick,
             style: OutlinedButton.styleFrom(
-                side: BorderSide(
-                    width: 1,
-                    color: Colors.grey.shade300,
-                    style: BorderStyle.solid),
+                side: BorderSide(width: 1, color: Colors.grey.shade300, style: BorderStyle.solid),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(24),
                 )),
@@ -215,10 +197,8 @@ class OutlinebuttonWigets extends StatelessWidget {
                                   height: 48,
                                   width: 48,
                                   padding: const EdgeInsets.all(8.0),
-                                  child:
-                                      const CircularProgressIndicator.adaptive(
-                                    valueColor: AlwaysStoppedAnimation<Color>(
-                                        Colors.white),
+                                  child: const CircularProgressIndicator.adaptive(
+                                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                                   ),
                                 ),
                               ],
@@ -249,8 +229,7 @@ class Createbtn extends StatelessWidget {
   final String text;
   final Color? color;
   final VoidCallback? onClick;
-  const Createbtn(
-      {super.key, this.image, this.color, required this.text, this.onClick});
+  const Createbtn({super.key, this.image, this.color, required this.text, this.onClick});
 
   @override
   Widget build(BuildContext context) {
@@ -277,10 +256,7 @@ class Createbtn extends StatelessWidget {
             const SizedBox(width: 25),
             Text(
               text,
-              style: TextStyle(
-                  fontSize: 12,
-                  color: Theme.of(context).colorScheme.onPrimary,
-                  fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.onPrimary, fontWeight: FontWeight.bold),
             )
           ],
         ),
@@ -293,20 +269,16 @@ class ElevatedButtonWigets extends StatelessWidget {
   final String text;
   final Color? backgroundColor;
   final Color? foregroundColor;
+  final bool isLoading;
   final VoidCallback? onClick;
-  const ElevatedButtonWigets(
-      {super.key,
-      required this.text,
-      this.backgroundColor,
-      this.onClick,
-      this.foregroundColor = Colors.white});
+  const ElevatedButtonWigets({super.key, required this.text, this.backgroundColor, this.onClick, this.isLoading = false, this.foregroundColor = Colors.white});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       height: 48,
-      child: ElevatedButton(
+      child: ElevatedButton.icon(
           style: ElevatedButton.styleFrom(
             backgroundColor: backgroundColor,
             foregroundColor: foregroundColor,
@@ -315,7 +287,16 @@ class ElevatedButtonWigets extends StatelessWidget {
             ),
           ),
           onPressed: onClick,
-          child: Text(text)),
+          icon: isLoading
+              ? SizedBox(
+                  height: 24,
+                  width: 24,
+                  child: CircularProgressIndicator(
+                    color: foregroundColor,
+                  ),
+                )
+              : null,
+          label: Text(text)),
     );
   }
 }
