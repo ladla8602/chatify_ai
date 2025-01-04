@@ -22,7 +22,7 @@ class DrawerWigets extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: [
           SizedBox(
-            height: 110,
+            height: 120,
             child: DrawerHeader(
               decoration:
                   BoxDecoration(border: Border(bottom: BorderSide.none)),
@@ -58,10 +58,10 @@ class DrawerWigets extends StatelessWidget {
                             Text(
                               user?.email ?? '',
                               style: TextStyle(
-                                  fontSize: 12,
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onBackground),
+                                fontSize: 12,
+                                color:
+                                    Theme.of(context).colorScheme.onBackground,
+                              ),
                             )
                           ],
                         ),

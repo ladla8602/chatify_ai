@@ -117,7 +117,7 @@ class SingupView extends StatelessWidget {
                       },
                     ),
                     SizedBox(width: 10),
-                    const Text("I agree to Carzo ",
+                    const Text("I agree to Chatify ",
                         style: TextStyle(fontSize: 13)),
                     Text("Terms & Conditions",
                         style: TextStyle(
