@@ -63,7 +63,62 @@ users/{userId}
     phoneLanguage: string,
     countryCode: string
   }
+  subscription: {
+    planId: string,      // "free", "basic", "pro"
+    status: string,      // "active", "cancelled", "expired"
+    startDate: timestamp,
+    endDate: timestamp,
+    platform: string,    // "google_play"
+    purchaseToken: string,
+    orderId: string
+  },
+  usage: {
+    daily: {
+      [date: string]: {  // Format: "YYYY-MM-DD"
+        messagesCount: number,
+        imagesCount: number,
+        audiosCount: number,
+        lastUpdated: timestamp
+      }
+    },
+    monthly: {
+      [month: string]: { // Format: "YYYY-MM"
+        messagesCount: number,
+        imagesCount: number,
+        audiosCount: number,
+        lastUpdated: timestamp
+      }
+    }
+  },
+  limits: {
+    messagesPerDay: number,
+    imagesPerDay: number,
+    messagesPerMonth: number,
+    imagesPerMonth: number
+  }
 }
+```
+
+`plans` Collection
+
+```js
+// plans collection for subscription tiers
+plans/{planId} {
+  name: string,
+  price: number,
+  currency: string,
+  interval: string,     // "month" or "year"
+  playStoreProductId: string,
+  limits: {
+    messagesPerDay: number,
+    imagesPerDay: number,
+    audioPerday: number,
+    messagesPerMonth: number,
+    imagesPerMonth: number,
+    audioPerMonth: number,
+  }
+}
+
 ```
 
 `chatBots` Collection

@@ -24,3 +24,35 @@ export interface ImageGenerateResponse {
   error?: string;
   timestamp: string;
 }
+
+
+interface Usage {
+  messagesCount: number;
+  imagesCount: number;
+  audiosCount: number;
+  lastUpdated: FirebaseFirestore.Timestamp;
+}
+
+export interface UserData {
+  subscription: {
+    planId: string;
+    status: string;
+    endDate: FirebaseFirestore.Timestamp;
+  };
+  limits: {
+    messagesPerDay: number;
+    imagesPerDay: number;
+    audiosPerDay: number;
+    messagesPerMonth: number;
+    imagesPerMonth: number;
+    audiosPerMonth: number;
+  };
+  usage: {
+    daily: {
+      [key: string]: Usage;
+    };
+    monthly: {
+      [key: string]: Usage;
+    };
+  };
+}
