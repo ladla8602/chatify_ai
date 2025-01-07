@@ -63,15 +63,7 @@ users/{userId}
     phoneLanguage: string,
     countryCode: string
   }
-  subscription: {
-    planId: string,      // "free", "basic", "pro"
-    status: string,      // "active", "cancelled", "expired"
-    startDate: timestamp,
-    endDate: timestamp,
-    platform: string,    // "google_play"
-    purchaseToken: string,
-    orderId: string
-  },
+  subscriptionId: string,
   usage: {
     daily: {
       [date: string]: {  // Format: "YYYY-MM-DD"
@@ -97,6 +89,21 @@ users/{userId}
     imagesPerMonth: number
   }
 }
+```
+
+`subscriptions` Collection
+
+```js
+subscription/{subscriptionId} {
+    planId: string,
+    status: string,      // "active", "cancelled", "expired"
+    userId: string,
+    startDate: timestamp,
+    endDate: timestamp,
+    platform: string,    // "google_play"
+    purchaseToken: string,
+    orderId: string
+  }
 ```
 
 `plans` Collection
