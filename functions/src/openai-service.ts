@@ -1,10 +1,11 @@
 // openai-service.ts
 import OpenAI from "openai";
-import { ImageGenerateRequest } from "./types";
+import { ImageGenerateRequest, TextToSpeechRequest } from "./types";
 
 export class OpenAIService {
   private client: OpenAI;
   private static instance: OpenAIService;
+  openai: any;
 
   /**
    * Creates an instance of the OpenAIService with the given API key.
@@ -76,4 +77,22 @@ export class OpenAIService {
     console.log(response.data);
     return response.data[0].url;
   }
+  async generateSpeech(params: TextToSpeechRequest): Promise<string> {
+    try {
+      const response = await this.openai.audio.speech.create({
+        model: params.model || "tts-1",
+        voice: params.voice || "alloy",
+        input: params.text,
+        response_format: params.format || "mp3",
+      });
+
+      // Convert the response to a base64 string
+      const audioBuffer = Buffer.from(await response.arrayBuffer());
+      return audioBuffer.toString("base64");
+    } catch (error) {
+      throw new Error(`Failed to generate speech: ${error instanceof Error ? error.message : "Unknown error"}`);
+    }
+  }
 }
+
+

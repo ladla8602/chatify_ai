@@ -1,30 +1,31 @@
-import * as admin from 'firebase-admin';
-import * as functions from 'firebase-functions';
-import { UserData } from './types';
+import * as admin from "firebase-admin";
+import * as functions from "firebase-functions";
+import { UserData } from "./types";
 
+admin.initializeApp();
 export class UsageService {
   private static async getUserData(userId: string): Promise<UserData> {
     const userDoc = await admin.firestore()
-      .collection('users')
+      .collection("users")
       .doc(userId)
       .get();
 
     if (!userDoc.exists) {
-      throw new functions.https.HttpsError('not-found', 'User not found');
+      throw new functions.https.HttpsError("not-found", "User not found");
     }
 
     const userData = userDoc.data();
     const now = admin.firestore.Timestamp.now();
     return {
       subscription: {
-        status: 'inactive',
+        status: "inactive",
         endDate: now,
-        ...userData?.subscription
+        ...userData?.subscription,
       },
       usage: {
         daily: {},
         monthly: {},
-        ...userData?.usage
+        ...userData?.usage,
       },
       limits: {
         messagesPerDay: 5,
@@ -33,9 +34,9 @@ export class UsageService {
         imagesPerMonth: 20,
         audiosPerDay: 2,
         audiosPerMonth: 20,
-        ...userData?.limits
+        ...userData?.limits,
       },
-      ...userData
+      ...userData,
     } as UserData;
   }
 
@@ -43,19 +44,19 @@ export class UsageService {
     const userData = await this.getUserData(userId);
     const now = admin.firestore.Timestamp.now();
 
-    if (userData.subscription.status !== 'active' ||
+    if (userData.subscription.status !== "active" ||
       userData.subscription.endDate.seconds < now.seconds) {
-      throw new functions.https.HttpsError('permission-denied', 'Subscription inactive');
+      throw new functions.https.HttpsError("permission-denied", "Subscription inactive");
     }
 
     return userData;
   }
 
   private static async checkLimits(
-    type: 'message' | 'image' | 'audio',
+    type: "message" | "image" | "audio",
     userData: UserData
   ): Promise<void> {
-    const today = new Date().toISOString().split('T')[0];
+    const today = new Date().toISOString().split("T")[0];
     const currentMonth = today.substring(0, 7);
 
     const dailyUsage = userData.usage?.daily?.[today]?.[`${type}sCount`] || 0;
@@ -63,14 +64,14 @@ export class UsageService {
 
     if (dailyUsage >= userData.limits[`${type}sPerDay`]) {
       throw new functions.https.HttpsError(
-        'resource-exhausted',
+        "resource-exhausted",
         `Daily ${type} limit reached`
       );
     }
 
     if (monthlyUsage >= userData.limits[`${type}sPerMonth`]) {
       throw new functions.https.HttpsError(
-        'resource-exhausted',
+        "resource-exhausted",
         `Monthly ${type} limit reached`
       );
     }
@@ -78,11 +79,11 @@ export class UsageService {
 
   public static async incrementUsage(
     userId: string,
-    type: 'message' | 'image' | 'audio'
+    type: "message" | "image" | "audio"
   ): Promise<void> {
-    const today = new Date().toISOString().split('T')[0];
+    const today = new Date().toISOString().split("T")[0];
     const currentMonth = today.substring(0, 7);
-    const userRef = admin.firestore().collection('users').doc(userId);
+    const userRef = admin.firestore().collection("users").doc(userId);
 
     try {
       await admin.firestore().runTransaction(async (transaction) => {
@@ -94,16 +95,16 @@ export class UsageService {
             daily: {
               [today]: {
                 [`${type}sCount`]: admin.firestore.FieldValue.increment(1),
-                lastUpdated: admin.firestore.FieldValue.serverTimestamp()
-              }
+                lastUpdated: admin.firestore.FieldValue.serverTimestamp(),
+              },
             },
             monthly: {
               [currentMonth]: {
                 [`${type}sCount`]: admin.firestore.FieldValue.increment(1),
-                lastUpdated: admin.firestore.FieldValue.serverTimestamp()
-              }
-            }
-          }
+                lastUpdated: admin.firestore.FieldValue.serverTimestamp(),
+              },
+            },
+          },
         }, { merge: true });
       });
     } catch (error) {
@@ -111,8 +112,8 @@ export class UsageService {
         throw error;
       }
       throw new functions.https.HttpsError(
-        'internal',
-        'Failed to increment usage'
+        "internal",
+        "Failed to increment usage"
       );
     }
   }

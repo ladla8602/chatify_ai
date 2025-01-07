@@ -5,10 +5,10 @@ import { initializeApp } from "firebase-admin/app";
 import { OpenAIService } from "./openai-service.js";
 // import { AuthService } from "./auth-service.js";
 import { RequestValidator } from "./validators.js";
-import type { ChatRequest, ChatResponse, ImageGenerateRequest, ImageGenerateResponse } from "./types.js";
+import type { ChatRequest, ChatResponse, ImageGenerateRequest, ImageGenerateResponse, TextToSpeechRequest, TextToSpeechResponse } from "./types.js";
 import { config } from "dotenv";
-import { getAuth, ListUsersResult } from "firebase-admin/auth";
-import { UsageService } from './usage-service';
+// import { getAuth, ListUsersResult } from "firebase-admin/auth";
+import { UsageService } from './usage-service.js';
 
 // Load environment variables
 config();
@@ -77,7 +77,7 @@ export const generateAIImage = onCall<ImageGenerateRequest, Promise<ImageGenerat
     if (!auth || !auth.uid) {
       throw new Error("Authentication required");
     }
-    await UsageService.incrementUsage(auth.uid, 'image');
+    await UsageService.incrementUsage(auth.uid, "image");
     // Get OpenAI service instance
     const openAIService = OpenAIService.getInstance(OPENAI_API_KEY);
     // Generate response with timeout
@@ -97,6 +97,54 @@ export const generateAIImage = onCall<ImageGenerateRequest, Promise<ImageGenerat
     };
   } catch (error) {
     logger.error("Error in generateAIImage:", error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "An unexpected error occurred",
+      timestamp: new Date().toISOString(),
+    };
+  }
+});
+
+
+// audio generated///
+export const generateSpeech = onCall<TextToSpeechRequest, Promise<TextToSpeechResponse>>({
+  maxInstances: 2,
+  timeoutSeconds: 120,
+  memory: "256MiB",
+}, async (request) => {
+  try {
+    const { auth } = request;
+
+    if (!auth || !auth.uid) {
+      throw new Error("Authentication required");
+    }
+
+    await UsageService.incrementUsage(auth.uid, "audio");
+
+    // Validate request
+    const params = RequestValidator.validateTextToSpeech(request.data);
+
+    // Get OpenAI service instance
+    const openAIService = OpenAIService.getInstance(OPENAI_API_KEY);
+
+    // Generate response with timeout
+    const timeoutPromise = new Promise<string>((_, reject) =>
+      setTimeout(() => reject(new Error("Request timeout")), 25000)
+    );
+
+    // Generate speech
+    const audioBase64 = await Promise.race<string>([
+      openAIService.generateSpeech(params),
+      timeoutPromise,
+    ]);
+
+    return {
+      success: true,
+      audioUrl: `data:audio/${params.format || "mp3"};base64,${audioBase64}`,
+      timestamp: new Date().toISOString(),
+    };
+  } catch (error) {
+    logger.error("Error in generateSpeech:", error);
     return {
       success: false,
       error: error instanceof Error ? error.message : "An unexpected error occurred",

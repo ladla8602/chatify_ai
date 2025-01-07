@@ -10,6 +10,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../models/audio_gen_model.dart';
+
 class FirestoreService {
   final FirebaseFirestore _firestore;
   final FirebaseAuth _auth;
@@ -30,7 +32,8 @@ class FirestoreService {
     String chatRoomId, [
     DocumentSnapshot? startAfter,
   ]) {
-    final CollectionReference<Map<String, dynamic>> collection = _firestore.collection(FirebasePaths.chatRoomMessages(chatRoomId));
+    final CollectionReference<Map<String, dynamic>> collection =
+        _firestore.collection(FirebasePaths.chatRoomMessages(chatRoomId));
 
     Query<Map<String, dynamic>> query = collection;
 
@@ -48,7 +51,10 @@ class FirestoreService {
       throw UnauthorizedException();
     }
 
-    var query = _firestore.collection(FirebasePaths.chatRoomsName).where("userId", isEqualTo: currentUser!.uid).limit(10);
+    var query = _firestore
+        .collection(FirebasePaths.chatRoomsName)
+        .where("userId", isEqualTo: currentUser!.uid)
+        .limit(10);
 
     if (startAfter != null) {
       query = query.startAfterDocument(startAfter);
@@ -63,7 +69,10 @@ class FirestoreService {
     }
 
     try {
-      await _firestore.collection(FirebasePaths.chatRoomsName).doc(command.chatRoomId).set(_createChatRoomData(command));
+      await _firestore
+          .collection(FirebasePaths.chatRoomsName)
+          .doc(command.chatRoomId)
+          .set(_createChatRoomData(command));
     } catch (e) {
       throw FirestoreException('Error creating chat room: $e');
     }
@@ -88,7 +97,10 @@ class FirestoreService {
     }
 
     try {
-      await _firestore.collection(FirebasePaths.chatRoomsName).doc(command.chatRoomId).update({
+      await _firestore
+          .collection(FirebasePaths.chatRoomsName)
+          .doc(command.chatRoomId)
+          .update({
         'lastMessage': {
           "senderId": command.chatBotId,
           "content": botResponse,
@@ -119,7 +131,8 @@ class FirestoreService {
 
       await Future.wait([
         messagesCollection.add(_createUserMessage(command).toFirestore()),
-        messagesCollection.add(_createBotMessage(command, botResponse).toFirestore()),
+        messagesCollection
+            .add(_createBotMessage(command, botResponse).toFirestore()),
         updateChatRoomLastMessage(command, botResponse),
       ]);
     } catch (e) {
@@ -156,9 +169,11 @@ class FirestoreService {
     if (currentUser == null) {
       throw UnauthorizedException();
     }
-    final CollectionReference<Map<String, dynamic>> collection = _firestore.collection(FirebasePaths.generatedImageName);
+    final CollectionReference<Map<String, dynamic>> collection =
+        _firestore.collection(FirebasePaths.generatedImageName);
 
-    Query<Map<String, dynamic>> query = collection.where("userId", isEqualTo: currentUser!.uid);
+    Query<Map<String, dynamic>> query =
+        collection.where("userId", isEqualTo: currentUser!.uid);
 
     if (startAfter != null) {
       query = query.startAfterDocument(startAfter);
@@ -180,7 +195,8 @@ class FirestoreService {
       await tempFile.writeAsBytes(response.bodyBytes);
 
       final storageRef = FirebaseStorage.instance.ref();
-      final imageRef = storageRef.child('ai-images/${DateTime.now().millisecondsSinceEpoch}.png');
+      final imageRef = storageRef
+          .child('ai-images/${DateTime.now().millisecondsSinceEpoch}.png');
       await imageRef.putFile(tempFile);
       imageMessage.imgUrl = await imageRef.getDownloadURL();
     } catch (e) {
@@ -189,10 +205,54 @@ class FirestoreService {
 
     // Store in firestore
     try {
-      await _firestore.collection(FirebasePaths.generatedImageName).add(imageMessage.toFirestore());
+      await _firestore
+          .collection(FirebasePaths.generatedImageName)
+          .add(imageMessage.toFirestore());
     } catch (e) {
       throw FirestoreException('Error storing image message: $e');
     }
+  }
+
+  //audio generated
+  Future<void> storeAudioMessage(AudioMessage audiomessage) async {
+    // await _firestore.collection('audio_messages').add(message.toFirestore());
+    try {
+      final response = await http.get(Uri.parse(audiomessage.audioUrl));
+      final tempDir = await getTemporaryDirectory();
+      final tempFile = File('${tempDir.path}/temp_image.png');
+      await tempFile.writeAsBytes(response.bodyBytes);
+
+      final storageRef = FirebaseStorage.instance.ref();
+      final audioRef = storageRef
+          .child('ai-audio/${DateTime.now().millisecondsSinceEpoch}.mp3');
+      await audioRef.putFile(tempFile);
+      audiomessage.audioUrl = await audioRef.getDownloadURL();
+    } catch (e) {
+      throw FirestoreException('Error uploading image: ${e.toString()}');
+    }
+
+    // Store in firestore
+    try {
+      await _firestore
+          .collection(FirebasePaths.generatedAudioName)
+          .add(audiomessage.toFirestore());
+    } catch (e) {
+      throw FirestoreException('Error storing image message: $e');
+    }
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> fetchAudioMessages(
+      [DocumentSnapshot? lastDocument]) async {
+    var query = _firestore
+        .collection(FirebasePaths.generatedAudioName)
+        .orderBy('createdAt', descending: true)
+        .limit(20);
+
+    if (lastDocument != null) {
+      query = query.startAfterDocument(lastDocument);
+    }
+
+    return query.get();
   }
 }
 

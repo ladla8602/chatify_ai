@@ -6,13 +6,17 @@ import 'package:chatify_ai/models/image_gen_command.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/material.dart';
 
+import '../models/speech_command_model.dart';
+
 class FirebaseFunctionsService {
   final FirebaseFunctions _functions = FirebaseFunctions.instance;
 
   Future<String> askChatGPT(ChatBotCommand chatBotCommand) async {
     try {
-      final response =
-          await _functions.httpsCallable('askChatGPT', options: HttpsCallableOptions(timeout: Duration(seconds: 120))).call(chatBotCommand.toJson());
+      final response = await _functions
+          .httpsCallable('askChatGPT',
+              options: HttpsCallableOptions(timeout: Duration(seconds: 120)))
+          .call(chatBotCommand.toJson());
       // log(">>>>>>generateAiResponse:${response.data.toString()}");
 
       return response.data['message'];
@@ -24,9 +28,26 @@ class FirebaseFunctionsService {
 
   Future<String> generateAIImage(ImageGenCommand imageGenCommand) async {
     try {
-      final response =
-          await _functions.httpsCallable('generateAIImage', options: HttpsCallableOptions(timeout: Duration(seconds: 120))).call(imageGenCommand.toJson());
+      final response = await _functions
+          .httpsCallable('generateAIImage',
+              options: HttpsCallableOptions(timeout: Duration(seconds: 120)))
+          .call(imageGenCommand.toJson());
       log(">>>>>>generateAiResponse:${response.data.toString()}");
+
+      return response.data['image'];
+    } catch (e) {
+      debugPrint("Error occurred while calling Firebase functions: $e");
+      return 'Opps something went wrong';
+    }
+  }
+
+  Future<String> generateAudio(SpeechCommand speechGenCommand) async {
+    try {
+      final response = await _functions
+          .httpsCallable('generateSpeech',
+              options: HttpsCallableOptions(timeout: Duration(seconds: 120)))
+          .call(speechGenCommand.toJson());
+      log(">>>>>>generateAudioAiResponse:${response.data.toString()}");
 
       return response.data['image'];
     } catch (e) {

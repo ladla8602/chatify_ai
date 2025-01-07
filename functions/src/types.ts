@@ -24,8 +24,19 @@ export interface ImageGenerateResponse {
   error?: string;
   timestamp: string;
 }
+export interface TextToSpeechRequest {
+  text: string;
+  voice?: "alloy" | "echo" | "fable" | "onyx" | "nova" | "shimmer"; // OpenAI voices
+  model?: "tts-1" | "tts-1-hd"; // OpenAI TTS models
+  format?: "mp3" | "opus" | "aac" | "flac";
+}
 
-
+export interface TextToSpeechResponse {
+  success: boolean;
+  audioUrl?: string;
+  error?: string;
+  timestamp: string;
+}
 interface Usage {
   messagesCount: number;
   imagesCount: number;
