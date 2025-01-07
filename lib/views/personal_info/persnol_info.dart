@@ -43,7 +43,6 @@ class PersonalInfo extends StatelessWidget {
                     hintText: "Andrew Ainsley",
                     hintStyle: TextStyle(
                       fontSize: 14,
-                      fontWeight: FontWeight.w600,
                     ),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
@@ -66,7 +65,6 @@ class PersonalInfo extends StatelessWidget {
                     hintText: "example@gmail.com",
                     hintStyle: TextStyle(
                       fontSize: 14,
-                      fontWeight: FontWeight.w600,
                     ),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
@@ -89,7 +87,6 @@ class PersonalInfo extends StatelessWidget {
                     hintText: "1.0.0",
                     hintStyle: TextStyle(
                       fontSize: 14,
-                      fontWeight: FontWeight.w600,
                     ),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
