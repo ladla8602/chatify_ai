@@ -9,6 +9,7 @@ import type { ChatRequest, ChatResponse, ImageGenerateRequest, ImageGenerateResp
 import { config } from "dotenv";
 // import { getAuth, ListUsersResult } from "firebase-admin/auth";
 import { UsageService } from './usage-service.js';
+import { getFirestore } from "firebase-admin/firestore";
 
 // Load environment variables
 config();
@@ -23,6 +24,8 @@ if (!OPENAI_API_KEY) {
 
 // Initialize Firebase Admin
 initializeApp();
+const db = getFirestore();
+UsageService.initialize(db);
 
 export const askChatGPT = onCall<ChatRequest, Promise<ChatResponse>>({
   maxInstances: 2,
@@ -133,14 +136,14 @@ export const generateSpeech = onCall<TextToSpeechRequest, Promise<TextToSpeechRe
     );
 
     // Generate speech
-    const audioBase64 = await Promise.race<string>([
+    const audioUrl = await Promise.race<string>([
       openAIService.generateSpeech(params),
       timeoutPromise,
     ]);
 
     return {
       success: true,
-      audioUrl: `data:audio/${params.format || "mp3"};base64,${audioBase64}`,
+      audioUrl: audioUrl,
       timestamp: new Date().toISOString(),
     };
   } catch (error) {

@@ -1,5 +1,6 @@
 // openai-service.ts
 import OpenAI from "openai";
+import { getStorage } from "firebase-admin/storage";
 import { ImageGenerateRequest, TextToSpeechRequest } from "./types";
 
 export class OpenAIService {
@@ -74,21 +75,44 @@ export class OpenAIService {
     if (!response) {
       throw new Error("No response generated");
     }
-    console.log(response.data);
+    console.log(response.data[0].url);
     return response.data[0].url;
   }
   async generateSpeech(params: TextToSpeechRequest): Promise<string> {
     try {
-      const response = await this.openai.audio.speech.create({
+      const response = await this.client.audio.speech.create({
         model: params.model || "tts-1",
         voice: params.voice || "alloy",
         input: params.text,
         response_format: params.format || "mp3",
       });
+      if (!response) {
+        throw new Error("No response generated");
+      }
+      const audioData = await response.arrayBuffer();
+      // console.log(">>>>>>>>>>>>>>>>>>>>>>>", audioData)
+      // const audioUrl = `data:audio/${params.format || "mp3"};base64,${Buffer.from(audioData).toString("base64")}`;
+      // console.log(audioUrl);
 
-      // Convert the response to a base64 string
-      const audioBuffer = Buffer.from(await response.arrayBuffer());
-      return audioBuffer.toString("base64");
+      // Convert the response to a Buffer
+      const audioBuffer = Buffer.from(audioData);
+
+      // Define the file path in Firebase Storage
+      const bucket = getStorage().bucket(); // Use the default Firebase Storage bucket
+      const fileName = `audio/${Date.now()}.${params.format || "mp3"}`; // Unique file name
+      const file = bucket.file(fileName);
+
+      // Upload the file to Firebase Storage
+      await file.save(audioBuffer, {
+        metadata: { contentType: `audio/${params.format || "mp3"}` }, // Set the correct content type
+      });
+
+      // Make the file publicly accessible (optional)
+      await file.makePublic();
+
+      // Get the public URL of the uploaded file
+      const publicUrl = `https://storage.googleapis.com/${bucket.name}/${fileName}`;
+      return publicUrl;
     } catch (error) {
       throw new Error(`Failed to generate speech: ${error instanceof Error ? error.message : "Unknown error"}`);
     }
