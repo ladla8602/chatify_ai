@@ -2,7 +2,6 @@ import * as admin from "firebase-admin";
 import * as functions from "firebase-functions";
 import { UserData } from "./types";
 
-admin.initializeApp();
 export class UsageService {
   private static async getUserData(userId: string): Promise<UserData> {
     const userDoc = await admin.firestore()
