@@ -146,8 +146,7 @@ class SettingView extends StatelessWidget {
             icon: HugeIcons.strokeRoundedHelpCircle,
             title: 'help_center'.tr,
             onTap: () {
-              Get.toNamed(AppRoutes.commonpageView,
-                  arguments: 'help_center'.tr);
+              Get.toNamed(AppRoutes.helpCenterView);
             },
           ),
           BuildTileWigets(

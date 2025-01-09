@@ -37,8 +37,7 @@ class _AudioGenerateViewState extends State<AudioGenerateView> {
   initializeAudioGen() {
     audioGenController
       ..speechGenCommand.text = ''
-      ..speechGenCommand.voice = 'alloy'
-      ..speechGenCommand.language = 'english';
+      ..speechGenCommand.voice = 'alloy';
 
     audioGenController.loadInitialMessages();
   }

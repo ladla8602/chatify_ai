@@ -41,6 +41,7 @@ class AuthController extends GetxController {
 
   String get initialRoute {
     return isLoggedIn ? AppRoutes.dashboard : AppRoutes.login;
+    // return AppRoutes.setting;
   }
 
   Future<void> signUpWithEmailPassword(String email, String password) async {

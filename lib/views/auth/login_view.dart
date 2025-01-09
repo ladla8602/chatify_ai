@@ -72,6 +72,7 @@ class LoginView extends StatelessWidget {
                     ),
                   ),
                 ),
+
                 // Text(
                 //   "Let's dive in into your account",
                 //   style: TextStyle(fontSize: 14, color: Colors.grey.shade500),

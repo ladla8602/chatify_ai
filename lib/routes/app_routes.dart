@@ -1,5 +1,6 @@
 import 'package:chatify_ai/bindings/dashboard_bindings.dart.dart';
 import 'package:chatify_ai/controllers/chatbot_controller.dart';
+import 'package:chatify_ai/views/help_center/help_center_view.dart';
 import 'package:chatify_ai/views/history/history_view.dart';
 import 'package:chatify_ai/views/linked_account/linked_accounts.dart';
 import 'package:chatify_ai/views/personal_info/persnol_info.dart';
@@ -53,6 +54,7 @@ class AppRoutes {
   static const imageView = '/imageView';
   static const audioView = '/audioView';
   static const commonpageView = '/commonpageView';
+  static const helpCenterView = '/helpCenterView';
 
   static final pages = [
     GetPage(name: login, page: () => LoginView()),
@@ -82,5 +84,6 @@ class AppRoutes {
     GetPage(name: imageView, page: () => ImageGenerateView()),
     GetPage(name: audioView, page: () => AudioGenerateView()),
     GetPage(name: commonpageView, page: () => CommonPageView()),
+    GetPage(name: helpCenterView, page: () => HelpCenterView()),
   ];
 }
