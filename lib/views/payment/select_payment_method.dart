@@ -83,7 +83,7 @@ class _SelectPaymentMethodsState extends State<SelectPaymentMethod> {
                 itemCount: paymentMethods.length,
               ),
             ),
-            Spacer(),
+            
             ElevatedButtonWigets(
               text: 'Continue',
               onClick: () {
@@ -120,7 +120,7 @@ class PaymentMethodsWidget extends StatelessWidget {
         border: Border.all(
           color: isSelected
               ? Colors.green
-              : Theme.of(context).colorScheme.onSurface,
+              : Colors.grey.shade200,
           width: 2, // Highlight the border when selected
         ),
       ),
