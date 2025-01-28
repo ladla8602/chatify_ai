@@ -71,7 +71,8 @@ class _ImageGenerateViewState extends State<ImageGenerateView> {
         actions: [GetPrimeWigets(), SizedBox(width: 16)],
       ),
       drawer: DrawerWigets(),
-      onEndDrawerChanged: (isOpened) => _imageGenController.isDrawerOpen.value = isOpened,
+      onEndDrawerChanged: (isOpened) =>
+          _imageGenController.isDrawerOpen.value = isOpened,
       endDrawerEnableOpenDragGesture: false,
       endDrawer: Drawer(
         width: MediaQuery.of(context).size.width * 0.8,
@@ -88,7 +89,8 @@ class _ImageGenerateViewState extends State<ImageGenerateView> {
                   : NotFoundWidget(
                       title: 'no_image_generate'.tr,
                       buttonText: 'generate'.tr,
-                      onButtonClick: () => Scaffold.of(context).closeEndDrawer(),
+                      onButtonClick: () =>
+                          Scaffold.of(context).closeEndDrawer(),
                     ),
               customBottomWidget: const SizedBox.shrink(),
               onEndReached: _imageGenController.loadInitialMessages,
@@ -111,13 +113,17 @@ class _ImageGenerateViewState extends State<ImageGenerateView> {
         children: [
           SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     'art_style'.tr,
-                    style: TextStyle(fontSize: 14, color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        fontSize: 14,
+                        color: Theme.of(context).primaryColor,
+                        fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 12),
                   SizedBox(
@@ -129,12 +135,15 @@ class _ImageGenerateViewState extends State<ImageGenerateView> {
                       itemBuilder: (context, index) => Padding(
                         padding: const EdgeInsets.only(right: 12),
                         child: ArtStyleWidget(
-                          imageUrl: artStyles[index]['icon'] ?? 'https://res.cloudinary.com/ladla8602/image/upload/v1704302268/VertexAI/nostyles.png',
+                          imageUrl: artStyles[index]['icon'] ??
+                              'https://res.cloudinary.com/ladla8602/image/upload/v1704302268/VertexAI/nostyles.png',
                           text: artStyles[index]['name'],
-                          isSelected: _imageGenController.imageGenCommand.art == artStyles[index]['name'],
+                          isSelected: _imageGenController.imageGenCommand.art ==
+                              artStyles[index]['name'],
                           onClick: () {
                             setState(() {
-                              _imageGenController.imageGenCommand.art = artStyles[index]['name'];
+                              _imageGenController.imageGenCommand.art =
+                                  artStyles[index]['name'];
                             });
                           },
                         ),
@@ -161,7 +170,8 @@ class _ImageGenerateViewState extends State<ImageGenerateView> {
                                 "prompt".tr,
                                 "prompt_help".tr,
                                 snackPosition: SnackPosition.BOTTOM,
-                                backgroundColor: Theme.of(context).colorScheme.surface,
+                                backgroundColor:
+                                    Theme.of(context).colorScheme.surface,
                                 duration: Duration(seconds: 3),
                               );
                             },
@@ -176,12 +186,19 @@ class _ImageGenerateViewState extends State<ImageGenerateView> {
                   TextFormField(
                     maxLines: 6,
                     maxLength: 460,
-                    onChanged: (value) => imageGeneratorController.imageGenCommand.prompt = value,
-                    style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+                    onChanged: (value) =>
+                        imageGeneratorController.imageGenCommand.prompt = value,
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurface),
                     decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide(color: Colors.grey.shade300)),
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(16),
+                          borderSide: BorderSide(color: Colors.grey.shade300)),
                       focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16), borderSide: BorderSide(color: Theme.of(context).primaryColor, width: 1.5)),
+                          borderRadius: BorderRadius.circular(16),
+                          borderSide: BorderSide(
+                              color: Theme.of(context).primaryColor,
+                              width: 1.5)),
                       hintText: "enter_prompt".tr,
                       hintStyle: TextStyle(fontSize: 14),
                     ),
@@ -189,7 +206,10 @@ class _ImageGenerateViewState extends State<ImageGenerateView> {
                   SizedBox(height: 12),
                   Text(
                     'image_size'.tr,
-                    style: TextStyle(fontSize: 14, color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        fontSize: 14,
+                        color: Theme.of(context).primaryColor,
+                        fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 12),
                   SizedBox(
@@ -200,14 +220,22 @@ class _ImageGenerateViewState extends State<ImageGenerateView> {
                         return Padding(
                           padding: const EdgeInsets.only(right: 14),
                           child: ChoiceChip(
-                            backgroundColor: Theme.of(context).colorScheme.onPrimary,
+                            backgroundColor:
+                                Theme.of(context).colorScheme.onPrimary,
                             selectedColor: Theme.of(context).primaryColor,
                             labelStyle: TextStyle(
-                                color: _selectedChipIndex == index ? Theme.of(context).colorScheme.onPrimary : Theme.of(context).primaryColor, fontSize: 12),
+                                color: _selectedChipIndex == index
+                                    ? Theme.of(context).colorScheme.onPrimary
+                                    : Theme.of(context).primaryColor,
+                                fontSize: 12),
                             showCheckmark: false,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20),
-                                side: BorderSide(color: _selectedChipIndex == index ? Theme.of(context).primaryColor : Colors.grey.shade300, width: 1.5)),
+                                side: BorderSide(
+                                    color: _selectedChipIndex == index
+                                        ? Theme.of(context).primaryColor
+                                        : Colors.grey.shade300,
+                                    width: 1.5)),
                             label: Row(
                               children: [
                                 const SizedBox(width: 4),
@@ -240,7 +268,9 @@ class _ImageGenerateViewState extends State<ImageGenerateView> {
                   size: 50,
                   panelOpenOffset: -10,
                   backgroundColor: Theme.of(context).colorScheme.primary,
-                  panelIcon: _imageGenController.isDrawerOpen.value ? Icons.chevron_right : Icons.chevron_left,
+                  panelIcon: _imageGenController.isDrawerOpen.value
+                      ? Icons.chevron_right
+                      : Icons.chevron_left,
                   onPressed: (index) {},
                   onMainPressed: _imageGenController.toggleDrawer,
                   buttons: const [], // Add your menu buttons here
@@ -319,7 +349,13 @@ class ImageGenerateWigets extends StatelessWidget {
   final bool isSelected;
   final String imagePath;
   final VoidCallback onClick;
-  const ImageGenerateWigets({super.key, required this.title, required this.color, required this.isSelected, required this.imagePath, required this.onClick});
+  const ImageGenerateWigets(
+      {super.key,
+      required this.title,
+      required this.color,
+      required this.isSelected,
+      required this.imagePath,
+      required this.onClick});
 
   @override
   Widget build(BuildContext context) {
@@ -331,9 +367,15 @@ class ImageGenerateWigets extends StatelessWidget {
             width: 105,
             height: 150,
             decoration: BoxDecoration(
-                color: isSelected ? Theme.of(context).primaryColor : Colors.transparent,
+                color: isSelected
+                    ? Theme.of(context).primaryColor
+                    : Colors.transparent,
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: isSelected ? Theme.of(context).primaryColor : Colors.grey.shade300, width: isSelected ? 2 : 1),
+                border: Border.all(
+                    color: isSelected
+                        ? Theme.of(context).primaryColor
+                        : Colors.grey.shade300,
+                    width: isSelected ? 2 : 1),
                 image: DecorationImage(
                   image: NetworkImage(
                     imagePath,
@@ -346,7 +388,9 @@ class ImageGenerateWigets extends StatelessWidget {
         Text(
           title,
           style: TextStyle(
-            color: isSelected ? Theme.of(context).primaryColor : Theme.of(context).colorScheme.onSurface,
+            color: isSelected
+                ? Theme.of(context).primaryColor
+                : Theme.of(context).colorScheme.onSurface,
             fontSize: 14,
             fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
           ),

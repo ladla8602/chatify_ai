@@ -8,7 +8,7 @@ import { RequestValidator } from "./validators.js";
 import type { ChatRequest, ChatResponse, ImageGenerateRequest, ImageGenerateResponse, TextToSpeechRequest, TextToSpeechResponse } from "./types.js";
 import { config } from "dotenv";
 // import { getAuth, ListUsersResult } from "firebase-admin/auth";
-import { UsageService } from './usage-service.js';
+import { UsageService } from "./usage-service.js";
 import { getFirestore } from "firebase-admin/firestore";
 
 // Load environment variables
@@ -39,7 +39,7 @@ export const askChatGPT = onCall<ChatRequest, Promise<ChatResponse>>({
       throw new Error("Authentication required");
     }
 
-    await UsageService.incrementUsage(auth.uid, 'message');
+    await UsageService.incrementUsage(auth.uid, "message");
     // Validate request
     const message = RequestValidator.validateMessage(request.data.message);
     // Get OpenAI service instance

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:chatify_ai/models/speech_command_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -168,7 +170,7 @@ class AudioGenerateController extends GetxController {
         : _firestoreService.fetchAudioMessages(lastDocument);
   }
 
-  Future<void> generateAudio() async {
+  Future<void> handleSendPressed() async {
     if (promptController.text.trim().isEmpty) {
       Get.snackbar(
         'Error',
@@ -181,31 +183,33 @@ class AudioGenerateController extends GetxController {
     try {
       isGenerating.value = true;
 
-      final userId = FirebaseAuth.instance.currentUser?.uid;
-      if (userId == null) throw Exception('User not authenticated');
-
-      final audioData =
+      // Call the Firebase function to generate audio
+      final value =
           await _firebaseFunctionsService.generateAudio(speechGenCommand);
 
+      // Create an AudioMessage object
       final audioMessage = AudioMessage(
-        userId: userId,
-        audioUrl: audioData,
+        userId: FirebaseAuth.instance.currentUser!.uid,
+        audioUrl: value, // Ensure this is a valid URL string
         createdAt: DateTime.now(),
-        prompt: speechGenCommand.text ?? '',
-        voiceId: speechGenCommand.voice ?? 'alloy',
-        duration: 0, // You can update this after getting the actual duration
+        prompt: speechGenCommand.text ?? '', // Use empty string if null
+        voiceId: speechGenCommand.voice ?? 'alloy', // Default to 'alloy'
+        duration: 0, // Update duration if available
       );
 
-      // Store in Firestore
-      await _firestoreService.storeAudioMessage(audioMessage);
+      // Add the new message to the UI
+      // messages.insert(0, _convertToTypesMessages(audioMessage));
+      messages.insert(0, _convertToTypesMessages(audioMessage).first);
 
-      // Update UI
-      messages.insert(0, _convertToTypesMessages(audioMessage));
-      promptController.clear();
+      // Store the audio message in Firestore
+      unawaited(_firestoreService.storeAudioMessage(audioMessage));
 
-      Get.back(); // Close the generation dialog
+      // Update the UI and clear the prompt
+      isGenerating.value = false;
       toggleDrawer(); // Open the history drawer
+      promptController.clear();
     } catch (e) {
+      print('>>>>>>>>$e');
       Get.snackbar(
         'Error',
         'Failed to generate audio: $e',
@@ -216,20 +220,23 @@ class AudioGenerateController extends GetxController {
     }
   }
 
-  _convertToTypesMessages(audioMessages) {
-    return audioMessages
-        .map((message) => types.CustomMessage(
-              author: user,
-              createdAt: message.createdAt.millisecondsSinceEpoch,
-              id: message.id,
-              metadata: {
-                'url': message.audioUrl,
-                'duration': message.duration,
-                'prompt': message.prompt,
-                'voiceId': message.voiceId,
-              },
-              type: types.MessageType.custom,
-            ))
-        .toList();
+  List<types.CustomMessage> _convertToTypesMessages(dynamic input) {
+    // Handle single AudioMessage or list of AudioMessages
+    final messages = input is List<AudioMessage> ? input : [input];
+
+    return messages.map((message) {
+      return types.CustomMessage(
+        author: user,
+        createdAt: message.createdAt.millisecondsSinceEpoch,
+        id: message.id,
+        metadata: {
+          'url': message.audioUrl,
+          'duration': message.duration,
+          'prompt': message.prompt,
+          'voiceId': message.voiceId,
+        },
+        type: types.MessageType.custom,
+      );
+    }).toList();
   }
 }

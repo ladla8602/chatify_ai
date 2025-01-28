@@ -215,32 +215,43 @@ class FirestoreService {
 
   //audio generated
   Future<void> storeAudioMessage(AudioMessage audiomessage) async {
-    // await _firestore.collection('audio_messages').add(message.toFirestore());
     try {
+      // Download the audio file from the URL
       final response = await http.get(Uri.parse(audiomessage.audioUrl));
+
+      // Ensure that the response is valid
+      if (response.statusCode != 200) {
+        throw Exception('Failed to download audio');
+      }
+
       final tempDir = await getTemporaryDirectory();
-      final tempFile = File('${tempDir.path}/temp_image.png');
+      final tempFile = File('${tempDir.path}/temp_audio.mp3');
+
       await tempFile.writeAsBytes(response.bodyBytes);
 
       final storageRef = FirebaseStorage.instance.ref();
       final audioRef = storageRef
           .child('ai-audio/${DateTime.now().millisecondsSinceEpoch}.mp3');
+
       await audioRef.putFile(tempFile);
+
       audiomessage.audioUrl = await audioRef.getDownloadURL();
     } catch (e) {
-      throw FirestoreException('Error uploading image: ${e.toString()}');
+      // Throw a FirestoreException with detailed error message
+      throw Exception('Error uploading audio: ${e.toString()}');
     }
 
-    // Store in firestore
     try {
       await _firestore
           .collection(FirebasePaths.generatedAudioName)
           .add(audiomessage.toFirestore());
     } catch (e) {
-      throw FirestoreException('Error storing image message: $e');
+      throw Exception(
+          'Error storing audio message in Firestore: ${e.toString()}');
     }
   }
 
+  // Fetch audio messages from Firestore with pagination
   Future<QuerySnapshot<Map<String, dynamic>>> fetchAudioMessages(
       [DocumentSnapshot? lastDocument]) async {
     var query = _firestore
@@ -248,11 +259,17 @@ class FirestoreService {
         .orderBy('createdAt', descending: true)
         .limit(20);
 
+    // If a last document is provided, use it for pagination
     if (lastDocument != null) {
       query = query.startAfterDocument(lastDocument);
     }
 
-    return query.get();
+    try {
+      return await query.get(); // Fetch the query result
+    } catch (e) {
+      // Handle any query errors
+      throw Exception('Error fetching audio messages: ${e.toString()}');
+    }
   }
 }
 

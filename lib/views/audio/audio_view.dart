@@ -42,6 +42,24 @@ class _AudioGenerateViewState extends State<AudioGenerateView> {
     audioGenController.loadInitialMessages();
   }
 
+  Future<void> _handleGenerate(BuildContext context) async {
+    if (audioGenController.promptController.text.trim().isEmpty) {
+      Get.snackbar(
+        'Error',
+        'Please enter text to generate audio',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      return;
+    }
+
+    audioGenController.speechGenCommand
+      ..text = audioGenController.promptController.text.trim()
+      ..voice = audioGenController
+          .audioGenerate[audioGenController.isSelected.value]['voice'];
+
+    await audioGenController.handleSendPressed();
+  }
+
   @override
   Widget build(BuildContext context) {
     final AudioGenerateController audioGenerateController = Get.find();
@@ -204,7 +222,8 @@ class _AudioGenerateViewState extends State<AudioGenerateView> {
                       maxLength: 400,
                       controller: audioGenerateController.promptController,
                       onChanged: (value) =>
-                          audioGenerateController.speechGenCommand == value,
+                          audioGenerateController.speechGenCommand.text ==
+                          value,
                       style: TextStyle(
                           color: Theme.of(context).colorScheme.onSurface),
                       decoration: InputDecoration(
@@ -246,62 +265,14 @@ class _AudioGenerateViewState extends State<AudioGenerateView> {
       ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(14),
-        child: ElevatedButtonWigets(
-          text: 'generate'.tr,
-          backgroundColor: Theme.of(context).primaryColor,
-          foregroundColor: Colors.white,
-          onClick: () {
-            audioGenController.generateAudio();
-            // showDialog(
-            //   barrierDismissible: false,
-            //   context: context,
-            //   builder: (context) {
-            //     return AlertDialog(
-            //       shape: RoundedRectangleBorder(
-            //           borderRadius: BorderRadius.circular(16)),
-            //       content: Column(
-            //         mainAxisSize: MainAxisSize.min,
-            //         children: [
-            //           Align(
-            //             alignment: Alignment.topRight,
-            //             child: GestureDetector(
-            //               onTap: () {
-            //                 Get.back();
-            //               },
-            //               child: Icon(
-            //                 HugeIcons.strokeRoundedMultiplicationSignCircle,
-            //                 color: Theme.of(context).primaryColor,
-            //               ),
-            //             ),
-            //           ),
-            //           Text(
-            //             'audio'.tr,
-            //             style: TextStyle(fontSize: 17),
-            //           ),
-            //           SizedBox(height: 20),
-            //           Container(
-            //             height: 250,
-            //             decoration: BoxDecoration(
-            //                 borderRadius: BorderRadius.circular(16),
-            //                 color: Colors.grey.shade200,
-            //                 border: Border.all(
-            //                     color: Theme.of(context)
-            //                         .primaryColor
-            //                         .withOpacity(0.5),
-            //                     width: 1.5)),
-            //           ),
-            //           SizedBox(height: 20),
-            //           ElevatedButtonWigets(
-            //             backgroundColor: Theme.of(context).primaryColor,
-            //             text: 'Download',
-            //             onClick: () {},
-            //           ),
-            //         ],
-            //       ),
-            //     );
-            //   },
-            // );
-          },
+        child: Obx(
+          () => ElevatedButtonWigets(
+            isLoading: audioGenController.isGenerating.value,
+            text: 'generate'.tr,
+            backgroundColor: Theme.of(context).primaryColor,
+            foregroundColor: Colors.white,
+            onClick: () => _handleGenerate(context),
+          ),
         ),
       ),
     );

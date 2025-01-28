@@ -49,7 +49,7 @@ class FirebaseFunctionsService {
           .call(speechGenCommand.toJson());
       log(">>>>>>generateAudioAiResponse:${response.data.toString()}");
 
-      return response.data['image'];
+      return response.data['audioUrl'];
     } catch (e) {
       debugPrint("Error occurred while calling Firebase functions: $e");
       return 'Opps something went wrong';
