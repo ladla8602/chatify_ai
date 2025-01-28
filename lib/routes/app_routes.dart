@@ -4,6 +4,9 @@ import 'package:chatify_ai/controllers/chatbot_controller.dart';
 import 'package:chatify_ai/views/help_center/help_center_view.dart';
 import 'package:chatify_ai/views/history/history_view.dart';
 import 'package:chatify_ai/views/linked_account/linked_accounts.dart';
+import 'package:chatify_ai/views/payment/review_summary.dart';
+import 'package:chatify_ai/views/payment/select_payment_method.dart';
+import 'package:chatify_ai/views/payment/successfully_screen.dart';
 import 'package:chatify_ai/views/personal_info/persnol_info.dart';
 import 'package:chatify_ai/views/privacy_policy/privacy_policy_screen.dart';
 import 'package:chatify_ai/views/security/security_view.dart';
@@ -59,8 +62,11 @@ class AppRoutes {
   static const commonpageView = '/commonpageView';
   static const helpCenterView = '/helpCenterView';
   static const termsOfUse = '/termsOfUse';
-  static const privacyPolicy = '/privacyPolicy';//AboutChatifyScreen
+  static const privacyPolicy = '/privacyPolicy';
   static const aboutChatify = '/aboutChatify';
+  static const paymentMethodsSelect = '/paymentMethodsSelect';
+  static const reviewSummary = '/reviewSummary';
+  static const successfullyScreen = '/successfullyScreen';
 
   static final pages = [
     GetPage(name: login, page: () => LoginView()),
@@ -95,5 +101,8 @@ class AppRoutes {
     GetPage(name: termsOfUse, page: () => TermsOfUseScreen()),
     GetPage(name: privacyPolicy, page: () => PrivacyPolicyScreen()),
     GetPage(name: aboutChatify, page: () => AboutChatifyScreen()),
+    GetPage(name: paymentMethodsSelect, page: () => SelectPaymentMethod()),
+    GetPage(name: reviewSummary, page: () => ReviewSummary()),
+    GetPage(name: successfullyScreen, page: () => SuccessfullyScreen()),
   ];
 }

@@ -1,9 +1,10 @@
-import 'package:chatify_ai/constants/constants.dart';
+
 import 'package:chatify_ai/controllers/plan_controller.dart';
+import 'package:chatify_ai/routes/app_routes.dart';
 import 'package:chatify_ai/views/common/button_wigets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
+
 import 'package:hugeicons/hugeicons.dart';
 
 class UpgradeView extends StatelessWidget {
@@ -11,7 +12,7 @@ class UpgradeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final PlanController _planController = Get.put(PlanController());
+    final PlanController planController = Get.put(PlanController());
     return Scaffold(
       appBar: AppBar(
         surfaceTintColor: Colors.white,
@@ -21,15 +22,15 @@ class UpgradeView extends StatelessWidget {
         itemBuilder: (context, index) {
           return UpgradeWigets(
             index: index,
-            title: _planController.plan[index]['title'],
-            plan: _planController.plan[index]['plan'],
-            content: _planController.plan[index]['content'],
+            title: planController.plan[index]['title'],
+            plan: planController.plan[index]['plan'],
+            content: planController.plan[index]['content'],
           );
         },
         separatorBuilder: (context, index) {
           return SizedBox(height: 10);
         },
-        itemCount: _planController.plan.length,
+        itemCount: planController.plan.length,
       ),
     );
   }
@@ -97,7 +98,11 @@ class UpgradeWigets extends StatelessWidget {
               SizedBox(height: 18),
               ElevatedButtonWigets(
                 text: 'Select Plan',
-                onClick: () {},
+                onClick: () {
+               
+                  Get.toNamed(AppRoutes.paymentMethodsSelect);
+             
+                },
                 backgroundColor: Theme.of(context).primaryColor,
               )
             ],
