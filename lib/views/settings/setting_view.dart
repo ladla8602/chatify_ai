@@ -153,14 +153,16 @@ class SettingView extends StatelessWidget {
             icon: HugeIcons.strokeRoundedTask01,
             title: 'terms_of_use'.tr,
             onTap: () {
-              Get.toNamed(AppRoutes.termsOfUse);//termsOfUse
+              Get.toNamed(AppRoutes.commonpageView,
+                  arguments: 'terms_of_use'.tr); //termsOfUse
             },
           ),
           BuildTileWigets(
             icon: HugeIcons.strokeRoundedSquareLock01,
             title: 'privacy_policy'.tr,
             onTap: () {
-              Get.toNamed(AppRoutes.privacyPolicy);
+              Get.toNamed(AppRoutes.commonpageView,
+                  arguments: 'privacy_policy'.tr);
             },
           ),
           BuildTileWigets(

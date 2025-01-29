@@ -53,7 +53,10 @@ class ForgotPasswordView extends StatelessWidget {
               textAlign: TextAlign.start,
               textAlignVertical: TextAlignVertical.bottom,
               // controller: ,
-              style: const TextStyle(fontSize: 15),
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyMedium
+                  ?.copyWith(fontSize: 15),
               decoration: InputDecoration(
                 contentPadding:
                     const EdgeInsets.symmetric(vertical: 20, horizontal: 28),

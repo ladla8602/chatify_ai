@@ -46,6 +46,7 @@ class _HelpCenterViewState extends State<HelpCenterView> {
                     indicatorSize: TabBarIndicatorSize.tab,
                     labelColor: Colors.white,
                     dividerColor: Colors.transparent,
+                    unselectedLabelColor: Colors.black,
                     tabs: [
                       Tab(text: 'FAQ'),
                       Tab(text: 'Contact us'),
@@ -65,39 +66,41 @@ class _HelpCenterViewState extends State<HelpCenterView> {
                         scrollDirection: Axis.horizontal,
                         itemCount: helpCenterController.categories.length,
                         itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              helpCenterController.selectCategory(index);
-                            },
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 5),
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 10),
-                              decoration: BoxDecoration(
-                                color: helpCenterController
-                                            .selectedCategoryIndex ==
-                                        index
-                                    ? Theme.of(context).primaryColor
-                                    : Colors.white,
-                                border: Border.all(
-                                    color: helpCenterController
-                                                .selectedCategoryIndex ==
-                                            index
-                                        ? Theme.of(context).primaryColor
-                                        : Colors.grey.shade100,
-                                    width: 1),
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  helpCenterController.categories[index],
-                                  style: TextStyle(
-                                    color: helpCenterController
-                                                .selectedCategoryIndex ==
-                                            index
-                                        ? Colors.white
-                                        : Colors.black,
+                          return Obx(
+                            () => GestureDetector(
+                              onTap: () {
+                                helpCenterController.selectCategory(index);
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 5),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 10),
+                                decoration: BoxDecoration(
+                                  color: helpCenterController
+                                              .selectedCategoryIndex ==
+                                          index
+                                      ? Theme.of(context).primaryColor
+                                      : Colors.white,
+                                  border: Border.all(
+                                      color: helpCenterController
+                                                  .selectedCategoryIndex ==
+                                              index
+                                          ? Theme.of(context).primaryColor
+                                          : Colors.grey.shade100,
+                                      width: 1),
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    helpCenterController.categories[index],
+                                    style: TextStyle(
+                                      color: helpCenterController
+                                                  .selectedCategoryIndex ==
+                                              index
+                                          ? Colors.white
+                                          : Colors.black,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -158,35 +161,32 @@ class _HelpCenterViewState extends State<HelpCenterView> {
                     ),
                   ],
                 ),
-                Expanded(
-                  child: ListView.separated(
-                    separatorBuilder: (context, index) {
-                      return SizedBox(height: 16);
-                    },
-                    itemCount: helpCenterController.contactUs.length,
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () {},
-                        child: Container(
-                          padding: EdgeInsets.all(14),
-                          decoration: BoxDecoration(
-                              border: Border.all(color: Colors.grey.shade100),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10))),
-                          child: Row(
-                            children: [
-                              Icon(
-                                  helpCenterController.contactUs[index]['icon'],
-                                  color: Theme.of(context).primaryColor),
-                              SizedBox(width: 12),
-                              Text(helpCenterController.contactUs[index]
-                                  ['title']),
-                            ],
-                          ),
+                ListView.separated(
+                  separatorBuilder: (context, index) {
+                    return SizedBox(height: 16);
+                  },
+                  itemCount: helpCenterController.contactUs.length,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () {},
+                      child: Container(
+                        padding: EdgeInsets.all(14),
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey.shade100),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10))),
+                        child: Row(
+                          children: [
+                            Icon(helpCenterController.contactUs[index]['icon'],
+                                color: Theme.of(context).primaryColor),
+                            SizedBox(width: 12),
+                            Text(
+                                helpCenterController.contactUs[index]['title']),
+                          ],
                         ),
-                      );
-                    },
-                  ),
+                      ),
+                    );
+                  },
                 ),
               ],
             ),

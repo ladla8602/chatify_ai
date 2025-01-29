@@ -18,8 +18,6 @@ class AboutChatifyScreen extends StatelessWidget {
           },
         ),
         elevation: 0,
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
@@ -27,11 +25,11 @@ class AboutChatifyScreen extends StatelessWidget {
           child: Column(
             children: [
               CircleAvatar(
-                radius: 70,
+                radius: 50,
                 child: SvgPicture.asset(
                   'assets/icons/chatify_logo.svg',
                   height: 60,
-                  color: Theme.of(context).primaryColor,
+                  color: Colors.white,
                 ),
               ),
               const SizedBox(height: 20),
@@ -50,7 +48,7 @@ class AboutChatifyScreen extends StatelessWidget {
                   Icon(HugeIcons.strokeRoundedArrowRight01),
                 ],
               ),
-                SizedBox(height: 18),
+              SizedBox(height: 18),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -61,7 +59,7 @@ class AboutChatifyScreen extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 18),
-               Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text('Visit Our Website',
@@ -70,7 +68,7 @@ class AboutChatifyScreen extends StatelessWidget {
                   Icon(HugeIcons.strokeRoundedArrowRight01),
                 ],
               ),
-                SizedBox(height: 18),
+              SizedBox(height: 18),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

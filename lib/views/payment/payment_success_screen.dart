@@ -4,33 +4,32 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
 
-class SuccessfullyScreen extends StatefulWidget {
-  const SuccessfullyScreen({super.key});
+class PaymentSuccessScreen extends StatefulWidget {
+  const PaymentSuccessScreen({super.key});
 
   @override
-  State<SuccessfullyScreen> createState() => _SuccessfullyScreenState();
+  State<PaymentSuccessScreen> createState() => _SuccessfullyScreenState();
 }
 
-class _SuccessfullyScreenState extends State<SuccessfullyScreen> {
+class _SuccessfullyScreenState extends State<PaymentSuccessScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: GestureDetector(
+          onTap: () => Get.back(),
+          child: Icon(
+            HugeIcons.strokeRoundedMultiplicationSign,
+            size: 24,
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Spacer(),
-            Row(
-              children: [
-                Icon(
-                  HugeIcons.strokeRoundedMultiplicationSign,
-                  size: 24,
-                  color: Colors.black,
-                ),
-              ],
-            ),
-            Spacer(),
             Stack(
               clipBehavior: Clip.none,
               children: [
