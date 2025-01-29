@@ -74,7 +74,8 @@ class PaymentMethodsWigets extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: Colors.white,
-        border: Border.all(color: Theme.of(context).colorScheme.onSurface),
+        border:
+            Border.all(color: Theme.of(context).colorScheme.surface, width: 2),
       ),
       child: Row(
         children: [
@@ -91,7 +92,10 @@ class PaymentMethodsWigets extends StatelessWidget {
           Spacer(),
           Text(
             'Connected',
-            style: TextStyle(fontSize: 13, color: Colors.black),
+            style: TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.bold,
+                color: Colors.grey.shade500),
           )
         ],
       ),

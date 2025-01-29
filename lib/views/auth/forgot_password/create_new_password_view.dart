@@ -43,7 +43,7 @@ class CreateNewPasswordView extends StatelessWidget {
                   textAlign: TextAlign.start,
                   textAlignVertical: TextAlignVertical.bottom,
                   controller: emailController,
-                  style: const TextStyle(fontSize: 15),
+                  style: const TextStyle(fontSize: 15, color: Colors.black),
                   decoration: InputDecoration(
                     prefixIcon: Icon(HugeIcons.strokeRoundedLockPassword),
                     suffixIcon: Icon(HugeIcons.strokeRoundedEye),
@@ -73,7 +73,7 @@ class CreateNewPasswordView extends StatelessWidget {
                   textAlign: TextAlign.start,
                   textAlignVertical: TextAlignVertical.bottom,
                   controller: passwordController,
-                  style: const TextStyle(fontSize: 15),
+                  style: const TextStyle(fontSize: 15, ),
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.symmetric(
                         vertical: 20, horizontal: 28),

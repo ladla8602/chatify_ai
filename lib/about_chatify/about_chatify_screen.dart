@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
 
 class AboutChatifyScreen extends StatelessWidget {
@@ -27,11 +28,11 @@ class AboutChatifyScreen extends StatelessWidget {
           child: Column(
             children: [
               CircleAvatar(
-                radius: 70,
+                radius: 50,
                 child: SvgPicture.asset(
                   'assets/icons/chatify_logo.svg',
                   height: 60,
-                  color: Theme.of(context).primaryColor,
+                  color: Colors.white,
                 ),
               ),
               const SizedBox(height: 20),
@@ -44,37 +45,37 @@ class AboutChatifyScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Feedback',
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-                  Icon(HugeIcons.strokeRoundedArrowRight01),
-                ],
-              ),
-                SizedBox(height: 18),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('Rate Us',
+                  Text('feedback'.tr,
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   Icon(HugeIcons.strokeRoundedArrowRight01),
                 ],
               ),
               SizedBox(height: 18),
-               Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Visit Our Website',
+                  Text('rate us'.tr,
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   Icon(HugeIcons.strokeRoundedArrowRight01),
                 ],
               ),
-                SizedBox(height: 18),
+              SizedBox(height: 18),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Follw us on Social Media ',
+                  Text('visit_website'.tr,
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                  Icon(HugeIcons.strokeRoundedArrowRight01),
+                ],
+              ),
+              SizedBox(height: 18),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('follow_us'.tr,
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   Icon(HugeIcons.strokeRoundedArrowRight01),

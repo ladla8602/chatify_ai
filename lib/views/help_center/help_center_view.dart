@@ -28,7 +28,7 @@ class _HelpCenterViewState extends State<HelpCenterView> {
       child: Obx(() {
         return Scaffold(
           appBar: AppBar(
-            title: const Text('Help Center'),
+            title:  Text( 'help_center'.tr,),
             centerTitle: true,
             bottom: PreferredSize(
               preferredSize: const Size.fromHeight(60),
@@ -47,8 +47,8 @@ class _HelpCenterViewState extends State<HelpCenterView> {
                     labelColor: Colors.white,
                     dividerColor: Colors.transparent,
                     tabs: [
-                      Tab(text: 'FAQ'),
-                      Tab(text: 'Contact us'),
+                      Tab(text: 'faq'.tr),
+                      Tab(text: 'contact_us'.tr),
                     ]),
               ),
             ),
@@ -109,7 +109,7 @@ class _HelpCenterViewState extends State<HelpCenterView> {
                     SizedBox(height: 16),
                     TextFormField(
                       decoration: InputDecoration(
-                        hintText: 'Search',
+                        hintText: 'search'.tr,
                         prefixIcon: Icon(
                           HugeIcons.strokeRoundedSearch01,
                           size: 22,

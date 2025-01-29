@@ -1,6 +1,7 @@
 import 'package:chatify_ai/constants/constants.dart';
 import 'package:chatify_ai/views/common/button_wigets.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
 
 class PersonalInfo extends StatelessWidget {
@@ -10,7 +11,7 @@ class PersonalInfo extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Personal Info',
+          'personal_infos'.tr,
           style: TextStyle(fontSize: 20),
         ),
         centerTitle: true,
@@ -29,7 +30,7 @@ class PersonalInfo extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Full Name',
+                  'full_name'.tr,
                   style: TextStyle(
                     fontSize: 15,
                   ),
@@ -51,7 +52,7 @@ class PersonalInfo extends StatelessWidget {
                 ),
                 SizedBox(height: 15),
                 Text(
-                  'Email Address',
+                  'email_address'.tr,
                   style: TextStyle(
                     fontSize: 15,
                   ),
@@ -73,7 +74,7 @@ class PersonalInfo extends StatelessWidget {
                 ),
                 SizedBox(height: 15),
                 Text(
-                  'App Version',
+                  'app_version'.tr,
                   style: TextStyle(
                     fontSize: 15,
                   ),

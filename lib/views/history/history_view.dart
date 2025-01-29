@@ -106,8 +106,8 @@ class HistoryView extends StatelessWidget {
                 indicatorSize: TabBarIndicatorSize.tab,
                 tabs: [
                   Tab(text: 'chat'.tr),
-                  Tab(text: 'Pinned'),
-                  Tab(text: 'Shared'),
+                  Tab(text: 'pinned'.tr),
+                  Tab(text: 'shared'.tr),
                 ],
               ),
             ),
