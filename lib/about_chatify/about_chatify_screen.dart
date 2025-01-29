@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
 
 class AboutChatifyScreen extends StatelessWidget {
@@ -42,7 +43,7 @@ class AboutChatifyScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Feedback',
+                  Text('feedback'.tr,
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   Icon(HugeIcons.strokeRoundedArrowRight01),
@@ -52,7 +53,7 @@ class AboutChatifyScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Rate Us',
+                  Text('rate us'.tr,
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   Icon(HugeIcons.strokeRoundedArrowRight01),
@@ -62,7 +63,7 @@ class AboutChatifyScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Visit Our Website',
+                  Text('visit_website'.tr,
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   Icon(HugeIcons.strokeRoundedArrowRight01),
@@ -72,7 +73,7 @@ class AboutChatifyScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Follw us on Social Media ',
+                  Text('follow_us'.tr,
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   Icon(HugeIcons.strokeRoundedArrowRight01),
