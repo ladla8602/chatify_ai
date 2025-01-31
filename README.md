@@ -199,3 +199,65 @@ generatedImages/{generatedImageId}
   }
 }
 ```
+
+`appSetting` Collection
+
+```js
+{
+  "settings": {
+    "version": "1.0",
+    "apiKeys": {
+      "openai": "sk-...",
+      "deepseek": "ds-...",
+      "gemini": "gem-..."
+    },
+    "models": {
+      "chat": {
+        "configurations": [
+          {
+            "id": "gpt-4",
+            "name": "GPT-4",
+            "provider": "openai",
+            "apiModel": "gpt-4-turbo-preview",
+            "maxTokens": 128000,
+            "isDefault": true,
+            "isActive": true,
+            "capabilities": {
+              "streaming": true,
+              "functionCalling": true,
+              "imageAnalysis": true
+            }
+          }
+          // More chat models...
+        ],
+        "defaultModelId": "gpt-4"
+      },
+      "voiceAssistant": {
+        "configurations": [
+          // Voice assistant models...
+        ],
+        "defaultModelId": "whisper-1"
+      },
+      "imageGeneration": {
+        "configurations": [
+          // Image generation models...
+        ],
+        "defaultModelId": "dall-e-3"
+      },
+      "textToVoice": {
+        "configurations": [
+          // Text to voice models...
+        ],
+        "defaultModelId": "elevenlabs-1"
+      }
+    },
+    "rateLimit": {
+      "requestsPerMinute": 60,
+      "requestsPerDay": 1000
+    },
+    "maintenance": {
+      "isUnderMaintenance": false
+    }
+  }
+}
+```
