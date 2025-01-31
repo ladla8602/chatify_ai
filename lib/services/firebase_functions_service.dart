@@ -55,4 +55,19 @@ class FirebaseFunctionsService {
       return 'Opps something went wrong';
     }
   }
+
+  // WEB RTC
+  Future<String> getVoiceChatToken() async {
+    try {
+      final response =
+          await _functions.httpsCallable('getVoiceChatToken').call();
+
+      if (response.data['success'] == true) {
+        return response.data['token'];
+      }
+      throw Exception(response.data['error'] ?? 'Failed to get token');
+    } catch (e) {
+      throw Exception('Error getting voice chat token: $e');
+    }
+  }
 }

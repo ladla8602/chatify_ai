@@ -90,6 +90,5 @@ final Map<String, String> enUS = {
   "pinned": "Pinned",
   "shared": "Shared",
   "unpin": "Unpin",
-  "delete": "Delete",
-  "about_chatify": "About Chatify",
+  "delete": "Delete"
 };

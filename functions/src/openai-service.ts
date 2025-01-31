@@ -1,7 +1,8 @@
 // openai-service.ts
 import OpenAI from "openai";
 import { getStorage } from "firebase-admin/storage";
-import { ImageGenerateRequest, TextToSpeechRequest } from "./types";
+import { ImageGenerateRequest, TextToSpeechRequest, WebRTCTokenRequest, WebRTCTokenResponse } from "./types";
+
 
 export class OpenAIService {
   private client: OpenAI;
@@ -117,6 +118,50 @@ export class OpenAIService {
       throw new Error(`Failed to generate speech: ${error instanceof Error ? error.message : "Unknown error"}`);
     }
   }
+
+  //WEB RTC 
+
+  async generateEphemeralKey(request?: WebRTCTokenRequest): Promise<WebRTCTokenResponse> {
+    try {
+      if (!this.client.apiKey) {
+        throw new Error("API Key is missing. Set your OpenAI API key before making requests.");
+      }
+
+      const requestBody = {
+        model: request?.model || "gpt-4o-realtime-preview-2024-12-17", // Ensure correct model
+        voice: request?.voice || "verse" // Default voice
+      };
+
+      console.log("Sending request to OpenAI API:", process.env.OPENAI_API_KEY);
+      console.log("Sending request to OpenAI API:", requestBody);
+
+      const response = await fetch('https://api.openai.com/v1/realtime/sessions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestBody)
+      });
+
+      const responseText = await response.json();
+
+      if (!response.ok) {
+        console.error("OpenAI API Error Response:", responseText);
+        throw new Error(`API request failed: ${response.status} - ${responseText}`);
+      }
+
+      const data = responseText;
+      console.log(responseText)
+      console.log("Received token:", data.token);
+
+      return {
+        token: data.client_secret.value,
+        expires_at: data.expires_at
+      };
+    } catch (error) {
+      console.error("Error generating ephemeral key:", error);
+      throw new Error(`Failed to generate ephemeral key: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+  }
 }
-
-

@@ -45,6 +45,8 @@ dependencies:
     path: "./lib/library/flutter_chat"
   get_storage:
   cached_network_image:
+  flutter_webrtc: 
+  web_socket_channel: ^3.0.2 
  
 
 dev_dependencies:

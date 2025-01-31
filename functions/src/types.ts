@@ -67,3 +67,12 @@ export interface UserData {
     };
   };
 }
+export interface WebRTCTokenRequest {
+  model?: string;
+  voice?: string;
+}
+
+export interface WebRTCTokenResponse {
+  token: string;
+  expires_at: string;
+}

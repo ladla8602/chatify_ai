@@ -155,3 +155,30 @@ export const generateSpeech = onCall<TextToSpeechRequest, Promise<TextToSpeechRe
     };
   }
 });
+
+//WEB RTC  
+export const getVoiceChatToken = onCall(async (request) => {
+  try {
+    console.log(OPENAI_API_KEY)
+    const { auth } = request;
+    if (!auth || !auth.uid) {
+      throw new Error("Authentication required");
+    }
+
+    const openAIService = OpenAIService.getInstance(OPENAI_API_KEY);
+
+    const ephemeralKey = await openAIService.generateEphemeralKey(request.data);
+
+    return {
+      success: true,
+      token: ephemeralKey,
+      timestamp: new Date().toISOString()
+    };
+  } catch (error) {
+    logger.error("Error generating voice chat token:", error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "An unexpected error occurred"
+    };
+  }
+});
