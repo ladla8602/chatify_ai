@@ -14,7 +14,7 @@ class SecurityView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Security',
+          'security'.tr,
           style: TextStyle(fontSize: 20),
         ),
         centerTitle: true,
@@ -26,42 +26,42 @@ class SecurityView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               BuildTileWigets(
-                title: 'Remember me',
+                title: 'remember'.tr,
                 trailing: CustomSwitchButtonWigets(
                   isSwitched: commonController.dataEncryption.value,
                   onClick: () => commonController.toggleDataEncryption(),
                 ),
               ),
               BuildTileWigets(
-                title: 'Biometric ID',
+                title: 'biometric'.tr,
                 trailing: CustomSwitchButtonWigets(
                   isSwitched: commonController.isDarkMode.value,
                   onClick: () => commonController.toggleDarkMode(),
                 ),
               ),
               BuildTileWigets(
-                title: 'Face ID',
+                title: 'face'.tr,
                 trailing: CustomSwitchButtonWigets(
                   isSwitched: commonController.enableForNewChats.value,
                   onClick: () => commonController.toggleEnableForNewChats(),
                 ),
               ),
               BuildTileWigets(
-                title: 'SMS Authenticator',
+                title: 'sms_auth'.tr,
                 trailing: CustomSwitchButtonWigets(
                   isSwitched: commonController.chatHistory.value,
                   onClick: () => commonController.toggleChatHistory(),
                 ),
               ),
               BuildTileWigets(
-                title: 'Google Authenticator',
+                title: 'google_auth'.tr,
                 trailing: CustomSwitchButtonWigets(
                   isSwitched: commonController.dataTraining.value,
                   onClick: () => commonController.toggleDataTraining(),
                 ),
               ),
               BuildTileWigets(
-                title: 'Device Management',
+                title: 'device_auth'.tr,
               ),
               SizedBox(height: 16),
               SizedBox(
@@ -80,7 +80,7 @@ class SecurityView extends StatelessWidget {
                       ),
                     ),
                     child: Text(
-                      'Change Password',
+                      'change_password'.tr,
                     )),
               )
             ],

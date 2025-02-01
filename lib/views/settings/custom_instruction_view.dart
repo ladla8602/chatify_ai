@@ -31,8 +31,8 @@ class CustomInstructionView extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'What would you like Chatify to know about you to provide better responses?',
+             Text(
+              'custom_instruction_help'.tr,
               style: TextStyle(fontSize: 15),
             ),
             const SizedBox(height: 8),
@@ -41,7 +41,7 @@ class CustomInstructionView extends StatelessWidget {
               controller: firstAnswerController,
               maxLines: 5,
               decoration: InputDecoration(
-                hintText: 'Your answer ...',
+                hintText: 'your_answer'.tr,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
                   borderSide: BorderSide.none,
@@ -59,7 +59,7 @@ class CustomInstructionView extends StatelessWidget {
               controller: secondAnswerController,
               maxLines: 5,
               decoration: InputDecoration(
-                hintText: 'Your answer ...',
+                hintText: 'your_answer'.tr,
                 border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.0),
                     borderSide: BorderSide.none),
@@ -69,8 +69,8 @@ class CustomInstructionView extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
-                  'Enable for new chats',
+                 Text(
+                  'enabnle'.tr,
                   style: TextStyle(
                     fontSize: 15,
                   ),
@@ -104,7 +104,7 @@ class CustomInstructionView extends StatelessWidget {
                         color: Theme.of(context).primaryColor.withOpacity(0.2),
                       ),
                       child: Text(
-                        'Cancel',
+                        'cancels'.tr,
                         style: TextStyle(color: Theme.of(context).primaryColor),
                       ),
                     ),
@@ -113,7 +113,7 @@ class CustomInstructionView extends StatelessWidget {
                 const SizedBox(width: 16),
                 Expanded(
                   child: ElevatedButtonWigets(
-                      text: 'Save',
+                      text: 'save'.tr,
                       backgroundColor: Theme.of(context).primaryColor,
                       foregroundColor: Colors.white,
                       onClick: () {}),

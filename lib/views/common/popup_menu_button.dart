@@ -3,57 +3,64 @@ import 'package:hugeicons/hugeicons.dart';
 
 class ThemedPopupMenuButton extends StatelessWidget {
   final void Function(String)? onSelected;
-  final String ? text;
+  final String? text;
 
   const ThemedPopupMenuButton({
     super.key,
     this.onSelected,
-   this.text,
+    this.text,
   });
 
   @override
   Widget build(BuildContext context) {
     return Theme(
       data: Theme.of(context).copyWith(
-        popupMenuTheme: const PopupMenuThemeData(
-          color: Colors.white, // Background color of the menu
-          textStyle: TextStyle(color: Colors.black),
+        popupMenuTheme: PopupMenuThemeData(
+          color: Theme.of(context)
+              .scaffoldBackgroundColor, // Background color of the menu
+          textStyle: TextStyle(color: Theme.of(context).colorScheme.onSurface),
         ),
       ),
       child: PopupMenuButton<String>(
-        icon: const Icon(
+        icon: Icon(
           HugeIcons.strokeRoundedMoreVertical, // HugeIcons preserved
-          color: Colors.black, // Set icon color
+          color: Theme.of(context).colorScheme.onSurface, // Set icon color
         ),
         onSelected: onSelected,
         itemBuilder: (context) => [
-          const PopupMenuItem<String>(
+          PopupMenuItem<String>(
             value: 'Share Link',
             child: ListTile(
               leading: Icon(HugeIcons.strokeRoundedShare01,
-                  size: 20, color: Colors.black),
+                  size: 20, color: Theme.of(context).colorScheme.onSurface),
               title: Text('Share Link'),
             ),
           ),
-          const PopupMenuItem<String>(
+          PopupMenuItem<String>(
             value: 'Unpin',
             child: ListTile(
-              leading: Icon(HugeIcons.strokeRoundedPinOff, size: 20, color: Colors.black),
+              leading: Icon(HugeIcons.strokeRoundedPinOff,
+                  size: 20, color: Theme.of(context).colorScheme.onSurface),
               title: Text('Unpin'),
             ),
           ),
-          const PopupMenuItem<String>(
+          PopupMenuItem<String>(
             value: 'Rename',
             child: ListTile(
-              leading: Icon(HugeIcons.strokeRoundedEdit01, size: 20, color: Colors.black),
+              leading: Icon(HugeIcons.strokeRoundedEdit01,
+                  size: 20, color: Theme.of(context).colorScheme.onSurface),
               title: Text('Rename'),
             ),
           ),
-          const PopupMenuItem<String>(
+          PopupMenuItem<String>(
             value: 'Delete',
             child: ListTile(
-              leading: Icon(HugeIcons.strokeRoundedDelete01, size: 20, color: Colors.red),
-              title: Text('Delete', style: TextStyle(color: Colors.red),),
+              leading: Icon(HugeIcons.strokeRoundedDelete01,
+                  size: 20, color: Colors.red),
+              title: Text(
+                'Delete',
+                style: TextStyle(color: Colors.red),
+              ),
             ),
           ),
         ],

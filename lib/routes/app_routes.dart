@@ -6,11 +6,9 @@ import 'package:chatify_ai/views/history/history_view.dart';
 import 'package:chatify_ai/views/linked_account/linked_accounts.dart';
 import 'package:chatify_ai/views/payment/review_summary.dart';
 import 'package:chatify_ai/views/payment/select_payment_method.dart';
-import 'package:chatify_ai/views/payment/successfully_screen.dart';
+import 'package:chatify_ai/views/payment/payment_success_screen.dart';
 import 'package:chatify_ai/views/personal_info/persnol_info.dart';
-import 'package:chatify_ai/views/privacy_policy/privacy_policy_screen.dart';
 import 'package:chatify_ai/views/security/security_view.dart';
-import 'package:chatify_ai/views/terms_of_use/terms_of_use_screen.dart';
 import 'package:get/get.dart';
 import '../views/audio/audio_view.dart';
 import '../views/auth/forgot_password/create_new_password_view.dart';
@@ -97,12 +95,9 @@ class AppRoutes {
     GetPage(name: audioView, page: () => AudioGenerateView()),
     GetPage(name: commonpageView, page: () => CommonPageView()),
     GetPage(name: helpCenterView, page: () => HelpCenterView()),
-  
-    GetPage(name: termsOfUse, page: () => TermsOfUseScreen()),
-    GetPage(name: privacyPolicy, page: () => PrivacyPolicyScreen()),
     GetPage(name: aboutChatify, page: () => AboutChatifyScreen()),
     GetPage(name: paymentMethodsSelect, page: () => SelectPaymentMethod()),
     GetPage(name: reviewSummary, page: () => ReviewSummary()),
-    GetPage(name: successfullyScreen, page: () => SuccessfullyScreen()),
+    GetPage(name: successfullyScreen, page: () => PaymentSuccessScreen()),
   ];
 }

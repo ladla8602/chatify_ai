@@ -22,7 +22,6 @@ class _ReviewSummaryState extends State<ReviewSummary> {
             style: TextStyle(fontSize: 20),
           ),
           centerTitle: true,
-        
         ),
         body: Padding(
           padding: const EdgeInsets.all(18),
@@ -90,7 +89,6 @@ class _ReviewSummaryState extends State<ReviewSummary> {
                 border: Border.all(color: Colors.grey.shade300),
               ),
               child: Column(
-              
                 children: [
                   Row(
                     children: [
@@ -101,10 +99,11 @@ class _ReviewSummaryState extends State<ReviewSummary> {
                       SizedBox(width: 16),
                       Text(
                         '********5567',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                            color: Colors.black),
+                        style:
+                            Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                ),
                       ),
                       Spacer(),
                       Text(
@@ -118,10 +117,9 @@ class _ReviewSummaryState extends State<ReviewSummary> {
                   ),
                 ],
               ),
-
             ),
             const Spacer(),
-               ElevatedButtonWigets(
+            ElevatedButtonWigets(
               text: 'Continue Payment -\4.99',
               onClick: () {
                 Get.toNamed(AppRoutes.successfullyScreen);

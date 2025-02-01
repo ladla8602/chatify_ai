@@ -71,8 +71,9 @@ class LinkedAccountWigets extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: Colors.grey.shade200),
         color: Colors.white,
+        border:
+            Border.all(color: Theme.of(context).colorScheme.surface, width: 2),
       ),
       child: Row(
         children: [

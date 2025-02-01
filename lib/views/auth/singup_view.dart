@@ -41,7 +41,10 @@ class SingupView extends StatelessWidget {
                   controller: emailController,
                   textAlign: TextAlign.start,
                   textAlignVertical: TextAlignVertical.bottom,
-                  style: const TextStyle(fontSize: 15),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyMedium
+                      ?.copyWith(fontSize: 15),
                   decoration: InputDecoration(
                     prefixIcon: Icon(
                       HugeIcons.strokeRoundedMail01,
@@ -73,7 +76,10 @@ class SingupView extends StatelessWidget {
                   obscureText: authController.passwordVisible.value,
                   textAlignVertical: TextAlignVertical.bottom,
                   controller: passwordController,
-                  style: const TextStyle(fontSize: 15),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyMedium
+                      ?.copyWith(fontSize: 15),
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.symmetric(
                         vertical: 20, horizontal: 28),

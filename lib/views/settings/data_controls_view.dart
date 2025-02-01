@@ -25,7 +25,7 @@ class DataControlsView extends StatelessWidget {
             Obx(() {
               return BuildTileWigets(
                 icon: HugeIcons.strokeRoundedWorkHistory,
-                title: 'Chat History',
+                title: 'chat_history'.tr,
                 trailing: CustomSwitchButtonWigets(
                   isSwitched: commonController.chatHistory.value,
                   onClick: () {
@@ -37,7 +37,7 @@ class DataControlsView extends StatelessWidget {
             Obx(() {
               return BuildTileWigets(
                 icon: HugeIcons.strokeRoundedAnalytics02,
-                title: 'Data Training',
+                title: 'data_training'.tr,
                 trailing: CustomSwitchButtonWigets(
                   isSwitched: commonController.dataTraining.value,
                   onClick: () {
@@ -49,7 +49,7 @@ class DataControlsView extends StatelessWidget {
             Obx(() {
               return BuildTileWigets(
                 icon: HugeIcons.strokeRoundedKey02,
-                title: 'Data Encryption',
+                title: 'data_encryption'.tr,
                 trailing: CustomSwitchButtonWigets(
                   isSwitched: commonController.dataEncryption.value,
                   onClick: () {
@@ -60,17 +60,17 @@ class DataControlsView extends StatelessWidget {
             }),
             BuildTileWigets(
               icon: HugeIcons.strokeRoundedArrowUpDown,
-              title: 'Third-party Integrations',
+              title: 'third_party'.tr,
               onTap: () {},
             ),
             BuildTileWigets(
               icon: HugeIcons.strokeRoundedFileExport,
-              title: 'Export Data',
+              title: 'export_data'.tr,
               onTap: () {},
             ),
             BuildTileWigets(
               icon: HugeIcons.strokeRoundedDelete02,
-              title: 'Delete All Chat History',
+              title: 'delete_all'.tr,
               onTap: () {},
             ),
           ],
