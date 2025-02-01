@@ -118,8 +118,8 @@
 //   }
 // }
 import * as admin from "firebase-admin";
+import { FieldValue, Firestore } from "firebase-admin/firestore";
 import * as functions from "firebase-functions";
-import { Firestore, FieldValue } from "firebase-admin/firestore";
 import { logger } from "firebase-functions";
 
 interface UserData {
@@ -284,20 +284,6 @@ export class UsageService {
         "internal",
         "An unexpected error occurred while updating usage limits"
       );
-    }
-  }
-
-  // Utility method for debugging
-  public static async debugUserData(userId: string): Promise<any> {
-    try {
-      const userDoc = await this.db.collection("users").doc(userId).get();
-      return {
-        exists: userDoc.exists,
-        data: userDoc.data(),
-      };
-    } catch (error) {
-      logger.error("Error in debugUserData:", error);
-      throw error;
     }
   }
 }

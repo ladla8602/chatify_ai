@@ -1,15 +1,15 @@
 // index.ts
-import { onCall } from "firebase-functions/v2/https";
-import { logger } from "firebase-functions";
 import { initializeApp } from "firebase-admin/app";
+import { logger } from "firebase-functions";
+import { onCall } from "firebase-functions/v2/https";
 import { OpenAIService } from "./openai-service.js";
 // import { AuthService } from "./auth-service.js";
-import { RequestValidator } from "./validators.js";
-import type { ChatRequest, ChatResponse, ImageGenerateRequest, ImageGenerateResponse, TextToSpeechRequest, TextToSpeechResponse } from "./types.js";
 import { config } from "dotenv";
+import type { ChatRequest, ChatResponse, ImageGenerateRequest, ImageGenerateResponse, TextToSpeechRequest, TextToSpeechResponse } from "./types.js";
+import { RequestValidator } from "./validators.js";
 // import { getAuth, ListUsersResult } from "firebase-admin/auth";
-import { UsageService } from "./usage-service.js";
 import { getFirestore } from "firebase-admin/firestore";
+import { UsageService } from "./usage-service.js";
 
 // Load environment variables
 config();
@@ -156,10 +156,13 @@ export const generateSpeech = onCall<TextToSpeechRequest, Promise<TextToSpeechRe
   }
 });
 
-//WEB RTC  
-export const getVoiceChatToken = onCall(async (request) => {
+// WEB RTC
+export const getVoiceChatToken = onCall({
+  maxInstances: 3,
+  timeoutSeconds: 120,
+  memory: "256MiB",
+}, async (request) => {
   try {
-    console.log(OPENAI_API_KEY)
     const { auth } = request;
     if (!auth || !auth.uid) {
       throw new Error("Authentication required");
@@ -172,13 +175,13 @@ export const getVoiceChatToken = onCall(async (request) => {
     return {
       success: true,
       token: ephemeralKey,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     };
   } catch (error) {
     logger.error("Error generating voice chat token:", error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : "An unexpected error occurred"
+      error: error instanceof Error ? error.message : "An unexpected error occurred",
     };
   }
 });
