@@ -5,10 +5,11 @@ import { onCall } from "firebase-functions/v2/https";
 import { OpenAIService } from "./openai-service.js";
 // import { AuthService } from "./auth-service.js";
 import { config } from "dotenv";
-import type { ChatRequest, ChatResponse, ImageGenerateRequest, ImageGenerateResponse, TextToSpeechRequest, TextToSpeechResponse } from "./types.js";
+import type { ChatRequest, ChatResponse, ImageGenerateRequest, ImageGenerateResponse, Message, TextToSpeechRequest, TextToSpeechResponse } from "./types.js";
 import { RequestValidator } from "./validators.js";
 // import { getAuth, ListUsersResult } from "firebase-admin/auth";
 import { getFirestore } from "firebase-admin/firestore";
+import { LangChainService } from "./langchain.service.js";
 import { UsageService } from "./usage-service.js";
 
 // Load environment variables
@@ -20,7 +21,7 @@ if (!OPENAI_API_KEY) {
 }
 
 // Set emulator before initializing
-// process.env.FIREBASE_AUTH_EMULATOR_HOST = "127.0.0.1:9099";
+process.env.FIREBASE_AUTH_EMULATOR_HOST = "127.0.0.1:9099";
 
 // Initialize Firebase Admin
 initializeApp();
@@ -39,20 +40,29 @@ export const askChatGPT = onCall<ChatRequest, Promise<ChatResponse>>({
       throw new Error("Authentication required");
     }
 
-    await UsageService.incrementUsage(auth.uid, "message");
     // Validate request
     const message = RequestValidator.validateMessage(request.data.message);
     // Get OpenAI service instance
-    const openAIService = OpenAIService.getInstance(OPENAI_API_KEY);
+    // const openAIService = OpenAIService.getInstance(OPENAI_API_KEY);
+    const langchainService = await LangChainService.getInstance(request.data.provider || "deepseek");
     // Generate response with timeout
     const timeoutPromise = new Promise<string>((_, reject) =>
       setTimeout(() => reject(new Error("Request timeout")), 25000)
     );
+
+    // Prepare messages
+    const messages: Message[] = [
+      { role: "assistant", content: request.data.chatBot.botPrompt || "You are a helpful assistant." },
+      { role: "user", content: message },
+    ];
     // Generate response
     const response = await Promise.race<string>([
-      openAIService.generateCompletion(message),
+      // openAIService.generateCompletion(message),
+      langchainService.generateCompletion(messages),
       timeoutPromise,
     ]);
+
+    await UsageService.incrementUsage(auth.uid, "message");
 
     return {
       success: true,

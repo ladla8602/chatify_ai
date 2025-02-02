@@ -1,5 +1,7 @@
 export interface ChatRequest {
   message: string;
+  chatBot: any;
+  provider: "openai" | "gemini" | "deepseek";
 }
 
 export interface ChatResponse {
@@ -9,6 +11,10 @@ export interface ChatResponse {
   timestamp: string;
 }
 
+export interface Message {
+  role: "system" | "user" | "assistant";
+  content: string;
+}
 
 export interface ImageGenerateRequest {
   prompt: string;
@@ -57,6 +63,8 @@ export interface UserData {
     messagesPerMonth: number;
     imagesPerMonth: number;
     audiosPerMonth: number;
+    voicePerDay: number;
+    voicePerMonth: number;
   };
   usage: {
     daily: {
@@ -75,4 +83,43 @@ export interface WebRTCTokenRequest {
 export interface WebRTCTokenResponse {
   token: string;
   expires_at: string;
+}
+
+export interface ModelConfiguration {
+  id: string;
+  name: string;
+  provider: string;
+  apiModel: string;
+  maxTokens: number;
+  isActive: boolean;
+  capabilities: {
+    streaming: boolean;
+    functionCalling: boolean;
+    imageAnalysis: boolean;
+  };
+}
+
+interface DefaultModel {
+  openai: string;
+  gemini: string;
+  deepseek: string;
+}
+
+export interface ModelsSettings {
+  chat: {
+    configurations: ModelConfiguration[];
+    defaultModels: DefaultModel;
+  };
+  voiceAssistant: {
+    configurations: ModelConfiguration[];
+    defaultModels: DefaultModel;
+  };
+  imageGeneration: {
+    configurations: ModelConfiguration[];
+    defaultModels: DefaultModel;
+  };
+  textToVoice: {
+    configurations: ModelConfiguration[];
+    defaultModels: DefaultModel;
+  };
 }

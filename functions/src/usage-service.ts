@@ -118,14 +118,14 @@
 //   }
 // }
 import * as admin from "firebase-admin";
-import { FieldValue, Firestore } from "firebase-admin/firestore";
+import { FieldValue, Firestore, Timestamp } from "firebase-admin/firestore";
 import * as functions from "firebase-functions";
 import { logger } from "firebase-functions";
 
 interface UserData {
   subscription: {
     status: "active" | "inactive";
-    endDate: admin.firestore.Timestamp;
+    endDate: Timestamp;
   };
   usage: {
     daily: Record<string, any>;
@@ -185,7 +185,7 @@ export class UsageService {
         const defaultData = {
           subscription: {
             status: "active", // Changed to active for testing
-            endDate: admin.firestore.Timestamp.fromDate(
+            endDate: Timestamp.fromDate(
               new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) // 30 days from now
             ),
           },
@@ -200,6 +200,8 @@ export class UsageService {
             imagesPerMonth: 200,
             audiosPerDay: 20,
             audiosPerMonth: 200,
+            voicePerDay: 3,
+            voicePerMonth: 100,
           },
         };
 
@@ -224,7 +226,7 @@ export class UsageService {
 
   public static async incrementUsage(
     userId: string,
-    type: "message" | "image" | "audio"
+    type: "message" | "image" | "audio" | "voice"
   ): Promise<void> {
     try {
       logger.info(`Starting incrementUsage for userId: ${userId}, type: ${type}`);
