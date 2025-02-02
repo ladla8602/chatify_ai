@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:chatify_ai/models/chat_bot_command.model.dart';
 import 'package:chatify_ai/models/image_gen_command.dart';
@@ -13,10 +12,8 @@ class FirebaseFunctionsService {
 
   Future<String> askChatGPT(ChatBotCommand chatBotCommand) async {
     try {
-      final response = await _functions
-          .httpsCallable('askChatGPT',
-              options: HttpsCallableOptions(timeout: Duration(seconds: 120)))
-          .call(chatBotCommand.toJson());
+      final response =
+          await _functions.httpsCallable('askChatGPT', options: HttpsCallableOptions(timeout: Duration(seconds: 120))).call(chatBotCommand.toJson());
       // log(">>>>>>generateAiResponse:${response.data.toString()}");
 
       return response.data['message'];
@@ -28,11 +25,9 @@ class FirebaseFunctionsService {
 
   Future<String> generateAIImage(ImageGenCommand imageGenCommand) async {
     try {
-      final response = await _functions
-          .httpsCallable('generateAIImage',
-              options: HttpsCallableOptions(timeout: Duration(seconds: 120)))
-          .call(imageGenCommand.toJson());
-      log(">>>>>>generateAiResponse:${response.data.toString()}");
+      final response =
+          await _functions.httpsCallable('generateAIImage', options: HttpsCallableOptions(timeout: Duration(seconds: 120))).call(imageGenCommand.toJson());
+      // log(">>>>>>generateAiResponse:${response.data.toString()}");
 
       return response.data['image'];
     } catch (e) {
@@ -43,11 +38,9 @@ class FirebaseFunctionsService {
 
   Future<String> generateAudio(SpeechCommand speechGenCommand) async {
     try {
-      final response = await _functions
-          .httpsCallable('generateSpeech',
-              options: HttpsCallableOptions(timeout: Duration(seconds: 120)))
-          .call(speechGenCommand.toJson());
-      log(">>>>>>generateAudioAiResponse:${response.data.toString()}");
+      final response =
+          await _functions.httpsCallable('generateSpeech', options: HttpsCallableOptions(timeout: Duration(seconds: 120))).call(speechGenCommand.toJson());
+      // log(">>>>>>generateAudioAiResponse:${response.data.toString()}");
 
       return response.data['audioUrl'];
     } catch (e) {
@@ -59,11 +52,10 @@ class FirebaseFunctionsService {
   // WEB RTC
   Future<String> getVoiceChatToken() async {
     try {
-      final response =
-          await _functions.httpsCallable('getVoiceChatToken').call();
-
+      final response = await _functions.httpsCallable('getVoiceChatToken').call();
+      print(">>>>>>getVoiceChatToken:${response.data.toString()}");
       if (response.data['success'] == true) {
-        return response.data['token'];
+        return response.data['token']['token'];
       }
       throw Exception(response.data['error'] ?? 'Failed to get token');
     } catch (e) {

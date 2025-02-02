@@ -1,12 +1,16 @@
+import 'chatbot.model.dart';
+
 class ChatBotCommand {
   String? chatRoomId;
   String? chatBotId;
+  ChatBot? chatbot;
   String? chatBotName;
   String? chatBotAvatar;
   bool? roomExist;
   String? title;
   String? message;
   String? prompt;
+  String? provider;
   String? model;
   String? action;
   String? rewardToken;
@@ -15,12 +19,14 @@ class ChatBotCommand {
   ChatBotCommand({
     this.chatRoomId,
     this.chatBotId,
+    this.chatbot,
     this.chatBotName,
     this.chatBotAvatar,
     this.roomExist,
     this.title = "New Conversation",
     this.message,
     this.prompt,
+    this.provider,
     this.model = "gpt-3.5-turbo-1106",
     this.action = "next",
     this.rewardToken,
@@ -43,6 +49,15 @@ class ChatBotCommand {
     if (vision != null) {
       data['vision'] = vision!.toJson();
     }
+    return data;
+  }
+
+  Map<String, dynamic> toPayload() {
+    final Map<String, dynamic> data = {};
+    data['chatRoomId'] = chatRoomId;
+    data['chatBot'] = chatbot?.toJson();
+    data['message'] = message;
+    data['provider'] = provider;
     return data;
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:chatify_ai/library/flutter_chat/lib/src/types/types.dart' as types;
 import 'package:chatify_ai/models/image_gen_command.dart';
 import 'package:chatify_ai/models/image_message.model.dart';
 import 'package:chatify_ai/services/firebase_functions_service.dart';
@@ -8,11 +9,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/state_manager.dart';
-import 'package:chatify_ai/library/flutter_chat/lib/src/types/types.dart'
-    as types;
-
-import '../constants/constants.dart';
 
 class ImageGenController extends GetxController {
   // Dependencies
@@ -23,8 +19,7 @@ class ImageGenController extends GetxController {
     FirestoreService? firestoreService,
     FirebaseFunctionsService? firebaseFunctionsService,
   })  : _firestoreService = firestoreService ?? FirestoreService(),
-        _firebaseFunctionsService =
-            firebaseFunctionsService ?? FirebaseFunctionsService();
+        _firebaseFunctionsService = firebaseFunctionsService ?? FirebaseFunctionsService();
 
   // UI Controllers
   final messageController = TextEditingController();
@@ -71,13 +66,10 @@ class ImageGenController extends GetxController {
   }
 
   Future<QuerySnapshot<Map<String, dynamic>>> _fetchMessages() {
-    return lastDocument == null
-        ? _firestoreService.fetchImageMessages()
-        : _firestoreService.fetchImageMessages(lastDocument);
+    return lastDocument == null ? _firestoreService.fetchImageMessages() : _firestoreService.fetchImageMessages(lastDocument);
   }
 
-  List<types.Message> _convertFirestoreToMessages(
-      List<QueryDocumentSnapshot<Map<String, dynamic>>> docs) {
+  List<types.Message> _convertFirestoreToMessages(List<QueryDocumentSnapshot<Map<String, dynamic>>> docs) {
     return docs.expand((doc) {
       final message = ImageMessage.fromFirestore(doc);
       return _createMessagesFromChatMessage(message);
@@ -95,8 +87,7 @@ class ImageGenController extends GetxController {
   types.Message _createImageMessage(ImageMessage message) {
     return types.ImageMessage(
       author: user,
-      createdAt:
-          DateTime.parse(message.createdAt.toString()).millisecondsSinceEpoch,
+      createdAt: DateTime.parse(message.createdAt.toString()).millisecondsSinceEpoch,
       id: message.id.toString(),
       name: 'AI Generated Image',
       size: 1024,

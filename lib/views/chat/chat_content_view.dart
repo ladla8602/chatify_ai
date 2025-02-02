@@ -1,14 +1,13 @@
-import 'dart:developer';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:chatify_ai/controllers/chat_controller.dart';
 import 'package:chatify_ai/library/flutter_chat/lib/flutter_chat.dart';
 import 'package:chatify_ai/library/flutter_chat/lib/src/types/types.dart' as types;
 import 'package:chatify_ai/models/chatbot.model.dart';
 import 'package:chatify_ai/widgets/not_found_widget.dart';
 import 'package:chatify_ai/widgets/typing_loader.dart';
-import 'package:chatify_ai/controllers/chat_controller.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:uuid/uuid.dart';
 
@@ -37,6 +36,8 @@ class _ChatContentViewState extends State<ChatContentView> {
 
     _chatController
       ..chatbot = chatbot
+      ..chatBotCommand.chatbot = chatbot
+      ..chatBotCommand.provider = 'openai'
       ..chatBotCommand.chatRoomId = Get.arguments['chatRoomId'] ?? Uuid().v4()
       ..chatBotCommand.roomExist = Get.arguments['chatRoomId'] != null
       ..chatBotCommand.chatBotId = chatbot.botId

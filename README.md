@@ -41,7 +41,7 @@ Follow this doc - https://firebase.google.com/docs/flutter/setup?platform=androi
 
 ## 3. Firebase functions
 
-firebase emulators:start --import ./firebase-export-17353920669909mXqhx --export-on-exit
+firebase emulators:start --import ./firebase-export-1738494335036oJP5Y8 --export-on-exit
 
 firebase functions:delete myFunction
 
