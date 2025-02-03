@@ -17,7 +17,8 @@ final Map<String, String> ruRU = {
   "forgot_password": "Забыли пароль?",
   "login_with_google": "Войти через Google",
   "upgrade_to_pro": "Обновите до PRO!",
-  "enjoy_all_benefits": "Наслаждайтесь всеми преимуществами и исследуйте новые функции!",
+  "enjoy_all_benefits":
+      "Наслаждайтесь всеми преимуществами и исследуйте новые функции!",
   "new_chat": "Новый чат",
   "chat": "Чат",
   "image_generate": "Создание изображения",
@@ -91,4 +92,10 @@ final Map<String, String> ruRU = {
   "shared": "Поделились",
   "unpin": "Открепить",
   "delete": "Удалить",
+  "go_ahead": "Продолжайте, я слушаю...",
+  "click_on_mic": "Нажмите на кнопку микрофона, чтобы начать голосовой чат.",
+  "go_to_premium": "Перейти на премиум",
+  "upgrade_now": "Обновить сейчас",
+  "voice_assistant": "Голосовой помощник",
+  "listening": "Слушаю..."
 };

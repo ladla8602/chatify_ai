@@ -17,7 +17,8 @@ final Map<String, String> frFR = {
   "forgot_password": "Mot de passe oublié ?",
   "login_with_google": "Se connecter avec Google",
   "upgrade_to_pro": "Passez à PRO !",
-  "enjoy_all_benefits": "Profitez de tous les avantages et explorez plus de fonctionnalités !",
+  "enjoy_all_benefits":
+      "Profitez de tous les avantages et explorez plus de fonctionnalités !",
   "new_chat": "Nouvelle conversation",
   "chat": "Discussion",
   "image_generate": "Générer une image",
@@ -91,4 +92,11 @@ final Map<String, String> frFR = {
   "shared": "Partagé",
   "unpin": "Désépingler",
   "delete": "Supprimer",
+  "go_ahead": "Allez-y, je vous écoute...",
+  "click_on_mic":
+      "Cliquez sur le bouton du micro pour commencer le chat vocal.",
+  "go_to_premium": "Passer à la version premium",
+  "upgrade_now": "Mettre à niveau maintenant",
+  "voice_assistant": "Assistant vocal",
+  "listening": "Écoute..."
 };

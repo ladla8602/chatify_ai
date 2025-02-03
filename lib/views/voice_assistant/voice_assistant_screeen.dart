@@ -5,6 +5,7 @@ import 'package:hugeicons/hugeicons.dart';
 import 'package:lottie/lottie.dart';
 
 import '../../controllers/voice_assistant_controller.dart';
+import '../../routes/app_routes.dart';
 
 class VoiceAssistantChatScreen extends StatefulWidget {
   const VoiceAssistantChatScreen({super.key});
@@ -13,7 +14,8 @@ class VoiceAssistantChatScreen extends StatefulWidget {
   State<VoiceAssistantChatScreen> createState() => _VoiceChatScreenState();
 }
 
-class _VoiceChatScreenState extends State<VoiceAssistantChatScreen> with SingleTickerProviderStateMixin {
+class _VoiceChatScreenState extends State<VoiceAssistantChatScreen>
+    with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late VoiceAssistantController _voiceAssistantController;
 
@@ -24,7 +26,8 @@ class _VoiceChatScreenState extends State<VoiceAssistantChatScreen> with SingleT
       vsync: this,
       duration: const Duration(seconds: 2),
     );
-    _voiceAssistantController = Get.put(VoiceAssistantController(animationController: _animationController));
+    _voiceAssistantController = Get.put(
+        VoiceAssistantController(animationController: _animationController));
   }
 
   @override
@@ -47,8 +50,10 @@ class _VoiceChatScreenState extends State<VoiceAssistantChatScreen> with SingleT
               return Expanded(
                 child: Column(
                   children: [
-                    Text(_voiceAssistantController.isListening.value ? 'Go ahead, I’m listening . . .' : 'Click on mic button to start voice chatting.'),
-                    const SizedBox(height: 16),
+                    Text(_voiceAssistantController.isListening.value
+                        ? 'go_ahead'.tr
+                        : 'click_on_mic'.tr),
+                    const SizedBox(height: 22),
                     LottieBuilder.asset(
                       controller: _animationController,
                       width: 305,
@@ -56,23 +61,48 @@ class _VoiceChatScreenState extends State<VoiceAssistantChatScreen> with SingleT
                       delegates: LottieDelegates(
                         values: [
                           ValueDelegate.color(
-                            const ['Untitled-1 Outlines', 'Group 1', 'Fill 1', '**'],
+                            const [
+                              'Untitled-1 Outlines',
+                              'Group 1',
+                              'Fill 1',
+                              '**'
+                            ],
                             value: Theme.of(context).primaryColor,
                           ),
                           ValueDelegate.color(
-                            const ['Untitled-1 Outlines', 'Group 2', 'Fill 1', '**'],
+                            const [
+                              'Untitled-1 Outlines',
+                              'Group 2',
+                              'Fill 1',
+                              '**'
+                            ],
                             value: Theme.of(context).primaryColor,
                           ),
                           ValueDelegate.color(
-                            const ['Shape Layer 1', 'Ellipse 1', 'Fill 1', '**'],
+                            const [
+                              'Shape Layer 1',
+                              'Ellipse 1',
+                              'Fill 1',
+                              '**'
+                            ],
                             value: const Color(0xff5B5B5B),
                           ),
                           ValueDelegate.color(
-                            const ['Shape Layer 2', 'Ellipse 1', 'Fill 1', '**'],
+                            const [
+                              'Shape Layer 2',
+                              'Ellipse 1',
+                              'Fill 1',
+                              '**'
+                            ],
                             value: const Color(0xff5B5B5B),
                           ),
                           ValueDelegate.color(
-                            const ['Shape Layer 3', 'Ellipse 1', 'Fill 1', '**'],
+                            const [
+                              'Shape Layer 3',
+                              'Ellipse 1',
+                              'Fill 1',
+                              '**'
+                            ],
                             value: const Color(0xff5B5B5B),
                           ),
                         ],
@@ -91,7 +121,7 @@ class _VoiceChatScreenState extends State<VoiceAssistantChatScreen> with SingleT
         height: 200,
         padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 16),
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.tertiary,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(20),
             topRight: Radius.circular(20),
@@ -116,17 +146,25 @@ class _VoiceChatScreenState extends State<VoiceAssistantChatScreen> with SingleT
                 const SizedBox(width: 4),
                 Flexible(
                   child: Text.rich(
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w400, color: Theme.of(context).colorScheme.outlineVariant),
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        fontWeight: FontWeight.w400,
+                        color: Theme.of(context).colorScheme.outlineVariant),
                     TextSpan(
-                      text: 'Go to premium',
+                      text: 'go_to_premium'.tr,
                       children: [
                         const TextSpan(text: ' '),
                         TextSpan(
-                          text: 'Upgrade now',
-                          style: Theme.of(context).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w500, color: Theme.of(context).colorScheme.primary),
+                          text: 'upgrade_now'.tr,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodySmall
+                              ?.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                  color: Theme.of(context).colorScheme.primary),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
                               // Navigate to subscription screen
+                              Get.toNamed(AppRoutes.upgrade);
                             },
                         ),
                       ],
@@ -142,35 +180,36 @@ class _VoiceChatScreenState extends State<VoiceAssistantChatScreen> with SingleT
               children: [
                 SizedBox(),
                 GestureDetector(
-                  onTap: _voiceAssistantController.isListening.value ? _voiceAssistantController.stopRecording : _voiceAssistantController.startRecording,
+                  onTap: _voiceAssistantController.isListening.value
+                      ? _voiceAssistantController.stopRecording
+                      : _voiceAssistantController.startRecording,
                   child: Container(
                     height: 80,
                     width: 80,
                     padding: const EdgeInsets.all(22),
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.2),
+                          spreadRadius: 2,
+                          blurRadius: 4,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
                       gradient: LinearGradient(
                         colors: [
-                          Color(0xff1A1A40),
-                          Color(0xff1A1A40),
+                          Theme.of(context).colorScheme.primary,
+                          Theme.of(context).colorScheme.primary,
                         ],
                       ),
-                      border: Border(
-                        top: BorderSide(
-                          width: 4,
-                          color: Color(0xff262660),
-                        ),
-                        left: BorderSide(
-                          width: 4,
-                          color: Color(0xff262660),
-                        ),
-                        right: BorderSide(
-                          width: 4,
-                          color: Color(0xff262660),
-                        ),
-                      ),
                     ),
-                    child: Icon(_voiceAssistantController.isListening.value ? HugeIcons.strokeRoundedPause : HugeIcons.strokeRoundedMic01),
+                    child: Icon(
+                      _voiceAssistantController.isListening.value
+                          ? HugeIcons.strokeRoundedPause
+                          : HugeIcons.strokeRoundedMic01,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
                 GestureDetector(
@@ -178,14 +217,26 @@ class _VoiceChatScreenState extends State<VoiceAssistantChatScreen> with SingleT
                     Navigator.pop(context);
                   },
                   child: Container(
-                    height: 48,
-                    width: 48,
+                    height: 45,
+                    width: 45,
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: Theme.of(context).colorScheme.surfaceContainer,
+                      color: Theme.of(context).colorScheme.primary,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.2),
+                          spreadRadius: 2,
+                          blurRadius: 4,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
                     ),
-                    child: Icon(HugeIcons.strokeRoundedTime01),
+                    child: Icon(
+                      HugeIcons.strokeRoundedMultiplicationSign,
+                      color: Colors.white,
+                      size: 20,
+                    ),
                   ),
                 ),
               ],
@@ -202,21 +253,15 @@ class _VoiceChatScreenState extends State<VoiceAssistantChatScreen> with SingleT
       children: [
         GestureDetector(
           onTap: () => Navigator.pop(context),
-          child: Container(
-            height: 36,
-            width: 36,
-            alignment: Alignment.center,
-            decoration: const BoxDecoration(shape: BoxShape.circle, color: Color(0xff1C1C1C)),
-            child: Icon(
-              Icons.chevron_left,
-              color: Theme.of(context).primaryColor,
-              size: 20,
-            ),
+          child: Icon(
+            Icons.arrow_back,
           ),
         ),
         Obx(() {
           return Text(
-            _voiceAssistantController.isListening.value ? "Listening..." : 'Voice Assistant',
+            _voiceAssistantController.isListening.value
+                ? "listening".tr
+                : 'voice_assistant'.tr,
             style: Theme.of(context).textTheme.titleLarge,
           );
         }),
@@ -226,7 +271,6 @@ class _VoiceChatScreenState extends State<VoiceAssistantChatScreen> with SingleT
           },
           child: const Icon(
             HugeIcons.strokeRoundedSetting06,
-            color: Colors.white,
           ),
         ),
       ],

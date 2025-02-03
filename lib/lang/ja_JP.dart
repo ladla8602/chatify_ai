@@ -51,8 +51,7 @@ final Map<String, String> jaJP = {
   "ask_anything": "何でも聞いてください",
   "language": "言語",
   "prompt_help": "例：サッカーボールで遊ぶ猫の画像を生成",
-  "custom_instruction_help":
-      "Chatifyがより良い回答を提供できるよう、知っておいてほしいことを教えてください。",
+  "custom_instruction_help": "Chatifyがより良い回答を提供できるよう、知っておいてほしいことを教えてください。",
   "your_answer": "あなたの答え...",
   "chatify_response": "Chatifyの応答方法を設定します。",
   "enabnle": "新しいチャットで有効化",
@@ -89,4 +88,10 @@ final Map<String, String> jaJP = {
   "shared": "共有済み",
   "unpin": "固定解除",
   "delete": "削除",
+  "go_ahead": "どうぞ、お聞きしています…",
+  "click_on_mic": "マイクボタンをクリックして音声チャットを開始してください。",
+  "go_to_premium": "プレミアムへ移動",
+  "upgrade_now": "今すぐアップグレード",
+  "voice_assistant": "音声アシスタント",
+  "listening": "聞いています..."
 };

@@ -91,4 +91,10 @@ final Map<String, String> arAR = {
   "shared": "مشترك",
   "unpin": "إلغاء التثبيت",
   "delete": "حذف",
+  "go_ahead": "تفضل، أنا أستمع . . .",
+  "click_on_mic": "اضغط على زر الميكروفون لبدء الدردشة الصوتية.",
+  "go_to_premium": "انتقل إلى البريميوم",
+  "upgrade_now": "قم بالترقية الآن",
+  "voice_assistant": "المساعد الصوتي",
+  "listening": "يستمع..."
 };

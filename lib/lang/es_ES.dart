@@ -92,4 +92,11 @@ final Map<String, String> esES = {
   "shared": "Compartido",
   "unpin": "Desfijar",
   "delete": "Eliminar",
+  "go_ahead": "Adelante, te escucho...",
+  "click_on_mic":
+      "Haz clic en el botón del micrófono para empezar a chatear por voz.",
+  "go_to_premium": "Ir a premium",
+  "upgrade_now": "Actualizar ahora",
+  "voice_assistant": "Asistente de voz",
+  "listening": "Escuchando..."
 };

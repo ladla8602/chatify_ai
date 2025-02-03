@@ -90,5 +90,11 @@ final Map<String, String> enUS = {
   "pinned": "Pinned",
   "shared": "Shared",
   "unpin": "Unpin",
-  "delete": "Delete"
+  "delete": "Delete",
+  "go_ahead": "Go ahead, I’m listening . . .",
+  "click_on_mic": "Click on mic button to start voice chatting.",
+  "go_to_premium": "Go to premium",
+  "upgrade_now": "Upgrade now",
+  "voice_assistant": "Voice Assistant",
+  "listening": "Listening..."
 };

@@ -35,6 +35,7 @@ final lightTheme = ThemeData.light().copyWith(
     onSurface: Colors.black, // Text on surface
     onBackground: Colors.black, // Text on background
     onError: Colors.white, // Text on error color
+    outline: Colors.grey.shade200, // Outline color
   ),
   iconTheme: IconThemeData(
     color: Colors.black, // Icon colors
@@ -84,17 +85,17 @@ final darkTheme = ThemeData.dark().copyWith(
     scrimColor: Colors.black54, // Scrim color when drawer is open
   ),
   colorScheme: ColorScheme.dark(
-    primary: Colors.blue, // Primary color
-    secondary: Colors.lightBlueAccent, // Accent color
-    surface: Colors.grey[850]!, // Surface background
-    background: Colors.black, // Overall background
-    error: Colors.redAccent, // Error color
-    onPrimary: Colors.white, // Text on primary color
-    onSecondary: Colors.white, // Text on secondary color
-    onSurface: Colors.white, // Text on surface
-    onBackground: Colors.white, // Text on background
-    onError: Colors.black, // Text on error color
-  ),
+      primary: Colors.blue, // Primary color
+      secondary: Colors.lightBlueAccent, // Accent color
+      surface: Colors.grey[850]!, // Surface background
+      background: Colors.black, // Overall background
+      error: Colors.redAccent, // Error color
+      onPrimary: Colors.white, // Text on primary color
+      onSecondary: Colors.white, // Text on secondary color
+      onSurface: Colors.white, // Text on surface
+      onBackground: Colors.white, // Text on background
+      onError: Colors.black, // Text on error color
+      outline: Colors.grey[850]!),
   iconTheme: IconThemeData(
     color: Colors.white, // Icon colors
   ),
