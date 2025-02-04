@@ -1,6 +1,6 @@
 // index.ts
 import { initializeApp } from "firebase-admin/app";
-import { logger } from "firebase-functions";
+import * as functions from "firebase-functions";
 import { onCall } from "firebase-functions/v2/https";
 import { OpenAIService } from "./openai-service.js";
 // import { AuthService } from "./auth-service.js";
@@ -9,7 +9,9 @@ import type { ChatRequest, ChatResponse, ImageGenerateRequest, ImageGenerateResp
 import { RequestValidator } from "./validators.js";
 // import { getAuth, ListUsersResult } from "firebase-admin/auth";
 import { getFirestore } from "firebase-admin/firestore";
+import Stripe from "stripe";
 import { LangChainService } from "./langchain.service.js";
+import { HandleStripeWebhook } from "./stripe.webhook.js";
 import { UsageService } from "./usage-service.js";
 
 // Load environment variables
@@ -20,8 +22,19 @@ if (!OPENAI_API_KEY) {
   throw new Error("OPENAI_API_KEY environment variable is required");
 }
 
+const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY;
+if (!STRIPE_SECRET_KEY) {
+  throw new Error("STRIPE_SECRET_KEY environment variable is required");
+}
+
+const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET;
+if (!STRIPE_WEBHOOK_SECRET) {
+  throw new Error("STRIPE_WEBHOOK_SECRET environment variable is required");
+}
+
+const stripe = new Stripe(STRIPE_SECRET_KEY);
 // Set emulator before initializing
-process.env.FIREBASE_AUTH_EMULATOR_HOST = "127.0.0.1:9099";
+// process.env.FIREBASE_AUTH_EMULATOR_HOST = "127.0.0.1:9099";
 
 // Initialize Firebase Admin
 initializeApp();
@@ -70,7 +83,7 @@ export const askChatGPT = onCall<ChatRequest, Promise<ChatResponse>>({
       timestamp: new Date().toISOString(),
     };
   } catch (error) {
-    logger.error("Error in askChatGPT:", error);
+    functions.logger.error("Error in askChatGPT:", error);
     // Return error response
     return {
       success: false,
@@ -109,7 +122,7 @@ export const generateAIImage = onCall<ImageGenerateRequest, Promise<ImageGenerat
       timestamp: new Date().toISOString(),
     };
   } catch (error) {
-    logger.error("Error in generateAIImage:", error);
+    functions.logger.error("Error in generateAIImage:", error);
     return {
       success: false,
       error: error instanceof Error ? error.message : "An unexpected error occurred",
@@ -157,7 +170,7 @@ export const generateSpeech = onCall<TextToSpeechRequest, Promise<TextToSpeechRe
       timestamp: new Date().toISOString(),
     };
   } catch (error) {
-    logger.error("Error in generateSpeech:", error);
+    functions.logger.error("Error in generateSpeech:", error);
     return {
       success: false,
       error: error instanceof Error ? error.message : "An unexpected error occurred",
@@ -188,10 +201,197 @@ export const getVoiceChatToken = onCall({
       timestamp: new Date().toISOString(),
     };
   } catch (error) {
-    logger.error("Error generating voice chat token:", error);
+    functions.logger.error("Error generating voice chat token:", error);
     return {
       success: false,
       error: error instanceof Error ? error.message : "An unexpected error occurred",
     };
   }
+});
+
+export const getSubscriptionPlans = onCall(
+  async (request) => {
+    const { auth } = request;
+    if (!auth || !auth.uid) {
+      throw new Error("Authentication required");
+    }
+
+    try {
+      // Retrieve active products with prices from Stripe
+      const products = await stripe.products.list({
+        active: true,
+        expand: ["data.default_price"],
+        type: "service",
+      });
+
+      // Filter and format plans
+      const plans = products.data
+        .filter((product) => product.metadata.subscription_plan === "true") // Optional filter
+        .map((product) => ({
+          id: product.id,
+          name: product.name,
+          description: product.description,
+          marketing_features: product.marketing_features,
+          metadata: product.metadata,
+          price: {
+            id: (product.default_price as Stripe.Price)?.id,
+            currency: (product.default_price as Stripe.Price)?.currency,
+            unit_amount: (product.default_price as Stripe.Price)?.unit_amount,
+            recurring: (product.default_price as Stripe.Price)?.recurring,
+          },
+        }));
+
+      return { plans: plans };
+    } catch (error) {
+      functions.logger.error("Error getSubscriptionPlans:", error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : "An unexpected error occurred",
+      };
+    }
+  }
+);
+
+
+// Create Customer in Stripe
+export const createStripeCustomer = onCall(async (request) => {
+  const { auth } = request;
+  if (!auth || !auth.uid) {
+    throw new Error("Authentication required");
+  }
+
+  try {
+    // const userDoc = db.collection('users').doc(auth.uid);
+    // const userSnapshot = await userDoc.get();
+
+    // // Check for existing Stripe customer ID
+    // if (userSnapshot.exists) {
+    //   const existingCustomerId = userSnapshot.data()?.stripeCustomerId;
+    //   if (existingCustomerId) {
+    //     return { customerId: existingCustomerId };
+    //   }
+    // }
+
+    const customer = await stripe.customers.create({
+      email: auth.token.email,
+      name: auth.token.name,
+      metadata: {
+        firebaseUid: auth.uid,
+      },
+    },
+    {
+      idempotencyKey: auth.uid, // Ensure idempotency
+    },
+    );
+
+    // Save Stripe Customer ID to Firestore
+    await db
+      .collection("users")
+      .doc(auth.uid)
+      .set({
+        stripeCustomerId: customer.id,
+      });
+
+    return { customerId: customer.id };
+  } catch (error) {
+    functions.logger.error("Error createStripeCustomer:", error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "An unexpected error occurred",
+    };
+  }
+});
+
+// Create Subscription
+export const createSubscription = onCall(async (request) => {
+  const { auth } = request;
+  if (!auth || !auth.uid) {
+    throw new Error("Authentication required");
+  }
+
+  const { priceId } = request.data;
+  const user = await db
+    .collection("users")
+    .doc(auth.uid)
+    .get();
+
+  let stripeCustomerId = user.data()?.stripeCustomerId;
+
+  if (!stripeCustomerId) {
+    const customer = await stripe.customers.create({
+      email: auth.token.email,
+      name: auth.token.name,
+      metadata: {
+        firebaseUid: auth.uid,
+      },
+    },
+    {
+      idempotencyKey: auth.uid, // Ensure idempotency
+    },
+    );
+    stripeCustomerId = customer.id;
+    await db
+      .collection("users")
+      .doc(auth.uid)
+      .set({
+        stripeCustomerId: customer.id,
+      });
+  }
+
+  try {
+    const subscription = await stripe.subscriptions.create({
+      customer: stripeCustomerId,
+      items: [{ price: priceId }],
+      payment_behavior: "default_incomplete",
+      expand: ["latest_invoice.payment_intent"],
+    });
+
+    // Type-safe access to expanded properties
+    const latestInvoice = subscription.latest_invoice as Stripe.Invoice | null;
+    const paymentIntent = latestInvoice?.payment_intent as Stripe.PaymentIntent | null;
+
+    if (!paymentIntent?.client_secret) {
+      throw new Error("Failed to retrieve payment intent client secret");
+    }
+
+    return {
+      subscriptionId: subscription.id,
+      clientSecret: paymentIntent?.client_secret,
+    };
+  } catch (error) {
+    functions.logger.error("Error createSubscription:", error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "An unexpected error occurred. Cannot create subscription.",
+    };
+  }
+});
+
+
+export const stripeWebhook = functions.https.onRequest(async (request: any, response: any) => {
+  const sig = request.headers["stripe-signature"] as string;
+
+  // Webhook secret from Stripe Dashboard
+  const webhookSecret = STRIPE_WEBHOOK_SECRET;
+
+  let event: Stripe.Event;
+
+  try {
+    // Verify webhook signature for security
+    event = stripe.webhooks.constructEvent(
+      request.rawBody,
+      sig,
+      webhookSecret
+    );
+  } catch (err) {
+    console.error("Webhook signature verification failed", err);
+    return response.status(400).send(`Webhook Error: ${err}`);
+  }
+  const stripeWebhookHandler = new HandleStripeWebhook(db);
+
+  // Handle different subscription events
+  stripeWebhookHandler.handleEvent(event);
+
+  // Send 200 response to acknowledge receipt of the event
+  response.json({ received: true });
 });
