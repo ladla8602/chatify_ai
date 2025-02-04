@@ -21,9 +21,7 @@ dependencies:
   diffutil_dart:
   flutter_parsed_text:
   cached_network_image:
-  assets_audio_player:
-    git:
-      url: https://github.com/Rupakpoddar/Flutter-AssetsAudioPlayer
+  assets_audio_player_plus:
   dio:
   flutter_neumorphic_plus:
   permission_handler:

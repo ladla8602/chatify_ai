@@ -4,6 +4,7 @@ import 'package:chatify_ai/lang/app_translations.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
@@ -21,6 +22,10 @@ Future<void> main() async {
   await GetStorage.init();
   Get.put(AuthController());
   Get.put(ThemeController());
+  Stripe.publishableKey = 'pk_test_51I8qeJLG0TY6E07fTqYQpf0uDbaIBREnGaWKT59jqjr33YE8UMLKTpCC3XRh23zwOnZ1JOSnZZdA8M0Jz3X3IYHD00GgaoWYzU';
+  Stripe.merchantIdentifier = 'merchant.flutter.stripe.test';
+  Stripe.urlScheme = 'flutterstripe';
+  await Stripe.instance.applySettings();
   runApp(MyApp());
 }
 
@@ -51,11 +56,7 @@ class MyApp extends StatelessWidget {
           Locale('ru', 'RU'),
         ],
 
-        localizationsDelegates: [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate
-        ],
+        localizationsDelegates: [GlobalMaterialLocalizations.delegate, GlobalWidgetsLocalizations.delegate, GlobalCupertinoLocalizations.delegate],
         initialBinding: InitialBindings(),
         initialRoute: authController.initialRoute,
         getPages: AppRoutes.pages,

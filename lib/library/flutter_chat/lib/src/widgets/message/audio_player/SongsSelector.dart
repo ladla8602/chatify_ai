@@ -1,6 +1,6 @@
 // ignore_for_file: file_names
 
-import 'package:assets_audio_player/assets_audio_player.dart';
+import 'package:assets_audio_player_plus/assets_audio_player.dart';
 import 'package:flutter_neumorphic_plus/flutter_neumorphic.dart';
 
 class SongsSelector extends StatelessWidget {
@@ -9,12 +9,7 @@ class SongsSelector extends StatelessWidget {
   final Function(Audio) onSelected;
   final Function(List<Audio>) onPlaylistSelected;
 
-  const SongsSelector(
-      {super.key,
-      required this.playing,
-      required this.audios,
-      required this.onSelected,
-      required this.onPlaylistSelected});
+  const SongsSelector({super.key, required this.playing, required this.audios, required this.onSelected, required this.onPlaylistSelected});
 
   Widget _image(Audio item) {
     if (item.metas.image == null) {

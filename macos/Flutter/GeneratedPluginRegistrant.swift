@@ -5,7 +5,7 @@
 import FlutterMacOS
 import Foundation
 
-import assets_audio_player
+import assets_audio_player_plus
 import audioplayers_darwin
 import cloud_firestore
 import cloud_functions

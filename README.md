@@ -4,7 +4,7 @@ A new Flutter project.
 
 ## Getting Started
 
-Flutter SDK used: 3.27.1
+Flutter SDK used: 3.27.3
 
 ## Flutter commands
 
@@ -44,6 +44,12 @@ Follow this doc - https://firebase.google.com/docs/flutter/setup?platform=androi
 firebase emulators:start --import ./firebase-export-1738494335036oJP5Y8 --export-on-exit
 
 firebase functions:delete myFunction
+
+## Stripe
+
+### Subscription Testing Cards
+
+https://docs.stripe.com/india-recurring-payments?integration=paymentIntents-setupIntents&testing-method=card-numbers#testing
 
 ## 4. Firestore Database Design
 

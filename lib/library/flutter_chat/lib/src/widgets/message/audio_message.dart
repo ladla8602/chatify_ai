@@ -1,15 +1,15 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:assets_audio_player/assets_audio_player.dart';
+import 'package:assets_audio_player_plus/assets_audio_player.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import './../../types/types.dart' as types;
 import 'package:flutter_neumorphic_plus/flutter_neumorphic.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import './../../types/types.dart' as types;
 import 'audio_player/PlaySpeedSelector.dart';
 import 'audio_player/PlayingControlsSmall.dart';
 import 'audio_player/PositionSeekWidget.dart';
@@ -28,7 +28,7 @@ class AudioMessage extends StatefulWidget {
 }
 
 class _AudioMessageState extends State<AudioMessage> {
-  late AssetsAudioPlayer _assetsAudioPlayer;
+  late AssetsAudioPlayerPlus _assetsAudioPlayer;
   late Audio audio;
 
   double progress = 0.0;
@@ -37,7 +37,7 @@ class _AudioMessageState extends State<AudioMessage> {
   @override
   void initState() {
     // printlog(widget.message.uri, stackTrace: 'current ');
-    _assetsAudioPlayer = AssetsAudioPlayer.newPlayer();
+    _assetsAudioPlayer = AssetsAudioPlayerPlus.newPlayer();
     audio = Audio.network(
       widget.message.uri,
       metas: Metas(

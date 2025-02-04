@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:chatify_ai/models/chat_bot_command.model.dart';
 import 'package:chatify_ai/models/image_gen_command.dart';
@@ -60,6 +61,19 @@ class FirebaseFunctionsService {
       throw Exception(response.data['error'] ?? 'Failed to get token');
     } catch (e) {
       throw Exception('Error getting voice chat token: $e');
+    }
+  }
+
+  Future<String> createSubscription(String priceId) async {
+    try {
+      final response =
+          await _functions.httpsCallable('createSubscription', options: HttpsCallableOptions(timeout: Duration(seconds: 120))).call({"priceId": priceId});
+      log(">>>>>>createSubscription:${response.data.toString()}");
+
+      return response.data['clientSecret'];
+    } catch (e) {
+      debugPrint("Error occurred while calling Firebase functions: $e");
+      return 'Opps something went wrong';
     }
   }
 }

@@ -1,6 +1,6 @@
 // ignore_for_file: file_names
 
-import 'package:assets_audio_player/assets_audio_player.dart';
+import 'package:assets_audio_player_plus/assets_audio_player.dart';
 import 'package:flutter_neumorphic_plus/flutter_neumorphic.dart';
 
 class PlayingControlsSmall extends StatelessWidget {
