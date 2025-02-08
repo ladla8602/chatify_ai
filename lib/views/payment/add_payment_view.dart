@@ -20,7 +20,6 @@ class AddPaymentView extends StatelessWidget {
         leading: IconButton(
           icon: Icon(
             HugeIcons.strokeRoundedCancel01,
-            color: Colors.black,
           ),
           onPressed: () => Get.back(),
         ),
@@ -52,8 +51,6 @@ class AddPaymentView extends StatelessWidget {
                 border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.0),
                     borderSide: BorderSide.none),
-                filled: true,
-                fillColor: Colors.grey.shade100,
               ),
             ),
             SizedBox(height: 20),
@@ -70,8 +67,6 @@ class AddPaymentView extends StatelessWidget {
                 border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.0),
                     borderSide: BorderSide.none),
-                filled: true,
-                fillColor: Colors.grey.shade100,
               ),
             ),
             SizedBox(height: 20),
@@ -95,8 +90,6 @@ class AddPaymentView extends StatelessWidget {
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8.0),
                               borderSide: BorderSide.none),
-                          filled: true,
-                          fillColor: Colors.grey.shade100,
                         ),
                       ),
                     ],
@@ -121,8 +114,6 @@ class AddPaymentView extends StatelessWidget {
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8.0),
                               borderSide: BorderSide.none),
-                          filled: true,
-                          fillColor: Colors.grey.shade100,
                         ),
                       ),
                     ],
