@@ -21,7 +21,9 @@ class _UpgradeViewState extends State<UpgradeView> {
   Future<bool> subscripeToProduct() async {
     final completer = Completer<bool>();
 
-    final paymentIntent = await subscriptionController.createSubscription('price_1QoeUZLG0TY6E07f8TGomsDk').onError((error, stackTrace) {
+    final paymentIntent = await subscriptionController
+        .createSubscription('price_1QoeUZLG0TY6E07f8TGomsDk')
+        .onError((error, stackTrace) {
       print(error);
       print(stackTrace);
 
@@ -60,19 +62,21 @@ class _UpgradeViewState extends State<UpgradeView> {
         title: Text('upgrade_to_pro'.tr, style: TextStyle(fontSize: 17)),
       ),
       body: ListView.separated(
+        padding: EdgeInsets.symmetric(vertical: 18),
         itemBuilder: (context, index) {
           return UpgradeWigets(
             index: index,
             title: planController.plan[index]['title'],
             plan: planController.plan[index]['plan'],
             content: planController.plan[index]['content'],
+            manualPlan: planController.plan[index]['manualPlan'],
             onClick: () {
               subscripeToProduct();
             },
           );
         },
         separatorBuilder: (context, index) {
-          return SizedBox(height: 10);
+          return SizedBox(height: 18);
         },
         itemCount: planController.plan.length,
       ),
@@ -85,6 +89,7 @@ class UpgradeWigets extends StatelessWidget {
   final String title;
   final String plan;
   final String content;
+  final String manualPlan;
   final void Function()? onClick;
   const UpgradeWigets({
     super.key,
@@ -93,14 +98,16 @@ class UpgradeWigets extends StatelessWidget {
     required this.plan,
     required this.content,
     this.onClick,
+    required this.manualPlan,
   });
 
   @override
   Widget build(BuildContext context) {
-    final List<String> contentList = content.split(',').map((e) => e.trim()).toList();
+    final List<String> contentList =
+        content.split(',').map((e) => e.trim()).toList();
     return Container(
       padding: EdgeInsets.all(14),
-      margin: EdgeInsets.all(20),
+      margin: EdgeInsets.symmetric(horizontal: 20),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(14),
         color: Theme.of(context).colorScheme.surface,
@@ -115,16 +122,47 @@ class UpgradeWigets extends StatelessWidget {
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
               ),
               SizedBox(height: 15),
-              Text(
-                plan,
-                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+              RichText(
+                text: TextSpan(children: [
+                  TextSpan(
+                    text: plan,
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
+                  ),
+                  TextSpan(
+                    text: '/',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.normal,
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
+                  ),
+                  TextSpan(
+                    text: manualPlan,
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.normal,
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
+                  )
+                ]),
               ),
               SizedBox(height: 20),
               Column(
                 children: contentList
-                    .map((item) => Row(
+                    .map(
+                      (item) => Padding(
+                        padding: const EdgeInsets.only(bottom: 8),
+                        child: Row(
                           children: [
-                            const Icon(HugeIcons.strokeRoundedTick02, size: 20),
+                            CircleAvatar(
+                              radius: 8,
+                              child: const Icon(HugeIcons.strokeRoundedTick02,
+                                  size: 15),
+                            ),
                             const SizedBox(width: 8),
                             Expanded(
                               child: Text(
@@ -133,7 +171,9 @@ class UpgradeWigets extends StatelessWidget {
                               ),
                             ),
                           ],
-                        ))
+                        ),
+                      ),
+                    )
                     .toList(),
               ),
               SizedBox(height: 18),
@@ -157,11 +197,16 @@ class UpgradeWigets extends StatelessWidget {
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   color: Theme.of(context).primaryColor,
-                  borderRadius: BorderRadius.only(topRight: Radius.circular(14), bottomLeft: Radius.circular(14)),
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(14),
+                      bottomLeft: Radius.circular(14)),
                 ),
                 child: Text(
                   'Most Popular',
-                  style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold),
                 ),
               ),
             )
