@@ -1,13 +1,11 @@
 import 'package:audioplayers/audioplayers.dart';
-import 'package:chatify_ai/constants/constants.dart';
+import 'package:chatify_ai/library/flutter_chat/lib/flutter_chat.dart';
 import 'package:chatify_ai/views/common/button_wigets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
 
 import '../../controllers/audio_generate_controller.dart';
-import '../../library/flutter_chat/lib/flutter_chat.dart';
-import '../../library/flutter_chat/lib/src/widgets/chat.dart';
 import '../../widgets/drawer.dart';
 import '../../widgets/floating_action_bubble.dart';
 import '../../widgets/not_found_widget.dart';
@@ -54,8 +52,7 @@ class _AudioGenerateViewState extends State<AudioGenerateView> {
 
     audioGenController.speechGenCommand
       ..text = audioGenController.promptController.text.trim()
-      ..voice = audioGenController
-          .audioGenerate[audioGenController.isSelected.value]['voice'];
+      ..voice = audioGenController.audioGenerate[audioGenController.isSelected.value]['voice'];
 
     await audioGenController.handleSendPressed();
   }
@@ -98,8 +95,7 @@ class _AudioGenerateViewState extends State<AudioGenerateView> {
       ),
       drawer: DrawerWigets(),
       endDrawerEnableOpenDragGesture: false,
-      onEndDrawerChanged: (isOpened) =>
-          audioGenController.isDrawerOpen.value = isOpened,
+      onEndDrawerChanged: (isOpened) => audioGenController.isDrawerOpen.value = isOpened,
       endDrawer: Drawer(
         width: MediaQuery.of(context).size.width * 0.8,
         child: SafeArea(
@@ -115,8 +111,7 @@ class _AudioGenerateViewState extends State<AudioGenerateView> {
                   : NotFoundWidget(
                       title: 'No audio genrated!',
                       buttonText: 'generate'.tr,
-                      onButtonClick: () =>
-                          Scaffold.of(context).closeEndDrawer(),
+                      onButtonClick: () => Scaffold.of(context).closeEndDrawer(),
                     ),
               customBottomWidget: const SizedBox.shrink(),
               onEndReached: audioGenController.loadInitialMessages,
@@ -151,10 +146,7 @@ class _AudioGenerateViewState extends State<AudioGenerateView> {
                     // SizedBox(height: 20),
                     Text(
                       'voice_style'.tr,
-                      style: TextStyle(
-                          fontSize: 14,
-                          color: Theme.of(context).primaryColor,
-                          fontWeight: FontWeight.bold),
+                      style: TextStyle(fontSize: 14, color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 12),
                     Wrap(
@@ -170,12 +162,9 @@ class _AudioGenerateViewState extends State<AudioGenerateView> {
                               print('Selected index: $index');
                             },
                             child: AudioGenerateWigets(
-                              title: audioGenController.audioGenerate[index]
-                                  ['title'],
-                              isSelected:
-                                  audioGenController.isSelected == index,
-                              imagePath: audioGenController.audioGenerate[index]
-                                  ['imagePath'],
+                              title: audioGenController.audioGenerate[index]['title'],
+                              isSelected: audioGenController.isSelected == index,
+                              imagePath: audioGenController.audioGenerate[index]['imagePath'],
                               onClick: () {
                                 audioGenController.changeSelected(index);
                               },
@@ -204,8 +193,7 @@ class _AudioGenerateViewState extends State<AudioGenerateView> {
                                   'information',
                                   "Swipe Right to See Audio History",
                                   snackPosition: SnackPosition.BOTTOM,
-                                  backgroundColor:
-                                      Theme.of(context).colorScheme.surface,
+                                  backgroundColor: Theme.of(context).colorScheme.surface,
                                   duration: Duration(seconds: 3),
                                 );
                               },
@@ -221,21 +209,12 @@ class _AudioGenerateViewState extends State<AudioGenerateView> {
                       maxLines: 5,
                       maxLength: 400,
                       controller: audioGenerateController.promptController,
-                      onChanged: (value) =>
-                          audioGenerateController.speechGenCommand.text ==
-                          value,
-                      style: TextStyle(
-                          color: Theme.of(context).colorScheme.onSurface),
+                      onChanged: (value) => audioGenerateController.speechGenCommand.text == value,
+                      style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
                       decoration: InputDecoration(
-                        enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(16),
-                            borderSide:
-                                BorderSide(color: Colors.grey.shade300)),
+                        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide(color: Colors.grey.shade300)),
                         focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(16),
-                            borderSide: BorderSide(
-                                color: Theme.of(context).primaryColor,
-                                width: 1.5)),
+                            borderRadius: BorderRadius.circular(16), borderSide: BorderSide(color: Theme.of(context).primaryColor, width: 1.5)),
                         hintText: "enter_prompt".tr,
                         hintStyle: TextStyle(fontSize: 14),
                       ),
@@ -253,9 +232,7 @@ class _AudioGenerateViewState extends State<AudioGenerateView> {
                   size: 50,
                   panelOpenOffset: -10,
                   backgroundColor: Theme.of(context).colorScheme.primary,
-                  panelIcon: audioGenController.isDrawerOpen.value
-                      ? Icons.chevron_right
-                      : Icons.chevron_left,
+                  panelIcon: audioGenController.isDrawerOpen.value ? Icons.chevron_right : Icons.chevron_left,
                   onPressed: (index) {},
                   onMainPressed: audioGenController.toggleDrawer,
                   buttons: const [], // Add your menu buttons here
@@ -285,12 +262,7 @@ class AudioGenerateWigets extends StatelessWidget {
   final bool isSelected;
   final String imagePath;
   final VoidCallback onClick;
-  const AudioGenerateWigets(
-      {super.key,
-      required this.title,
-      required this.isSelected,
-      required this.imagePath,
-      required this.onClick});
+  const AudioGenerateWigets({super.key, required this.title, required this.isSelected, required this.imagePath, required this.onClick});
 
   @override
   Widget build(BuildContext context) {
@@ -302,15 +274,9 @@ class AudioGenerateWigets extends StatelessWidget {
             width: 75,
             height: 75,
             decoration: BoxDecoration(
-                color: isSelected
-                    ? Theme.of(context).primaryColor
-                    : Colors.transparent,
+                color: isSelected ? Theme.of(context).primaryColor : Colors.transparent,
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                    color: isSelected
-                        ? Theme.of(context).primaryColor
-                        : Colors.grey.shade300,
-                    width: isSelected ? 2 : 1),
+                border: Border.all(color: isSelected ? Theme.of(context).primaryColor : Colors.grey.shade300, width: isSelected ? 2 : 1),
                 image: DecorationImage(
                   image: NetworkImage(
                     imagePath,
@@ -323,9 +289,7 @@ class AudioGenerateWigets extends StatelessWidget {
         Text(
           title,
           style: TextStyle(
-            color: isSelected
-                ? Theme.of(context).primaryColor
-                : Theme.of(context).colorScheme.onSurface,
+            color: isSelected ? Theme.of(context).primaryColor : Theme.of(context).colorScheme.onSurface,
             fontSize: 12,
             fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
           ),

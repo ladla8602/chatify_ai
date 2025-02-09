@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:chatify_ai/models/chat_bot_command.model.dart';
 import 'package:chatify_ai/models/image_gen_command.dart';
+import 'package:chatify_ai/models/subscription_plan.model.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/material.dart';
 
@@ -64,6 +65,25 @@ class FirebaseFunctionsService {
     }
   }
 
+  Future<List<SubscriptionPlan>> getSubscriptionPlans() async {
+    try {
+      final HttpsCallableResult<Map<String, dynamic>> response =
+          await _functions.httpsCallable('getSubscriptionPlans', options: HttpsCallableOptions(timeout: Duration(seconds: 120))).call();
+
+      final plansList = response.data['plans'];
+      log(">>>>>>getSubscriptionPlans:${plansList.toString()}");
+      return (plansList as List).map((item) {
+        log("Plan item before conversion: $item");
+        final planMap = Map<String, dynamic>.from(item).cast<String, dynamic>();
+        log("Plan item after conversion: $planMap");
+        return SubscriptionPlan.fromJson(planMap);
+      }).toList();
+    } catch (e) {
+      debugPrint("Error occurred while calling Firebase functions: $e");
+      throw Exception('Opps something went wrong: $e');
+    }
+  }
+
   Future<String> createSubscription(String priceId) async {
     try {
       final response =
@@ -73,7 +93,7 @@ class FirebaseFunctionsService {
       return response.data['clientSecret'];
     } catch (e) {
       debugPrint("Error occurred while calling Firebase functions: $e");
-      return 'Opps something went wrong';
+      throw Exception('Opps something went wrong: $e');
     }
   }
 }

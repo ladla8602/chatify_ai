@@ -1,4 +1,3 @@
-import 'package:chatify_ai/about_chatify/about_chatify_screen.dart';
 import 'package:chatify_ai/bindings/dashboard_bindings.dart.dart';
 import 'package:chatify_ai/views/help_center/help_center_view.dart';
 import 'package:chatify_ai/views/history/history_view.dart';
@@ -10,6 +9,7 @@ import 'package:chatify_ai/views/personal_info/persnol_info.dart';
 import 'package:chatify_ai/views/security/security_view.dart';
 import 'package:get/get.dart';
 
+import '../views/about_chatify/about_chatify_screen.dart';
 import '../views/audio/audio_view.dart';
 import '../views/auth/forgot_password/create_new_password_view.dart';
 import '../views/auth/forgot_password/forgot_password_view.dart';

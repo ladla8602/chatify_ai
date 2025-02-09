@@ -1,42 +1,35 @@
+import 'package:chatify_ai/models/subscription_plan.model.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../services/firebase_functions_service.dart';
+import '../services/firestore_service.dart';
+
 class PlanController extends GetxController {
-  List<Map<String, dynamic>> plan = [
-    {
-      'id': 'price_1QoeUZLG0TY6E07f8TGomsDk',
-      'title': 'Starter Plan',
-      'plan': '₹129.00',
-      'content':
-          'Ad-supported experience, Access to starter chatbot features, limited chat history ',
-      'manualPlan': 'month'
-    },
-    {
-      'title': 'Basic Plan',
-      'plan': '₹99.00',
-      'content':
-          'Ad-supported experience, Access to starter chatbot features, limited chat history',
-      'manualPlan': 'month'
-    },
-    {
-      'title': 'Plus Plan',
-      'plan': '₹120.00',
-      'content':
-          'Ad-supported experience, Access to starter chatbot features, limited chat history ',
-      'manualPlan': 'month'
-    },
-    {
-      'title': 'Premium Plan',
-      'plan': '₹125.00',
-      'content':
-          'Ad-supported experience, Access to starter chatbot features, limited chat history ',
-      'manualPlan': 'month'
-    },
-    {
-      'title': 'Business Plan',
-      'plan': '₹124.00',
-      'content':
-          'Ad-supported experience, Access to starter chatbot features, limited chat history ',
-      'manualPlan': 'month'
+  List<SubscriptionPlan> plans = <SubscriptionPlan>[].obs;
+
+  final FirestoreService _firestoreService;
+  final FirebaseFunctionsService _firebaseFunctionsService;
+
+  PlanController({
+    FirestoreService? firestoreService,
+    FirebaseFunctionsService? firebaseFunctionsService,
+  })  : _firestoreService = firestoreService ?? FirestoreService(),
+        _firebaseFunctionsService = firebaseFunctionsService ?? FirebaseFunctionsService();
+
+  @override
+  void onInit() {
+    getPlans();
+    super.onInit();
+  }
+
+  Future<void> getPlans() async {
+    try {
+      final subscriptionPlans = await _firebaseFunctionsService.getSubscriptionPlans();
+      plans.assignAll(subscriptionPlans);
+    } catch (e) {
+      debugPrint('Error fetching plans: $e');
+      // Handle error appropriately
     }
-  ];
+  }
 }

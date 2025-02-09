@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:chatify_ai/controllers/plan_controller.dart';
+import 'package:chatify_ai/models/subscription_plan.model.dart';
 import 'package:chatify_ai/views/common/button_wigets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
@@ -18,12 +19,18 @@ class UpgradeView extends StatefulWidget {
 
 class _UpgradeViewState extends State<UpgradeView> {
   final subscriptionController = Get.find<SubscriptionController>();
+  final planController = Get.find<PlanController>();
+
+  @override
+  initState() {
+    super.initState();
+    planController.getPlans();
+  }
+
   Future<bool> subscripeToProduct() async {
     final completer = Completer<bool>();
 
-    final paymentIntent = await subscriptionController
-        .createSubscription('price_1QoeUZLG0TY6E07f8TGomsDk')
-        .onError((error, stackTrace) {
+    final paymentIntent = await subscriptionController.createSubscription('price_1QoeUZLG0TY6E07f8TGomsDk').onError((error, stackTrace) {
       print(error);
       print(stackTrace);
 
@@ -55,7 +62,6 @@ class _UpgradeViewState extends State<UpgradeView> {
 
   @override
   Widget build(BuildContext context) {
-    final PlanController planController = Get.put(PlanController());
     return Scaffold(
       appBar: AppBar(
         surfaceTintColor: Colors.white,
@@ -64,12 +70,9 @@ class _UpgradeViewState extends State<UpgradeView> {
       body: ListView.separated(
         padding: EdgeInsets.symmetric(vertical: 18),
         itemBuilder: (context, index) {
-          return UpgradeWigets(
+          return PlanWidget(
             index: index,
-            title: planController.plan[index]['title'],
-            plan: planController.plan[index]['plan'],
-            content: planController.plan[index]['content'],
-            manualPlan: planController.plan[index]['manualPlan'],
+            plan: planController.plans[index],
             onClick: () {
               subscripeToProduct();
             },
@@ -78,33 +81,26 @@ class _UpgradeViewState extends State<UpgradeView> {
         separatorBuilder: (context, index) {
           return SizedBox(height: 18);
         },
-        itemCount: planController.plan.length,
+        itemCount: planController.plans.length,
       ),
     );
   }
 }
 
-class UpgradeWigets extends StatelessWidget {
+class PlanWidget extends StatelessWidget {
   final int index;
-  final String title;
-  final String plan;
-  final String content;
-  final String manualPlan;
+  final SubscriptionPlan plan;
   final void Function()? onClick;
-  const UpgradeWigets({
+  const PlanWidget({
     super.key,
     required this.index,
-    required this.title,
     required this.plan,
-    required this.content,
     this.onClick,
-    required this.manualPlan,
   });
 
   @override
   Widget build(BuildContext context) {
-    final List<String> contentList =
-        content.split(',').map((e) => e.trim()).toList();
+    final List<String?> featureList = plan.marketingFeatures?.map((e) => e.name).toList() ?? [];
     return Container(
       padding: EdgeInsets.all(14),
       margin: EdgeInsets.symmetric(horizontal: 20),
@@ -118,14 +114,14 @@ class UpgradeWigets extends StatelessWidget {
           Column(
             children: [
               Text(
-                title,
+                plan.name ?? '',
                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
               ),
               SizedBox(height: 15),
               RichText(
                 text: TextSpan(children: [
                   TextSpan(
-                    text: plan,
+                    text: ((plan.price?.unitAmount ?? 0) / 100).toString(),
                     style: TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
@@ -141,7 +137,7 @@ class UpgradeWigets extends StatelessWidget {
                     ),
                   ),
                   TextSpan(
-                    text: manualPlan,
+                    text: plan.price?.recurring?.interval ?? '',
                     style: TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.normal,
@@ -152,7 +148,7 @@ class UpgradeWigets extends StatelessWidget {
               ),
               SizedBox(height: 20),
               Column(
-                children: contentList
+                children: featureList
                     .map(
                       (item) => Padding(
                         padding: const EdgeInsets.only(bottom: 8),
@@ -160,13 +156,12 @@ class UpgradeWigets extends StatelessWidget {
                           children: [
                             CircleAvatar(
                               radius: 8,
-                              child: const Icon(HugeIcons.strokeRoundedTick02,
-                                  size: 15),
+                              child: const Icon(HugeIcons.strokeRoundedTick02, size: 15),
                             ),
                             const SizedBox(width: 8),
                             Expanded(
                               child: Text(
-                                item,
+                                item ?? '',
                                 style: const TextStyle(fontSize: 14),
                               ),
                             ),
@@ -197,16 +192,11 @@ class UpgradeWigets extends StatelessWidget {
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   color: Theme.of(context).primaryColor,
-                  borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(14),
-                      bottomLeft: Radius.circular(14)),
+                  borderRadius: BorderRadius.only(topRight: Radius.circular(14), bottomLeft: Radius.circular(14)),
                 ),
                 child: Text(
                   'Most Popular',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold),
+                  style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold),
                 ),
               ),
             )
