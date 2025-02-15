@@ -1,8 +1,6 @@
 // ignore_for_file: depend_on_referenced_packages
 
 import 'package:flutter/material.dart';
-// import 'package:flutter/services.dart';
-import './../../types/types.dart' as types;
 import 'package:visibility_detector/visibility_detector.dart';
 
 // import '../../../../../../../common/helper.dart';
@@ -12,6 +10,8 @@ import '../../models/emoji_enlargement_behavior.dart';
 import '../../utils/util.dart';
 import '../state/inherited_chat_theme.dart';
 import '../state/inherited_user.dart';
+// import 'package:flutter/services.dart';
+import './../../types/types.dart' as types;
 import 'audio_message.dart';
 import 'file_message.dart';
 import 'image_message.dart';
@@ -230,7 +230,7 @@ class Message extends StatelessWidget {
                     borderRadius: borderRadius,
                     color: !currentUserIsAuthor || message.type == types.MessageType.image
                         ? InheritedChatTheme.of(context).theme.secondaryColor
-                        : Theme.of(context).primaryColor.withOpacity(0.8),
+                        : Theme.of(context).primaryColor.withValues(alpha: 0.8),
                   ),
                   child: ClipRRect(
                     borderRadius: borderRadius,

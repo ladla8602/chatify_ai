@@ -8,14 +8,12 @@ import '../services/firestore_service.dart';
 class PlanController extends GetxController {
   List<SubscriptionPlan> plans = <SubscriptionPlan>[].obs;
 
-  final FirestoreService _firestoreService;
   final FirebaseFunctionsService _firebaseFunctionsService;
 
   PlanController({
     FirestoreService? firestoreService,
     FirebaseFunctionsService? firebaseFunctionsService,
-  })  : _firestoreService = firestoreService ?? FirestoreService(),
-        _firebaseFunctionsService = firebaseFunctionsService ?? FirebaseFunctionsService();
+  }) : _firebaseFunctionsService = firebaseFunctionsService ?? FirebaseFunctionsService();
 
   @override
   void onInit() {

@@ -5,7 +5,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import './../../types/types.dart' as types;
 import 'package:gallery_saver_plus/gallery_saver.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -13,6 +12,7 @@ import '../../conditional/conditional.dart';
 import '../../utils/util.dart';
 import '../state/inherited_chat_theme.dart';
 import '../state/inherited_user.dart';
+import './../../types/types.dart' as types;
 
 /// A class that represents image message widget. Supports different
 /// aspect ratios, renders blurred image as a background which is visible
@@ -207,7 +207,7 @@ class _ImageMessageState extends State<ImageMessage> {
                     color: Theme.of(context).primaryColor,
                     icon: const Icon(Icons.download),
                     style: ButtonStyle(
-                      backgroundColor: WidgetStateProperty.all<Color>(Theme.of(context).primaryColor.withOpacity(0.2)), // Set the background color
+                      backgroundColor: WidgetStateProperty.all<Color>(Theme.of(context).primaryColor.withValues(alpha: 0.2)), // Set the background color
                     ),
                   ),
           )

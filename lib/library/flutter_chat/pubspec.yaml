@@ -32,6 +32,8 @@ dependencies:
   url_launcher:
   flutter_linkify:
   html:
+  http: ^1.3.0
+  linkify: ^5.0.0
 
 dev_dependencies:
   flutter_test:

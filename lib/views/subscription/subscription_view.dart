@@ -31,8 +31,8 @@ class _UpgradeViewState extends State<UpgradeView> {
     final completer = Completer<bool>();
 
     final paymentIntent = await subscriptionController.createSubscription('price_1QoeUZLG0TY6E07f8TGomsDk').onError((error, stackTrace) {
-      print(error);
-      print(stackTrace);
+      debugPrint(error.toString());
+      debugPrint(stackTrace.toString());
 
       return '';
     });
@@ -52,8 +52,8 @@ class _UpgradeViewState extends State<UpgradeView> {
       //     await repo.waitForActiveSupscriptionOnProduct(product.id);
       // completer.complete(subscripped.value);
     }).onError((error, stackTrace) {
-      print(error);
-      print(stackTrace);
+      debugPrint(error.toString());
+      debugPrint(stackTrace.toString());
       completer.complete(false);
     });
 

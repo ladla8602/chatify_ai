@@ -14,8 +14,7 @@ class VoiceAssistantChatScreen extends StatefulWidget {
   State<VoiceAssistantChatScreen> createState() => _VoiceChatScreenState();
 }
 
-class _VoiceChatScreenState extends State<VoiceAssistantChatScreen>
-    with SingleTickerProviderStateMixin {
+class _VoiceChatScreenState extends State<VoiceAssistantChatScreen> with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late VoiceAssistantController _voiceAssistantController;
 
@@ -26,8 +25,7 @@ class _VoiceChatScreenState extends State<VoiceAssistantChatScreen>
       vsync: this,
       duration: const Duration(seconds: 2),
     );
-    _voiceAssistantController = Get.put(
-        VoiceAssistantController(animationController: _animationController));
+    _voiceAssistantController = Get.put(VoiceAssistantController(animationController: _animationController));
   }
 
   @override
@@ -50,9 +48,7 @@ class _VoiceChatScreenState extends State<VoiceAssistantChatScreen>
               return Expanded(
                 child: Column(
                   children: [
-                    Text(_voiceAssistantController.isListening.value
-                        ? 'go_ahead'.tr
-                        : 'click_on_mic'.tr),
+                    Text(_voiceAssistantController.isListening.value ? 'go_ahead'.tr : 'click_on_mic'.tr),
                     const SizedBox(height: 22),
                     LottieBuilder.asset(
                       controller: _animationController,
@@ -61,48 +57,23 @@ class _VoiceChatScreenState extends State<VoiceAssistantChatScreen>
                       delegates: LottieDelegates(
                         values: [
                           ValueDelegate.color(
-                            const [
-                              'Untitled-1 Outlines',
-                              'Group 1',
-                              'Fill 1',
-                              '**'
-                            ],
+                            const ['Untitled-1 Outlines', 'Group 1', 'Fill 1', '**'],
                             value: Theme.of(context).primaryColor,
                           ),
                           ValueDelegate.color(
-                            const [
-                              'Untitled-1 Outlines',
-                              'Group 2',
-                              'Fill 1',
-                              '**'
-                            ],
+                            const ['Untitled-1 Outlines', 'Group 2', 'Fill 1', '**'],
                             value: Theme.of(context).primaryColor,
                           ),
                           ValueDelegate.color(
-                            const [
-                              'Shape Layer 1',
-                              'Ellipse 1',
-                              'Fill 1',
-                              '**'
-                            ],
+                            const ['Shape Layer 1', 'Ellipse 1', 'Fill 1', '**'],
                             value: const Color(0xff5B5B5B),
                           ),
                           ValueDelegate.color(
-                            const [
-                              'Shape Layer 2',
-                              'Ellipse 1',
-                              'Fill 1',
-                              '**'
-                            ],
+                            const ['Shape Layer 2', 'Ellipse 1', 'Fill 1', '**'],
                             value: const Color(0xff5B5B5B),
                           ),
                           ValueDelegate.color(
-                            const [
-                              'Shape Layer 3',
-                              'Ellipse 1',
-                              'Fill 1',
-                              '**'
-                            ],
+                            const ['Shape Layer 3', 'Ellipse 1', 'Fill 1', '**'],
                             value: const Color(0xff5B5B5B),
                           ),
                         ],
@@ -146,21 +117,14 @@ class _VoiceChatScreenState extends State<VoiceAssistantChatScreen>
                 const SizedBox(width: 4),
                 Flexible(
                   child: Text.rich(
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        fontWeight: FontWeight.w400,
-                        color: Theme.of(context).colorScheme.outlineVariant),
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w400, color: Theme.of(context).colorScheme.outlineVariant),
                     TextSpan(
                       text: 'go_to_premium'.tr,
                       children: [
                         const TextSpan(text: ' '),
                         TextSpan(
                           text: 'upgrade_now'.tr,
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodySmall
-                              ?.copyWith(
-                                  fontWeight: FontWeight.w500,
-                                  color: Theme.of(context).colorScheme.primary),
+                          style: Theme.of(context).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w500, color: Theme.of(context).colorScheme.primary),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
                               // Navigate to subscription screen
@@ -180,9 +144,7 @@ class _VoiceChatScreenState extends State<VoiceAssistantChatScreen>
               children: [
                 SizedBox(),
                 GestureDetector(
-                  onTap: _voiceAssistantController.isListening.value
-                      ? _voiceAssistantController.stopRecording
-                      : _voiceAssistantController.startRecording,
+                  onTap: _voiceAssistantController.isListening.value ? _voiceAssistantController.stopRecording : _voiceAssistantController.startRecording,
                   child: Container(
                     height: 80,
                     width: 80,
@@ -191,7 +153,7 @@ class _VoiceChatScreenState extends State<VoiceAssistantChatScreen>
                       shape: BoxShape.circle,
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.grey.withOpacity(0.2),
+                          color: Colors.grey.withValues(alpha: 0.2),
                           spreadRadius: 2,
                           blurRadius: 4,
                           offset: const Offset(0, 2),
@@ -205,9 +167,7 @@ class _VoiceChatScreenState extends State<VoiceAssistantChatScreen>
                       ),
                     ),
                     child: Icon(
-                      _voiceAssistantController.isListening.value
-                          ? HugeIcons.strokeRoundedPause
-                          : HugeIcons.strokeRoundedMic01,
+                      _voiceAssistantController.isListening.value ? HugeIcons.strokeRoundedPause : HugeIcons.strokeRoundedMic01,
                       color: Colors.white,
                     ),
                   ),
@@ -225,7 +185,7 @@ class _VoiceChatScreenState extends State<VoiceAssistantChatScreen>
                       color: Theme.of(context).colorScheme.primary,
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.grey.withOpacity(0.2),
+                          color: Colors.grey.shade300,
                           spreadRadius: 2,
                           blurRadius: 4,
                           offset: const Offset(0, 2),
@@ -259,9 +219,7 @@ class _VoiceChatScreenState extends State<VoiceAssistantChatScreen>
         ),
         Obx(() {
           return Text(
-            _voiceAssistantController.isListening.value
-                ? "listening".tr
-                : 'voice_assistant'.tr,
+            _voiceAssistantController.isListening.value ? "listening".tr : 'voice_assistant'.tr,
             style: Theme.of(context).textTheme.titleLarge,
           );
         }),

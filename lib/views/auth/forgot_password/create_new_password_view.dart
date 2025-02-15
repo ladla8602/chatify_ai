@@ -1,11 +1,6 @@
-import 'package:chatify_ai/routes/app_routes.dart';
 import 'package:flutter/material.dart';
-
-import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
 
-import '../../../constants/constants.dart';
-import '../../../controllers/auth_controller.dart';
 import '../../common/button_wigets.dart';
 import '../../common/dialog_wigets.dart';
 
@@ -14,23 +9,21 @@ class CreateNewPasswordView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AuthController authController = Get.find<AuthController>();
+    // final AuthController authController = Get.find<AuthController>();
     final TextEditingController emailController = TextEditingController();
     final TextEditingController passwordController = TextEditingController();
-    final _formKey = GlobalKey<FormState>();
+    final formKey = GlobalKey<FormState>();
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 40),
           child: Form(
-            key: _formKey,
+            key: formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Create New Password 🔑",
-                    style:
-                        TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
+                Text("Create New Password 🔑", style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
                 SizedBox(height: 10),
                 Text(
                   "Create your new password if you forgot it.then you have to do forgot password.",
@@ -43,18 +36,13 @@ class CreateNewPasswordView extends StatelessWidget {
                   textAlign: TextAlign.start,
                   textAlignVertical: TextAlignVertical.bottom,
                   controller: emailController,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium
-                      ?.copyWith(fontSize: 15),
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 15),
                   decoration: InputDecoration(
                     prefixIcon: Icon(HugeIcons.strokeRoundedLockPassword),
                     suffixIcon: Icon(HugeIcons.strokeRoundedEye),
-                    contentPadding: const EdgeInsets.symmetric(
-                        vertical: 20, horizontal: 28),
+                    contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 28),
                     hintText: "Password",
-                    hintStyle:
-                        const TextStyle(color: Colors.grey, fontSize: 14),
+                    hintStyle: const TextStyle(color: Colors.grey, fontSize: 14),
                     border: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(14)),
                       borderSide: BorderSide.none,
@@ -76,18 +64,13 @@ class CreateNewPasswordView extends StatelessWidget {
                   textAlign: TextAlign.start,
                   textAlignVertical: TextAlignVertical.bottom,
                   controller: passwordController,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium
-                      ?.copyWith(fontSize: 15),
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 15),
                   decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.symmetric(
-                        vertical: 20, horizontal: 28),
+                    contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 28),
                     prefixIcon: Icon(HugeIcons.strokeRoundedLockPassword),
                     suffixIcon: Icon(HugeIcons.strokeRoundedEye),
                     hintText: "Confirm Password",
-                    hintStyle:
-                        const TextStyle(color: Colors.grey, fontSize: 14),
+                    hintStyle: const TextStyle(color: Colors.grey, fontSize: 14),
                     border: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(14)),
                       borderSide: BorderSide.none,
@@ -115,8 +98,7 @@ class CreateNewPasswordView extends StatelessWidget {
                       context,
                       title: 'Reset Password\nSuccessful!',
                       icon: HugeIcons.strokeRoundedSquareLock02,
-                      message:
-                          ' Please wait...\nYou will be directed to the homepage ',
+                      message: ' Please wait...\nYou will be directed to the homepage ',
                       widget: CircularProgressIndicator(
                         strokeCap: StrokeCap.round,
                         strokeWidth: 5,

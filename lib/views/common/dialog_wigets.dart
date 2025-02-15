@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hugeicons/hugeicons.dart';
 
-import '../../constants/constants.dart';
-
-showCustomDialog(BuildContext context,
-    {IconData? icon, String? title, String? message, required Widget widget}) {
+showCustomDialog(BuildContext context, {IconData? icon, String? title, String? message, required Widget widget}) {
   showDialog(
     context: context,
     builder: (context) {
@@ -88,10 +84,7 @@ showCustomDialog(BuildContext context,
               Text(
                 title ?? '',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                    color: Theme.of(context).primaryColor,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold),
+                style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 18, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 20),
               Text(

@@ -15,7 +15,7 @@ class HistoryView extends StatelessWidget {
   const HistoryView({super.key});
   @override
   Widget build(BuildContext context) {
-    final FirestoreService _firestoreService = FirestoreService();
+    final FirestoreService firestoreService = FirestoreService();
     final List<Map<String, dynamic>> chatdata = [
       {
         'title': 'Hello there, I need some help',
@@ -121,7 +121,7 @@ class HistoryView extends StatelessWidget {
               ListView(
                 children: [
                   StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                    stream: _firestoreService.fetchChatRooms(),
+                    stream: firestoreService.fetchChatRooms(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return ChatHistoryLoadingEffect();
@@ -135,9 +135,7 @@ class HistoryView extends StatelessWidget {
                         return const Text('No chat history found.');
                       }
 
-                      final chatRooms = snapshot.data!.docs
-                          .map((e) => ChatRoom.fromFirestore(e))
-                          .toList();
+                      final chatRooms = snapshot.data!.docs.map((e) => ChatRoom.fromFirestore(e)).toList();
                       return ListView.builder(
                         physics: NeverScrollableScrollPhysics(),
                         itemCount: chatRooms.length,
@@ -145,22 +143,15 @@ class HistoryView extends StatelessWidget {
                         itemBuilder: (context, index) {
                           final chatRoom = chatRooms[index];
                           return ListTile(
-                            onTap: () => Get.toNamed(AppRoutes.chatContentView,
-                                arguments: {
-                                  "chatbot": ChatBot(
-                                      botId: chatRoom.botId,
-                                      botName: chatRoom.botName,
-                                      botAvatar: chatRoom.botAvatar),
-                                  "chatRoomId": chatRoom.id
-                                }),
+                            onTap: () => Get.toNamed(AppRoutes.chatContentView, arguments: {
+                              "chatbot": ChatBot(botId: chatRoom.botId, botName: chatRoom.botName, botAvatar: chatRoom.botAvatar),
+                              "chatRoomId": chatRoom.id
+                            }),
                             contentPadding: EdgeInsets.all(0),
                             leading: Container(
                                 height: 45,
                                 width: 45,
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                        color: Colors.grey.shade200)),
+                                decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.grey.shade200)),
                                 child: Icon(
                                   HugeIcons.strokeRoundedMessage02,
                                   color: Colors.grey,
@@ -202,10 +193,7 @@ class HistoryView extends StatelessWidget {
                           leading: Container(
                               height: 42,
                               width: 42,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border:
-                                      Border.all(color: Colors.grey.shade200)),
+                              decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.grey.shade200)),
                               child: Icon(
                                 HugeIcons.strokeRoundedMessage02,
                                 color: Colors.grey,
@@ -243,10 +231,7 @@ class HistoryView extends StatelessWidget {
                         leading: Container(
                             height: 42,
                             width: 42,
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border:
-                                    Border.all(color: Colors.grey.shade200)),
+                            decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: Colors.grey.shade200)),
                             child: Icon(
                               HugeIcons.strokeRoundedMessage02,
                               color: Colors.grey,

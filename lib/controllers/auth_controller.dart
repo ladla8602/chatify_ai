@@ -1,9 +1,8 @@
 import 'package:chatify_ai/models/user.model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hugeicons/hugeicons.dart';
 
@@ -69,15 +68,10 @@ class AuthController extends GetxController {
             countryCode: deviceLocale?.countryCode ?? 'unknown',
           ),
         );
-        await _firestore
-            .collection('users')
-            .doc(firebaseUser.uid)
-            .set(userModel.toFirestore());
+        await _firestore.collection('users').doc(firebaseUser.uid).set(userModel.toFirestore());
 
         Get.snackbar("Success", "Account created successfully",
-            snackPosition: SnackPosition.BOTTOM,
-            backgroundColor: ColorConstant.primaryColor,
-            colorText: Colors.white);
+            snackPosition: SnackPosition.BOTTOM, backgroundColor: ColorConstant.primaryColor, colorText: Colors.white);
       }
     } on FirebaseAuthException catch (e) {
       Get.snackbar("Error", e.message ?? "An error occurred");
@@ -86,8 +80,7 @@ class AuthController extends GetxController {
     }
   }
 
-  Future<void> signIn(
-      String email, String password, BuildContext context) async {
+  Future<void> signIn(String email, String password, BuildContext context) async {
     try {
       isLoading.value = true;
       await _auth.signInWithEmailAndPassword(email: email, password: password);
@@ -106,8 +99,7 @@ class AuthController extends GetxController {
       Navigator.pop(context);
       Get.toNamed(AppRoutes.dashboard);
     } catch (e) {
-      Get.snackbar("Error", "Failed to sign in: $e",
-          snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar("Error", "Failed to sign in: $e", snackPosition: SnackPosition.BOTTOM);
     } finally {
       isLoading.value = false; // Hide loader
     }
@@ -168,23 +160,18 @@ class AuthController extends GetxController {
         return; // User canceled the login
       }
 
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
       final AuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
 
       // Sign in to Firebase
-      final UserCredential userCredential =
-          await _auth.signInWithCredential(credential);
+      final UserCredential userCredential = await _auth.signInWithCredential(credential);
       final User? firebaseUser = userCredential.user;
 
       // Check if user already exists in Firestore
-      final docSnapshot = await _firestore
-          .collection(AppConstant.usersCollection)
-          .doc(firebaseUser?.uid)
-          .get();
+      final docSnapshot = await _firestore.collection(AppConstant.usersCollection).doc(firebaseUser?.uid).get();
 
       if (!docSnapshot.exists) {
         // New Google user -> Create in Firestore
@@ -194,9 +181,7 @@ class AuthController extends GetxController {
         Get.offNamed(AppRoutes.setPassword, arguments: firebaseUser);
       } else {
         Get.snackbar("Success", "Logged in as ${firebaseUser?.displayName}",
-            snackPosition: SnackPosition.BOTTOM,
-            backgroundColor: ColorConstant.primaryColor,
-            colorText: Colors.white);
+            snackPosition: SnackPosition.BOTTOM, backgroundColor: ColorConstant.primaryColor, colorText: Colors.white);
 
         Get.offNamed(AppRoutes.dashboard);
       }
@@ -252,8 +237,7 @@ class AuthController extends GetxController {
         throw Exception("Firebase user is null");
       }
 
-      final usersCollection =
-          _firestore.collection(AppConstant.usersCollection);
+      final usersCollection = _firestore.collection(AppConstant.usersCollection);
       final userDoc = usersCollection.doc(firebaseUser.uid);
 
       // Merge user data
@@ -265,7 +249,7 @@ class AuthController extends GetxController {
         'lastLogin': DateTime.now(),
       }, SetOptions(merge: true)); // Merge with existing data
     } catch (e) {
-      print("Error creating user in Firestore: $e");
+      debugPrint("Error creating user in Firestore: $e");
       Get.snackbar("Error", "Failed to save user data: $e");
     }
   }

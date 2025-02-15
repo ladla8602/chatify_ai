@@ -31,7 +31,8 @@ class FloatingMenuPanel extends StatefulWidget {
   final VoidCallback? onMainPressed;
   final Function(int) onPressed;
 
-  FloatingMenuPanel({
+  const FloatingMenuPanel({
+    super.key,
     this.buttons,
     this.positionTop,
     this.positionRight,
@@ -91,48 +92,48 @@ class _FloatBoxState extends State<FloatingMenuPanel> {
   @override
   Widget build(BuildContext context) {
     // Width and height of page is required for the dragging the panel;
-    double _pageWidth = MediaQuery.of(context).size.width;
-    double _pageHeight = MediaQuery.of(context).size.height;
+    double pageWidth = MediaQuery.of(context).size.width;
+    double pageHeight = MediaQuery.of(context).size.height;
 
     // All Buttons;
-    List<IconData> _buttons = widget.buttons!;
+    List<IconData> buttons = widget.buttons!;
 
     // Dock offset creates the boundary for the page depending on the DockType;
-    double _dockOffset = widget.dockOffset ?? 20.0;
+    double dockOffset = widget.dockOffset ?? 20.0;
 
     // Widget size if the width of the panel;
-    double _widgetSize = widget.size ?? 70.0;
+    double widgetSize = widget.size ?? 70.0;
 
     // **** METHODS ****
 
     // Dock boundary is calculated according to the dock offset and dock type.
-    double _dockBoundary() {
+    double dockBoundary() {
       if (widget.dockType != null && widget.dockType == DockType.inside) {
         // If it's an 'inside' type dock, dock offset will remain the same;
-        return _dockOffset;
+        return dockOffset;
       } else {
         // If it's an 'outside' type dock, dock offset will be inverted, hence
         // negative value;
-        return -_dockOffset;
+        return -dockOffset;
       }
     }
 
     // If panel shape is set to rectangle, the border radius will be set to custom
     // border radius property of the WIDGET, else it will be set to the size of
     // widget to make all corners rounded.
-    BorderRadius _borderRadius() {
+    BorderRadius borderRadius() {
       if (widget.panelShape != null && widget.panelShape == PanelShape.rectangle) {
         // If panel shape is 'rectangle', border radius can be set to custom or 0;
         return widget.borderRadius ?? BorderRadius.circular(0);
       } else {
         // If panel shape is 'rounded', border radius will be the size of widget
         // to make it rounded;
-        return BorderRadius.circular(_widgetSize);
+        return BorderRadius.circular(widgetSize);
       }
     }
 
     // Total buttons are required to calculate the height of the panel;
-    double _totalButtons() {
+    double totalButtons() {
       if (widget.buttons == null) {
         return 0;
       } else {
@@ -141,38 +142,38 @@ class _FloatBoxState extends State<FloatingMenuPanel> {
     }
 
     // Height of the panel according to the panel state;
-    double _panelHeight() {
+    double panelHeight() {
       if (_panelState == PanelState.open) {
         // Panel height will be in multiple of total buttons, I have added "1"
         // digit height for each button to fix the overflow issue. Don't know
         // what's causing this, but adding "1" fixed the problem for now.
-        return (_widgetSize + (_widgetSize + 1) * _totalButtons()) + (widget.borderWidth ?? 0);
+        return (widgetSize + (widgetSize + 1) * totalButtons()) + (widget.borderWidth ?? 0);
       } else {
-        return _widgetSize + (widget.borderWidth ?? 0) * 2;
+        return widgetSize + (widget.borderWidth ?? 0) * 2;
       }
     }
 
     // Panel top needs to be recalculated while opening the panel, to make sure
     // the height doesn't exceed the bottom of the page;
-    void _calcPanelTop() {
-      if (_positionTop + _panelHeight() > _pageHeight + _dockBoundary()) {
-        _positionTop = _pageHeight - _panelHeight() + _dockBoundary();
+    void calcPanelTop() {
+      if (_positionTop + panelHeight() > pageHeight + dockBoundary()) {
+        _positionTop = pageHeight - panelHeight() + dockBoundary();
       }
     }
 
     // Dock Left position when open;
-    double _openDockLeft() {
-      if (_positionRight < (_pageWidth / 2)) {
+    double openDockLeft() {
+      if (_positionRight < (pageWidth / 2)) {
         // If panel is docked to the left;
         return widget.panelOpenOffset ?? 30.0;
       } else {
         // If panel is docked to the right;
-        return ((_pageWidth - _widgetSize)) - (widget.panelOpenOffset ?? 30.0);
+        return ((pageWidth - widgetSize)) - (widget.panelOpenOffset ?? 30.0);
       }
     }
 
     // Panel border is only enabled if the border width is greater than 0;
-    Border? _panelBorder() {
+    Border? panelBorder() {
       if (widget.borderWidth != null && widget.borderWidth! > 0) {
         return Border.all(
           color: widget.borderColor ?? Color(0xFF333333),
@@ -184,21 +185,21 @@ class _FloatBoxState extends State<FloatingMenuPanel> {
     }
 
     // Force dock will dock the panel to it's nearest edge of the screen;
-    void _forceDock() {
+    void forceDock() {
       // Calculate the center of the panel;
-      double center = _positionRight + (_widgetSize / 2);
+      double center = _positionRight + (widgetSize / 2);
 
       // Set movement speed to the custom duration property or '300' default;
       _movementSpeed = widget.dockAnimDuration ?? 300;
 
       // Check if the position of center of the panel is less than half of the
       // page;
-      if (center < _pageWidth / 2) {
+      if (center < pageWidth / 2) {
         // Dock to the left edge;
-        _positionRight = 0.0 + _dockBoundary();
+        _positionRight = 0.0 + dockBoundary();
       } else {
         // Dock to the right edge;
-        _positionRight = (_pageWidth - _widgetSize) - _dockBoundary();
+        _positionRight = (pageWidth - widgetSize) - dockBoundary();
       }
     }
 
@@ -217,12 +218,12 @@ class _FloatBoxState extends State<FloatingMenuPanel> {
       // Animated Container is used for easier animation of container height;
       child: AnimatedContainer(
         duration: Duration(milliseconds: widget.panelAnimDuration ?? 600),
-        width: _widgetSize,
-        height: _panelHeight(),
+        width: widgetSize,
+        height: panelHeight(),
         decoration: BoxDecoration(
           color: widget.backgroundColor ?? Color(0xff00b0cb),
-          borderRadius: _borderRadius(),
-          border: _panelBorder(),
+          borderRadius: borderRadius(),
+          border: panelBorder(),
         ),
         curve: widget.panelAnimCurve ?? Curves.fastLinearToSlowEaseIn,
         child: Wrap(
@@ -233,12 +234,12 @@ class _FloatBoxState extends State<FloatingMenuPanel> {
               onPanEnd: (event) {
                 setState(
                   () {
-                    _forceDock();
+                    forceDock();
                   },
                 );
               },
               onTapCancel: () {
-                print('TAP_CANCEL');
+                debugPrint('TAP_CANCEL');
               },
               onPanStart: (event) {
                 // Detect the offset between the top and left side of the panel and
@@ -259,22 +260,22 @@ class _FloatBoxState extends State<FloatingMenuPanel> {
                     _positionTop = event.globalPosition.dy - _panOffsetTop;
 
                     // Check if the top position is exceeding the dock boundaries;
-                    if (_positionTop < 0 + _dockBoundary()) {
-                      _positionTop = 0 + _dockBoundary();
+                    if (_positionTop < 0 + dockBoundary()) {
+                      _positionTop = 0 + dockBoundary();
                     }
-                    if (_positionTop > (_pageHeight - _panelHeight()) - _dockBoundary()) {
-                      _positionTop = (_pageHeight - _panelHeight()) - _dockBoundary();
+                    if (_positionTop > (pageHeight - panelHeight()) - dockBoundary()) {
+                      _positionTop = (pageHeight - panelHeight()) - dockBoundary();
                     }
 
                     // Calculate the Left position of the panel according to pan;
                     _positionRight = event.globalPosition.dx - _panOffsetLeft;
 
                     // Check if the left position is exceeding the dock boundaries;
-                    if (_positionRight < 0 + _dockBoundary()) {
-                      _positionRight = 0 + _dockBoundary();
+                    if (_positionRight < 0 + dockBoundary()) {
+                      _positionRight = 0 + dockBoundary();
                     }
-                    if (_positionRight > (_pageWidth - _widgetSize) - _dockBoundary()) {
-                      _positionRight = (_pageWidth - _widgetSize) - _dockBoundary();
+                    if (_positionRight > (pageWidth - widgetSize) - dockBoundary()) {
+                      _positionRight = (pageWidth - widgetSize) - dockBoundary();
                     }
                   },
                 );
@@ -291,18 +292,18 @@ class _FloatBoxState extends State<FloatingMenuPanel> {
                       _panelState = PanelState.closed;
 
                       // Reset panel position, dock it to nearest edge;
-                      _forceDock();
+                      forceDock();
                       //widget.isOpen(false);
-                      //print("Float panel closed.");
+                      //debugPrint("Float panel closed.");
                     } else {
                       // If panel state is "closed", set it to "open";
                       _panelState = PanelState.open;
 
                       // Set the left side position;
-                      _positionRight = _openDockLeft();
+                      _positionRight = openDockLeft();
                       //widget.isOpen(true);
 
-                      _calcPanelTop();
+                      calcPanelTop();
                     }
                   },
                 );
@@ -317,47 +318,45 @@ class _FloatBoxState extends State<FloatingMenuPanel> {
             AnimatedOpacity(
               opacity: _panelState == PanelState.open ? 1.0 : 0.0,
               duration: _panelState == PanelState.open ? Duration(milliseconds: 250) : Duration(milliseconds: 10),
-              child: Container(
-                child: Column(
-                  children: List.generate(
-                    _buttons.length,
-                    (index) {
-                      return GestureDetector(
-                        onTap: () {
-                          widget.onPressed(index);
-                          setState(() {
-                            _movementSpeed = widget.panelAnimDuration ?? 200;
+              child: Column(
+                children: List.generate(
+                  buttons.length,
+                  (index) {
+                    return GestureDetector(
+                      onTap: () {
+                        widget.onPressed(index);
+                        setState(() {
+                          _movementSpeed = widget.panelAnimDuration ?? 200;
 
-                            if (_panelState == PanelState.open) {
-                              // If panel state is "open", set it to "closed";
-                              _panelState = PanelState.closed;
+                          if (_panelState == PanelState.open) {
+                            // If panel state is "open", set it to "closed";
+                            _panelState = PanelState.closed;
 
-                              // Reset panel position, dock it to nearest edge;
-                              _forceDock();
-                              //widget.isOpen(false);
-                              ////print("Float panel closed.");
-                            } else {
-                              if (widget.onMainPressed != null) widget.onMainPressed!();
-                              // If panel state is "closed", set it to "open";
-                              _panelState = PanelState.open;
+                            // Reset panel position, dock it to nearest edge;
+                            forceDock();
+                            //widget.isOpen(false);
+                            ////debugPrint("Float panel closed.");
+                          } else {
+                            if (widget.onMainPressed != null) widget.onMainPressed!();
+                            // If panel state is "closed", set it to "open";
+                            _panelState = PanelState.open;
 
-                              // Set the left side position;
-                              _positionRight = _openDockLeft();
-                              // widget.isOpen(true);
+                            // Set the left side position;
+                            _positionRight = openDockLeft();
+                            // widget.isOpen(true);
 
-                              _calcPanelTop();
-                            }
-                          });
-                        },
-                        child: _FloatButton(
-                          size: widget.size ?? 70.0,
-                          icon: _buttons[index],
-                          color: widget.contentColor ?? Colors.white,
-                          iconSize: widget.iconSize ?? 24.0,
-                        ),
-                      );
-                    },
-                  ),
+                            calcPanelTop();
+                          }
+                        });
+                      },
+                      child: _FloatButton(
+                        size: widget.size ?? 70.0,
+                        icon: buttons[index],
+                        color: widget.contentColor ?? Colors.white,
+                        iconSize: widget.iconSize ?? 24.0,
+                      ),
+                    );
+                  },
                 ),
               ),
             ),
@@ -374,12 +373,12 @@ class _FloatButton extends StatelessWidget {
   final IconData? icon;
   final double? iconSize;
 
-  _FloatButton({this.size, this.color, this.icon, this.iconSize});
+  const _FloatButton({this.size, this.color, this.icon, this.iconSize});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white.withOpacity(0.0),
+      color: Colors.white,
       width: size ?? 70.0,
       height: size ?? 70.0,
       child: Icon(

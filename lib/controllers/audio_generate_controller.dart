@@ -1,14 +1,14 @@
 import 'dart:async';
 
 import 'package:audioplayers/audioplayers.dart';
+import 'package:chatify_ai/library/flutter_chat/lib/src/types/types.dart' as types;
 import 'package:chatify_ai/models/speech_command_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:chatify_ai/library/flutter_chat/lib/src/types/types.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:chatify_ai/library/flutter_chat/lib/src/types/types.dart'
-    as types;
+
 import '../models/audio_gen_model.dart';
 import '../services/firebase_functions_service.dart';
 import '../services/firestore_service.dart';
@@ -41,8 +41,7 @@ class AudioGenerateController extends GetxController {
     },
     {
       'title': 'Nova',
-      'imagePath':
-          'https://img.freepik.com/premium-photo/cybersecurity-style-man_664559-162.jpg?uid=R118908268&ga=GA1.1.1519694566.1696227085&semt=ais_hybrid',
+      'imagePath': 'https://img.freepik.com/premium-photo/cybersecurity-style-man_664559-162.jpg?uid=R118908268&ga=GA1.1.1519694566.1696227085&semt=ais_hybrid',
       'voice': 'nova'
     },
   ];
@@ -56,8 +55,7 @@ class AudioGenerateController extends GetxController {
     FirestoreService? firestoreService,
     FirebaseFunctionsService? firebaseFunctionsService,
   })  : _firestoreService = firestoreService ?? FirestoreService(),
-        _firebaseFunctionsService =
-            firebaseFunctionsService ?? FirebaseFunctionsService();
+        _firebaseFunctionsService = firebaseFunctionsService ?? FirebaseFunctionsService();
 
   // UI Controllers
   final TextEditingController promptController = TextEditingController();
@@ -144,7 +142,7 @@ class AudioGenerateController extends GetxController {
     try {
       await _loadHistoricalMessages();
     } catch (e) {
-      print('Error loading messages: $e');
+      debugPrint('Error loading messages: $e');
       Get.snackbar(
         'Error',
         'Failed to load audio history',
@@ -159,15 +157,12 @@ class AudioGenerateController extends GetxController {
     final snapshot = await _fetchMessages();
     if (snapshot.docs.isEmpty) return;
 
-    final audioMessages =
-        snapshot.docs.map((doc) => AudioMessage.fromFirestore(doc)).toList();
+    final audioMessages = snapshot.docs.map((doc) => AudioMessage.fromFirestore(doc)).toList();
     messages.assignAll(_convertToTypesMessages(audioMessages));
   }
 
   Future<QuerySnapshot<Map<String, dynamic>>> _fetchMessages() {
-    return lastDocument == null
-        ? _firestoreService.fetchAudioMessages()
-        : _firestoreService.fetchAudioMessages(lastDocument);
+    return lastDocument == null ? _firestoreService.fetchAudioMessages() : _firestoreService.fetchAudioMessages(lastDocument);
   }
 
   Future<void> handleSendPressed() async {
@@ -184,8 +179,7 @@ class AudioGenerateController extends GetxController {
       isGenerating.value = true;
 
       // Call the Firebase function to generate audio
-      final value =
-          await _firebaseFunctionsService.generateAudio(speechGenCommand);
+      final value = await _firebaseFunctionsService.generateAudio(speechGenCommand);
 
       // Create an AudioMessage object
       final audioMessage = AudioMessage(
@@ -209,7 +203,7 @@ class AudioGenerateController extends GetxController {
       toggleDrawer(); // Open the history drawer
       promptController.clear();
     } catch (e) {
-      print('>>>>>>>>$e');
+      debugPrint('>>>>>>>>$e');
       Get.snackbar(
         'Error',
         'Failed to generate audio: $e',

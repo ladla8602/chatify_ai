@@ -290,7 +290,7 @@ export const createStripeCustomer = onCall(async (request) => {
       .doc(auth.uid)
       .set({
         stripeCustomerId: customer.id,
-      });
+      }, { merge: true });
 
     return { customerId: customer.id };
   } catch (error) {
@@ -368,30 +368,48 @@ export const createSubscription = onCall(async (request) => {
 });
 
 
-export const stripeWebhook = functions.https.onRequest(async (request: any, response: any) => {
-  const sig = request.headers["stripe-signature"] as string;
+export const stripeWebhook = functions.https.onRequest(
+  {
+    timeoutSeconds: 300,
+    cors: false, // Disable CORS for webhook endpoints
+    maxInstances: 1,
+  },
+  async (request: any, response: any) => {
+    const sig = request.headers["stripe-signature"] as string;
 
-  // Webhook secret from Stripe Dashboard
-  const webhookSecret = STRIPE_WEBHOOK_SECRET;
+    // Webhook secret from Stripe Dashboard
+    const webhookSecret = STRIPE_WEBHOOK_SECRET;
 
-  let event: Stripe.Event;
+    // Important: Configure the cloud function to handle raw body
+    const rawBody = request.rawBody;
 
-  try {
-    // Verify webhook signature for security
-    event = stripe.webhooks.constructEvent(
-      request.rawBody,
-      sig,
-      webhookSecret
-    );
-  } catch (err) {
-    console.error("Webhook signature verification failed", err);
-    return response.status(400).send(`Webhook Error: ${err}`);
-  }
-  const stripeWebhookHandler = new HandleStripeWebhook(db);
+    if (!rawBody) {
+      console.error("No raw body found in request");
+      return response.status(400).send("Webhook Error: No raw body");
+    }
 
-  // Handle different subscription events
-  stripeWebhookHandler.handleEvent(event);
+    let event: Stripe.Event;
 
-  // Send 200 response to acknowledge receipt of the event
-  response.json({ received: true });
-});
+    try {
+      // Verify webhook signature for security
+      event = stripe.webhooks.constructEvent(
+        rawBody,
+        sig,
+        webhookSecret
+      );
+    } catch (err) {
+      console.error("Webhook signature verification failed", err);
+      return response.status(400).send(`Webhook Error: ${err}`);
+    }
+    try {
+      // Handle different subscription events
+      const stripeWebhookHandler = new HandleStripeWebhook(db);
+      await stripeWebhookHandler.handleEvent(event);
+
+      // Send 200 response to acknowledge receipt of the event
+      response.json({ received: true });
+    } catch (err) {
+      console.error("Error processing webhook:", err);
+      return response.status(500).send(`Webhook processing failed: ${err instanceof Error ? err.message : "Unknown error"}`);
+    }
+  });

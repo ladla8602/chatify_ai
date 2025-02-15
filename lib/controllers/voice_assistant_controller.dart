@@ -12,15 +12,13 @@ import '../services/firestore_service.dart';
 
 class VoiceAssistantController extends GetxController {
   final AnimationController animationController;
-  final FirestoreService _firestoreService;
   final FirebaseFunctionsService _firebaseFunctionsService;
 
   VoiceAssistantController({
     required this.animationController,
     FirestoreService? firestoreService,
     FirebaseFunctionsService? firebaseFunctionsService,
-  })  : _firestoreService = firestoreService ?? FirestoreService(),
-        _firebaseFunctionsService = firebaseFunctionsService ?? FirebaseFunctionsService();
+  }) : _firebaseFunctionsService = firebaseFunctionsService ?? FirebaseFunctionsService();
 
   final RTCVideoRenderer _audioRenderer = RTCVideoRenderer();
   var isListening = false.obs;
@@ -165,14 +163,14 @@ class VoiceAssistantController extends GetxController {
     }
   }
 
-  Future<void> _restartWebRTC() async {
-    await _stopWebRTC();
-    await _initWebRTC();
-    if (isListening.value) {
-      await _initLocalStream();
-      await _createOffer();
-    }
-  }
+  // Future<void> _restartWebRTC() async {
+  //   await _stopWebRTC();
+  //   await _initWebRTC();
+  //   if (isListening.value) {
+  //     await _initLocalStream();
+  //     await _createOffer();
+  //   }
+  // }
 
   Future<void> _stopWebRTC() async {
     await _mediaRecorder?.stop();

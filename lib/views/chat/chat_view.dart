@@ -4,6 +4,7 @@ import 'package:chatify_ai/views/chat/widgets/chatbot_card_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
+
 import '../../widgets/drawer.dart';
 import 'widgets/chat_bot_loading_effect.dart';
 
@@ -245,7 +246,7 @@ class CapabilityCard extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(color: Theme.of(context).colorScheme.surface, borderRadius: BorderRadius.circular(10), boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.25),
+              color: Colors.grey.withValues(alpha: 0.25),
               spreadRadius: 2,
               blurRadius: 4,
               offset: const Offset(0, 2),

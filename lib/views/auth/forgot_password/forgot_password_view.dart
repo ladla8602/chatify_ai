@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
 
-import '../../../constants/constants.dart';
 import '../../common/button_wigets.dart';
 
 class ForgotPasswordView extends StatelessWidget {
@@ -53,13 +51,9 @@ class ForgotPasswordView extends StatelessWidget {
               textAlign: TextAlign.start,
               textAlignVertical: TextAlignVertical.bottom,
               // controller: ,
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyMedium
-                  ?.copyWith(fontSize: 15),
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 15),
               decoration: InputDecoration(
-                contentPadding:
-                    const EdgeInsets.symmetric(vertical: 20, horizontal: 28),
+                contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 28),
                 prefixIcon: Icon(
                   HugeIcons.strokeRoundedMail01,
                   color: Colors.grey,

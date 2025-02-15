@@ -22,7 +22,6 @@ class AudioGenerateView extends StatefulWidget {
 class _AudioGenerateViewState extends State<AudioGenerateView> {
   final AudioPlayer audioPlayer = AudioPlayer();
   late AudioGenerateController audioGenController;
-  int _selectedChipIndex = 0;
 
   @override
   void initState() {
@@ -159,11 +158,11 @@ class _AudioGenerateViewState extends State<AudioGenerateView> {
                           return GestureDetector(
                             onTap: () {
                               audioGenController.changeSelected(index);
-                              print('Selected index: $index');
+                              debugPrint('Selected index: $index');
                             },
                             child: AudioGenerateWigets(
                               title: audioGenController.audioGenerate[index]['title'],
-                              isSelected: audioGenController.isSelected == index,
+                              isSelected: audioGenController.isSelected.value == index,
                               imagePath: audioGenController.audioGenerate[index]['imagePath'],
                               onClick: () {
                                 audioGenController.changeSelected(index);

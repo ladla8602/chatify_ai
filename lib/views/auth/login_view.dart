@@ -1,10 +1,8 @@
 import 'package:chatify_ai/routes/app_routes.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
-import '../../constants/constants.dart';
 import '../../controllers/auth_controller.dart';
 import '../../widgets/animated_text.dart';
 import '../../widgets/typewriter.dart';
@@ -35,8 +33,7 @@ class LoginView extends StatelessWidget {
                   height: 60,
                   color: Theme.of(context).primaryColor,
                 ),
-                Text("Let's Get Started!".tr,
-                    style: Theme.of(context).textTheme.headlineLarge),
+                Text("Let's Get Started!".tr, style: Theme.of(context).textTheme.headlineLarge),
 
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 0.9,
@@ -48,23 +45,17 @@ class LoginView extends StatelessWidget {
                         TypewriterAnimatedText(
                           'typewriter_animation_first'.tr,
                           textAlign: TextAlign.center,
-                          textStyle: TextStyle(
-                              fontSize: 14,
-                              color: Theme.of(context).primaryColor),
+                          textStyle: TextStyle(fontSize: 14, color: Theme.of(context).primaryColor),
                         ),
                         TypewriterAnimatedText(
                           'typewriter_animation_second'.tr,
                           textAlign: TextAlign.center,
-                          textStyle: TextStyle(
-                              fontSize: 14,
-                              color: Theme.of(context).primaryColor),
+                          textStyle: TextStyle(fontSize: 14, color: Theme.of(context).primaryColor),
                         ),
                         TypewriterAnimatedText(
                           'typewriter_animation_third'.tr,
                           textAlign: TextAlign.center,
-                          textStyle: TextStyle(
-                              fontSize: 14,
-                              color: Theme.of(context).primaryColor),
+                          textStyle: TextStyle(fontSize: 14, color: Theme.of(context).primaryColor),
                         ),
                       ],
                       totalRepeatCount: 20,
@@ -104,15 +95,11 @@ class LoginView extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('Don\'t have an account?',
-                        style: TextStyle(fontSize: 13)),
+                    Text('Don\'t have an account?', style: TextStyle(fontSize: 13)),
                     SizedBox(width: 5),
                     GestureDetector(
                       onTap: () => Get.toNamed(AppRoutes.signup),
-                      child: Text('Sign up',
-                          style: TextStyle(
-                              fontSize: 13,
-                              color: Theme.of(context).primaryColor)),
+                      child: Text('Sign up', style: TextStyle(fontSize: 13, color: Theme.of(context).primaryColor)),
                     ),
                   ],
                 ),
@@ -122,13 +109,10 @@ class LoginView extends StatelessWidget {
                   children: [
                     Text(
                       'Privacy Policy',
-                      style:
-                          TextStyle(color: Colors.grey.shade400, fontSize: 11),
+                      style: TextStyle(color: Colors.grey.shade400, fontSize: 11),
                     ),
                     SizedBox(width: 16),
-                    Text('Terms of Service',
-                        style: TextStyle(
-                            color: Colors.grey.shade400, fontSize: 11)),
+                    Text('Terms of Service', style: TextStyle(color: Colors.grey.shade400, fontSize: 11)),
                   ],
                 )
               ],

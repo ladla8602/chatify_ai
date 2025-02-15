@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:chatify_ai/models/chat_bot_command.model.dart';
@@ -55,7 +56,7 @@ class FirebaseFunctionsService {
   Future<String> getVoiceChatToken() async {
     try {
       final response = await _functions.httpsCallable('getVoiceChatToken').call();
-      print(">>>>>>getVoiceChatToken:${response.data.toString()}");
+      debugPrint(">>>>>>getVoiceChatToken:${response.data.toString()}");
       if (response.data['success'] == true) {
         return response.data['token']['token'];
       }
@@ -70,13 +71,15 @@ class FirebaseFunctionsService {
       final HttpsCallableResult<Map<String, dynamic>> response =
           await _functions.httpsCallable('getSubscriptionPlans', options: HttpsCallableOptions(timeout: Duration(seconds: 120))).call();
 
-      final plansList = response.data['plans'];
-      log(">>>>>>getSubscriptionPlans:${plansList.toString()}");
-      return (plansList as List).map((item) {
-        log("Plan item before conversion: $item");
-        final planMap = Map<String, dynamic>.from(item).cast<String, dynamic>();
-        log("Plan item after conversion: $planMap");
-        return SubscriptionPlan.fromJson(planMap);
+      // Convert the entire response to a JSON string and then parse it back
+      final jsonString = jsonEncode(response.data);
+      final decodedData = jsonDecode(jsonString) as Map<String, dynamic>;
+
+      final plansList = decodedData['plans'] as List;
+
+      return plansList.map((item) {
+        // The item should now be properly typed after the JSON encode/decode cycle
+        return SubscriptionPlan.fromJson(item as Map<String, dynamic>);
       }).toList();
     } catch (e) {
       debugPrint("Error occurred while calling Firebase functions: $e");

@@ -1,7 +1,5 @@
-import 'package:chatify_ai/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:hugeicons/hugeicons.dart';
 
 import '../../controllers/auth_controller.dart';
@@ -15,7 +13,7 @@ class SingupView extends StatelessWidget {
     final AuthController authController = Get.find<AuthController>();
     final TextEditingController emailController = TextEditingController();
     final TextEditingController passwordController = TextEditingController();
-    final _formKey = GlobalKey<FormState>();
+    final formKey = GlobalKey<FormState>();
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(),
@@ -23,12 +21,11 @@ class SingupView extends StatelessWidget {
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 30),
           child: Form(
-            key: _formKey,
+            key: formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Create an account",
-                    style: Theme.of(context).textTheme.headlineLarge),
+                Text("Create an account", style: Theme.of(context).textTheme.headlineLarge),
                 SizedBox(height: 10),
                 Text(
                   "We will send a verification link to the email you entered.",
@@ -41,19 +38,14 @@ class SingupView extends StatelessWidget {
                   controller: emailController,
                   textAlign: TextAlign.start,
                   textAlignVertical: TextAlignVertical.bottom,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium
-                      ?.copyWith(fontSize: 15),
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 15),
                   decoration: InputDecoration(
                     prefixIcon: Icon(
                       HugeIcons.strokeRoundedMail01,
                     ),
-                    contentPadding: const EdgeInsets.symmetric(
-                        vertical: 20, horizontal: 28),
+                    contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 28),
                     hintText: "Email",
-                    hintStyle:
-                        const TextStyle(color: Colors.grey, fontSize: 14),
+                    hintStyle: const TextStyle(color: Colors.grey, fontSize: 14),
                     border: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(14)),
                       borderSide: BorderSide.none,
@@ -76,13 +68,9 @@ class SingupView extends StatelessWidget {
                   obscureText: authController.passwordVisible.value,
                   textAlignVertical: TextAlignVertical.bottom,
                   controller: passwordController,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium
-                      ?.copyWith(fontSize: 15),
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 15),
                   decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.symmetric(
-                        vertical: 20, horizontal: 28),
+                    contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 28),
                     prefixIcon: Icon(HugeIcons.strokeRoundedLockPassword),
                     suffixIcon: InkWell(
                         onTap: () {
@@ -90,8 +78,7 @@ class SingupView extends StatelessWidget {
                         },
                         child: Icon(HugeIcons.strokeRoundedEye)),
                     hintText: "Password",
-                    hintStyle:
-                        const TextStyle(color: Colors.grey, fontSize: 14),
+                    hintStyle: const TextStyle(color: Colors.grey, fontSize: 14),
                     border: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(14)),
                       borderSide: BorderSide.none,
@@ -113,35 +100,25 @@ class SingupView extends StatelessWidget {
                     Obx(
                       () {
                         return Checkbox(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5)),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                           value: authController.checkbox.value,
-                          onChanged: (value) =>
-                              authController.toggleCheckbox(value),
+                          onChanged: (value) => authController.toggleCheckbox(value),
                           activeColor: Theme.of(context).primaryColor,
                         );
                       },
                     ),
                     SizedBox(width: 10),
-                    const Text("I agree to Chatify ",
-                        style: TextStyle(fontSize: 13)),
-                    Text("Terms & Conditions",
-                        style: TextStyle(
-                            color: Theme.of(context).primaryColor,
-                            fontSize: 13)),
+                    const Text("I agree to Chatify ", style: TextStyle(fontSize: 13)),
+                    Text("Terms & Conditions", style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 13)),
                   ],
                 ),
                 SizedBox(height: 26),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('Already have an account?',
-                        style: TextStyle(fontSize: 13)),
+                    Text('Already have an account?', style: TextStyle(fontSize: 13)),
                     SizedBox(width: 5),
-                    Text('Sign In',
-                        style: TextStyle(
-                            fontSize: 13,
-                            color: Theme.of(context).primaryColor)),
+                    Text('Sign In', style: TextStyle(fontSize: 13, color: Theme.of(context).primaryColor)),
                   ],
                 ),
                 SizedBox(height: 20),
@@ -150,14 +127,13 @@ class SingupView extends StatelessWidget {
                   text: 'Sign up',
                   onClick: () async {
                     authController.isLoading.value = true;
-                    if (_formKey.currentState?.validate() ?? false) {
+                    if (formKey.currentState?.validate() ?? false) {
                       // Form is valid, get email and password
                       String email = emailController.text.trim();
                       String password = passwordController.text.trim();
 
                       // Call the signUpOrLoginWithEmailPassword method
-                      await authController.signUpWithEmailPassword(
-                          email, password);
+                      await authController.signUpWithEmailPassword(email, password);
                     }
                   },
                   backgroundColor: Theme.of(context).primaryColor,

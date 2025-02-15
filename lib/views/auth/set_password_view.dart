@@ -4,10 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/state_manager.dart';
-import 'package:get/utils.dart';
 import 'package:hugeicons/hugeicons.dart';
 
-import '../../constants/constants.dart';
 import '../../routes/app_routes.dart';
 import '../common/button_wigets.dart';
 
@@ -89,13 +87,9 @@ class SetPasswordView extends StatelessWidget {
                   obscureText: !authController.passwordVisible.value,
                   textAlignVertical: TextAlignVertical.bottom,
                   controller: passwordController,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium
-                      ?.copyWith(fontSize: 15),
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 15),
                   decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.symmetric(
-                        vertical: 20, horizontal: 28),
+                    contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 28),
                     prefixIcon: Icon(
                       HugeIcons.strokeRoundedSquareLock01,
                       color: Colors.grey,
@@ -106,8 +100,7 @@ class SetPasswordView extends StatelessWidget {
                         },
                         child: Icon(HugeIcons.strokeRoundedEye)),
                     hintText: "*******",
-                    hintStyle:
-                        const TextStyle(color: Colors.grey, fontSize: 14),
+                    hintStyle: const TextStyle(color: Colors.grey, fontSize: 14),
                     border: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(14)),
                       borderSide: BorderSide.none,

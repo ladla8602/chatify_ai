@@ -1,13 +1,9 @@
 import 'package:chatify_ai/controllers/auth_controller.dart';
 import 'package:chatify_ai/controllers/dashboard_controller.dart';
 import 'package:chatify_ai/routes/app_routes.dart';
-import 'package:chatify_ai/views/history/history_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:hugeicons/hugeicons.dart';
-
-import '../constants/constants.dart';
 
 class DrawerWigets extends StatelessWidget {
   const DrawerWigets({super.key});
@@ -15,8 +11,7 @@ class DrawerWigets extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AuthController authController = Get.find<AuthController>();
-    final DashboardController dashboardController =
-        Get.find<DashboardController>();
+    final DashboardController dashboardController = Get.find<DashboardController>();
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -24,8 +19,7 @@ class DrawerWigets extends StatelessWidget {
           SizedBox(
             height: 120,
             child: DrawerHeader(
-              decoration:
-                  BoxDecoration(border: Border(bottom: BorderSide.none)),
+              decoration: BoxDecoration(border: Border(bottom: BorderSide.none)),
               child: Obx(() {
                 final user = authController.firebaseUser.value;
                 return Row(
@@ -35,8 +29,7 @@ class DrawerWigets extends StatelessWidget {
                       backgroundColor: Theme.of(context).colorScheme.onPrimary,
                       radius: 30,
                       backgroundImage: NetworkImage(
-                        user?.photoURL ??
-                            'https://cdn-icons-png.flaticon.com/128/8984/8984545.png',
+                        user?.photoURL ?? 'https://cdn-icons-png.flaticon.com/128/8984/8984545.png',
                       ),
                     ),
                     SizedBox(width: 10),
@@ -51,16 +44,14 @@ class DrawerWigets extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
-                                color:
-                                    Theme.of(context).colorScheme.onBackground,
+                                color: Theme.of(context).colorScheme.onSurface,
                               ),
                             ),
                             Text(
                               user?.email ?? '',
                               style: TextStyle(
                                 fontSize: 12,
-                                color:
-                                    Theme.of(context).colorScheme.onBackground,
+                                color: Theme.of(context).colorScheme.onSurface,
                               ),
                             )
                           ],
@@ -79,9 +70,7 @@ class DrawerWigets extends StatelessWidget {
             child: Container(
                 margin: EdgeInsets.symmetric(horizontal: 10),
                 padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor,
-                    borderRadius: BorderRadius.circular(8)),
+                decoration: BoxDecoration(color: Theme.of(context).primaryColor, borderRadius: BorderRadius.circular(8)),
                 child: Row(
                   children: [
                     Stack(

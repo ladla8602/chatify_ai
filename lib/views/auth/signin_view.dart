@@ -1,13 +1,10 @@
 import 'package:chatify_ai/routes/app_routes.dart';
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
 
-import '../../constants/constants.dart';
 import '../../controllers/auth_controller.dart';
 import '../common/button_wigets.dart';
-import '../common/dialog_wigets.dart';
 
 class SigninView extends StatelessWidget {
   const SigninView({super.key});
@@ -17,7 +14,7 @@ class SigninView extends StatelessWidget {
     final AuthController authController = Get.find<AuthController>();
     final TextEditingController emailController = TextEditingController();
     final TextEditingController passwordController = TextEditingController();
-    final _formKey = GlobalKey<FormState>();
+    final formKey = GlobalKey<FormState>();
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(),
@@ -25,13 +22,11 @@ class SigninView extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 40),
           child: Obx(() {
             return Form(
-              key: _formKey,
+              key: formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Welcome back👋",
-                      style:
-                          TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
+                  Text("Welcome back👋", style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
                   SizedBox(height: 10),
                   Text(
                     "Please enter your email & password to sign in.",
@@ -44,19 +39,14 @@ class SigninView extends StatelessWidget {
                     textAlign: TextAlign.start,
                     textAlignVertical: TextAlignVertical.bottom,
                     controller: emailController,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium
-                        ?.copyWith(fontSize: 15),
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 15),
                     decoration: InputDecoration(
                       prefixIcon: Icon(
                         HugeIcons.strokeRoundedMail01,
                       ),
-                      contentPadding: const EdgeInsets.symmetric(
-                          vertical: 20, horizontal: 28),
+                      contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 28),
                       hintText: "Email",
-                      hintStyle:
-                          const TextStyle(color: Colors.grey, fontSize: 14),
+                      hintStyle: const TextStyle(color: Colors.grey, fontSize: 14),
                       border: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(14)),
                         borderSide: BorderSide.none,
@@ -78,18 +68,13 @@ class SigninView extends StatelessWidget {
                     textAlign: TextAlign.start,
                     textAlignVertical: TextAlignVertical.bottom,
                     controller: passwordController,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium
-                        ?.copyWith(fontSize: 15),
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 15),
                     decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.symmetric(
-                          vertical: 20, horizontal: 28),
+                      contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 28),
                       prefixIcon: Icon(HugeIcons.strokeRoundedLockPassword),
                       suffixIcon: Icon(HugeIcons.strokeRoundedEye),
                       hintText: "Password",
-                      hintStyle:
-                          const TextStyle(color: Colors.grey, fontSize: 14),
+                      hintStyle: const TextStyle(color: Colors.grey, fontSize: 14),
                       border: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(14)),
                         borderSide: BorderSide.none,
@@ -121,25 +106,19 @@ class SigninView extends StatelessWidget {
                       //   },
                       // ),
                       Checkbox(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5)),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                         value: authController.checkbox.value,
-                        onChanged: (value) =>
-                            authController.toggleCheckbox(value),
+                        onChanged: (value) => authController.toggleCheckbox(value),
                         activeColor: Theme.of(context).primaryColor,
                       ),
                       SizedBox(width: 10),
-                      const Text("Remember me ",
-                          style: TextStyle(fontSize: 13)),
+                      const Text("Remember me ", style: TextStyle(fontSize: 13)),
                       Spacer(),
                       GestureDetector(
                         onTap: () {
                           Get.toNamed(AppRoutes.forgotpassword);
                         },
-                        child: Text("Forgot Password?",
-                            style: TextStyle(
-                                color: Theme.of(context).primaryColor,
-                                fontSize: 13)),
+                        child: Text("Forgot Password?", style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 13)),
                       ),
                     ],
                   ),
@@ -147,15 +126,11 @@ class SigninView extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('Don\'t have an account?',
-                          style: TextStyle(fontSize: 13)),
+                      Text('Don\'t have an account?', style: TextStyle(fontSize: 13)),
                       SizedBox(width: 5),
                       GestureDetector(
                         onTap: () => Get.toNamed(AppRoutes.signup),
-                        child: Text('Sign up',
-                            style: TextStyle(
-                                fontSize: 13,
-                                color: Theme.of(context).primaryColor)),
+                        child: Text('Sign up', style: TextStyle(fontSize: 13, color: Theme.of(context).primaryColor)),
                       ),
                     ],
                   ),
@@ -164,11 +139,10 @@ class SigninView extends StatelessWidget {
                   ElevatedButtonWigets(
                     text: 'Sign in',
                     onClick: () async {
-                      if (_formKey.currentState!.validate()) {
+                      if (formKey.currentState!.validate()) {
                         // Show loader
                         authController.isLoading.value = true;
-                        await authController.signIn(emailController.text,
-                            passwordController.text, context);
+                        await authController.signIn(emailController.text, passwordController.text, context);
                       }
                     },
                     backgroundColor: Theme.of(context).primaryColor,

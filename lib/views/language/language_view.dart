@@ -1,4 +1,3 @@
-import 'package:chatify_ai/constants/constants.dart';
 import 'package:chatify_ai/controllers/language_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -49,10 +48,7 @@ class LanguageView extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
-                color:
-                    languageController.selectedLanguage.value == language.name
-                        ? Theme.of(context).primaryColor
-                        : Colors.grey.shade300,
+                color: languageController.selectedLanguage.value == language.name ? Theme.of(context).primaryColor : Colors.grey.shade300,
                 width: 1,
               ),
             ),
@@ -66,13 +62,12 @@ class LanguageView extends StatelessWidget {
                 language.name,
                 style: TextStyle(fontSize: 14),
               ),
-              trailing:
-                  languageController.selectedLanguage.value == language.name
-                      ? Icon(
-                          HugeIcons.strokeRoundedCheckmarkCircle02,
-                          color: Theme.of(context).primaryColor,
-                        )
-                      : null,
+              trailing: languageController.selectedLanguage.value == language.name
+                  ? Icon(
+                      HugeIcons.strokeRoundedCheckmarkCircle02,
+                      color: Theme.of(context).primaryColor,
+                    )
+                  : null,
               onTap: () => languageController.changeLanguage(language),
             ),
           );

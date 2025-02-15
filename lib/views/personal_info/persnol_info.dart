@@ -1,8 +1,5 @@
-import 'package:chatify_ai/constants/constants.dart';
-import 'package:chatify_ai/views/common/button_wigets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hugeicons/hugeicons.dart';
 
 class PersonalInfo extends StatelessWidget {
   const PersonalInfo({super.key});
@@ -22,8 +19,7 @@ class PersonalInfo extends StatelessWidget {
           children: [
             CircleAvatar(
               backgroundColor: Colors.grey.shade200,
-              backgroundImage: NetworkImage(
-                  'https://cdn-icons-png.flaticon.com/128/8984/8984545.png'),
+              backgroundImage: NetworkImage('https://cdn-icons-png.flaticon.com/128/8984/8984545.png'),
               radius: 40,
             ),
             Column(
@@ -39,15 +35,12 @@ class PersonalInfo extends StatelessWidget {
                 TextField(
                   readOnly: true,
                   decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.symmetric(
-                        vertical: 15, horizontal: 18),
+                    contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 18),
                     hintText: "Andrew Ainsley",
                     hintStyle: TextStyle(
                       fontSize: 14,
                     ),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide.none),
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
                   ),
                 ),
                 SizedBox(height: 15),
@@ -61,15 +54,12 @@ class PersonalInfo extends StatelessWidget {
                 TextField(
                   readOnly: true,
                   decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.symmetric(
-                        vertical: 15, horizontal: 18),
+                    contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 18),
                     hintText: "example@gmail.com",
                     hintStyle: TextStyle(
                       fontSize: 14,
                     ),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide.none),
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
                   ),
                 ),
                 SizedBox(height: 15),
@@ -83,15 +73,12 @@ class PersonalInfo extends StatelessWidget {
                 TextField(
                   readOnly: true,
                   decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.symmetric(
-                        vertical: 15, horizontal: 18),
+                    contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 18),
                     hintText: "1.0.0",
                     hintStyle: TextStyle(
                       fontSize: 14,
                     ),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide.none),
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
                   ),
                 ),
                 SizedBox(height: 10),

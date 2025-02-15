@@ -1,7 +1,6 @@
 import 'package:chatify_ai/routes/app_routes.dart';
 import 'package:chatify_ai/views/common/button_wigets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
 
@@ -17,26 +16,11 @@ class _SelectPaymentMethodsState extends State<SelectPaymentMethod> {
   int selectedIndex = -1; // Tracks the selected payment method index
 
   List<Map<String, dynamic>> paymentMethods = [
-    {
-      'title': 'Paypal',
-      'imagePath': 'https://cdn-icons-png.flaticon.com/128/174/174861.png'
-    },
-    {
-      'title': 'Google Pay',
-      'imagePath': 'https://cdn-icons-png.flaticon.com/512/2991/2991148.png'
-    },
-    {
-      'title': 'Apple Pay',
-      'imagePath': 'https://cdn-icons-png.flaticon.com/128/15076/15076709.png'
-    },
-    {
-      'title': '********4678',
-      'imagePath': 'https://cdn-icons-png.flaticon.com/128/16009/16009219.png'
-    },
-    {
-      'title': '********5567',
-      'imagePath': 'https://cdn-icons-png.flaticon.com/128/196/196578.png'
-    }
+    {'title': 'Paypal', 'imagePath': 'https://cdn-icons-png.flaticon.com/128/174/174861.png'},
+    {'title': 'Google Pay', 'imagePath': 'https://cdn-icons-png.flaticon.com/512/2991/2991148.png'},
+    {'title': 'Apple Pay', 'imagePath': 'https://cdn-icons-png.flaticon.com/128/15076/15076709.png'},
+    {'title': '********4678', 'imagePath': 'https://cdn-icons-png.flaticon.com/128/16009/16009219.png'},
+    {'title': '********5567', 'imagePath': 'https://cdn-icons-png.flaticon.com/128/196/196578.png'}
   ];
 
   @override
@@ -83,7 +67,6 @@ class _SelectPaymentMethodsState extends State<SelectPaymentMethod> {
                 itemCount: paymentMethods.length,
               ),
             ),
-            
             ElevatedButtonWigets(
               text: 'Continue',
               onClick: () {
@@ -118,9 +101,7 @@ class PaymentMethodsWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
         color: Colors.white,
         border: Border.all(
-          color: isSelected
-              ? Colors.green
-              : Colors.grey.shade200,
+          color: isSelected ? Colors.green : Colors.grey.shade200,
           width: 2, // Highlight the border when selected
         ),
       ),

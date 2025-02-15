@@ -50,7 +50,7 @@ class ImageGenController extends GetxController {
     try {
       await _loadHistoricalMessages();
     } catch (e) {
-      print('Error loading messages: $e');
+      debugPrint('Error loading messages: $e');
     } finally {
       isDataLoadingForFirstTime.value = false;
     }

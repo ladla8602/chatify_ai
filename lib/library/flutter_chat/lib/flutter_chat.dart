@@ -1,4 +1,4 @@
-library flutter_chat;
+// library flutter_chat;
 
 export 'src/chat_l10n.dart';
 export 'src/chat_theme.dart';

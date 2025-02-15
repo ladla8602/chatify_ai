@@ -85,7 +85,7 @@ class AppRoutes {
     GetPage(name: languaeview, page: () => LanguageView()),
     GetPage(name: dashboard, page: () => DashboardView(), binding: DashboardBindings()),
     GetPage(name: history, page: () => HistoryView()),
-    GetPage(name: linkedAccount, page: () => Linked_Account()),
+    GetPage(name: linkedAccount, page: () => LinkedAccount()),
     GetPage(name: personalInfo, page: () => PersonalInfo()),
     GetPage(name: security, page: () => SecurityView()),
     GetPage(name: imageView, page: () => ImageGenerateView()),

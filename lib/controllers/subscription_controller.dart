@@ -7,14 +7,12 @@ import '../services/firestore_service.dart';
 
 class SubscriptionController extends GetxController {
   // Dependencies
-  final FirestoreService _firestoreService;
   final FirebaseFunctionsService _firebaseFunctionsService;
 
   SubscriptionController({
     FirestoreService? firestoreService,
     FirebaseFunctionsService? firebaseFunctionsService,
-  })  : _firestoreService = firestoreService ?? FirestoreService(),
-        _firebaseFunctionsService = firebaseFunctionsService ?? FirebaseFunctionsService();
+  }) : _firebaseFunctionsService = firebaseFunctionsService ?? FirebaseFunctionsService();
 
   Future<String> createSubscription(String planId) async {
     try {

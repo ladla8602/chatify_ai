@@ -25,8 +25,7 @@ class _ReviewSummaryState extends State<ReviewSummary> {
         ),
         body: Padding(
           padding: const EdgeInsets.all(18),
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Container(
               padding: EdgeInsets.symmetric(horizontal: 14, vertical: 20),
               decoration: BoxDecoration(
@@ -36,19 +35,13 @@ class _ReviewSummaryState extends State<ReviewSummary> {
               ),
               child: Column(
                 children: [
-                  Text('Basic Plan',
-                      style:
-                          TextStyle(fontSize: 15, fontWeight: FontWeight.w700)),
+                  Text('Basic Plan', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700)),
                   SizedBox(height: 15),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('\$ 1000 ',
-                          style: TextStyle(
-                              fontSize: 30, fontWeight: FontWeight.bold)),
-                      Text('/ month',
-                          style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.w600)),
+                      Text('\$ 1000 ', style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
+                      Text('/ month', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
                     ],
                   ),
                   SizedBox(height: 15),
@@ -63,8 +56,7 @@ class _ReviewSummaryState extends State<ReviewSummary> {
                           padding: const EdgeInsets.all(8.0),
                           child: Row(
                             children: [
-                              const Icon(HugeIcons.strokeRoundedTick02,
-                                  size: 20),
+                              const Icon(HugeIcons.strokeRoundedTick02, size: 20),
                               const SizedBox(width: 8),
                               Text(
                                 'Access to all features'.tr,
@@ -78,8 +70,7 @@ class _ReviewSummaryState extends State<ReviewSummary> {
               ),
             ),
             const SizedBox(height: 20),
-            Text('Selected Payment Method',
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700)),
+            Text('Selected Payment Method', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700)),
             const SizedBox(height: 15),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 14, vertical: 14),
@@ -99,19 +90,15 @@ class _ReviewSummaryState extends State<ReviewSummary> {
                       SizedBox(width: 16),
                       Text(
                         '********5567',
-                        style:
-                            Theme.of(context).textTheme.titleMedium?.copyWith(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                            ),
                       ),
                       Spacer(),
                       Text(
                         'Change',
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w800,
-                            color: Colors.green),
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: Colors.green),
                       )
                     ],
                   ),
@@ -120,7 +107,7 @@ class _ReviewSummaryState extends State<ReviewSummary> {
             ),
             const Spacer(),
             ElevatedButtonWigets(
-              text: 'Continue Payment -\4.99',
+              text: 'Continue Payment -\$4.99',
               onClick: () {
                 Get.toNamed(AppRoutes.successfullyScreen);
               },

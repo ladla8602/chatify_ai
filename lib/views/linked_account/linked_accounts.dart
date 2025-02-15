@@ -1,28 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class Linked_Account extends StatelessWidget {
-  const Linked_Account({super.key});
+class LinkedAccount extends StatelessWidget {
+  const LinkedAccount({super.key});
 
   @override
   Widget build(BuildContext context) {
     List<Map<String, dynamic>> linkedAccount = [
-      {
-        'title': 'Google',
-        'imagePath': 'https://cdn-icons-png.flaticon.com/128/174/174861.png',
-        'status': 'Connected'
-      },
-      {
-        'title': 'Facebook ',
-        'imagePath': 'https://cdn-icons-png.flaticon.com/512/2991/2991148.png',
-        'status': 'Connected'
-      },
-      {
-        'title': 'Apple',
-        'imagePath':
-            'https://cdn-icons-png.flaticon.com/128/15076/15076709.png',
-        'status': 'Connect'
-      },
+      {'title': 'Google', 'imagePath': 'https://cdn-icons-png.flaticon.com/128/174/174861.png', 'status': 'Connected'},
+      {'title': 'Facebook ', 'imagePath': 'https://cdn-icons-png.flaticon.com/512/2991/2991148.png', 'status': 'Connected'},
+      {'title': 'Apple', 'imagePath': 'https://cdn-icons-png.flaticon.com/128/15076/15076709.png', 'status': 'Connect'},
       {
         'title': 'X',
         'imagePath': 'https://cdn-icons-png.flaticon.com/128/5969/5969020.png',
@@ -59,11 +46,7 @@ class LinkedAccountWigets extends StatelessWidget {
   final String imagePath;
   final String status;
 
-  const LinkedAccountWigets(
-      {super.key,
-      required this.title,
-      required this.imagePath,
-      required this.status});
+  const LinkedAccountWigets({super.key, required this.title, required this.imagePath, required this.status});
 
   @override
   Widget build(BuildContext context) {
@@ -72,8 +55,7 @@ class LinkedAccountWigets extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: Colors.white,
-        border:
-            Border.all(color: Theme.of(context).colorScheme.surface, width: 2),
+        border: Border.all(color: Theme.of(context).colorScheme.surface, width: 2),
       ),
       child: Row(
         children: [
@@ -84,17 +66,14 @@ class LinkedAccountWigets extends StatelessWidget {
           SizedBox(width: 12),
           Text(
             title,
-            style: TextStyle(
-                fontWeight: FontWeight.bold, fontSize: 13, color: Colors.black),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Colors.black),
           ),
           Spacer(),
           Text(
             status,
             style: TextStyle(
               fontSize: 13,
-              color: status == 'Connected'
-                  ? Colors.black
-                  : Theme.of(context).primaryColor,
+              color: status == 'Connected' ? Colors.black : Theme.of(context).primaryColor,
             ),
           )
         ],

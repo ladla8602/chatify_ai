@@ -1,10 +1,9 @@
-import 'package:chatify_ai/constants/constants.dart';
 import 'package:chatify_ai/controllers/auth_controller.dart';
-import 'package:chatify_ai/controllers/common_controller.dart';
 import 'package:chatify_ai/controllers/language_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
+
 import '../../controllers/theme_controller.dart';
 import '../../routes/app_routes.dart';
 import '../../widgets/drawer.dart';
@@ -15,11 +14,9 @@ class SettingView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final CommonController commonController = Get.put(CommonController());
     final AuthController authController = Get.find<AuthController>();
     final ThemeController themeController = Get.put(ThemeController());
-    final LanguageController languageController =
-        Get.find<LanguageController>();
+    final LanguageController languageController = Get.find<LanguageController>();
     return Scaffold(
       appBar: AppBar(
         surfaceTintColor: Colors.white,
@@ -153,16 +150,14 @@ class SettingView extends StatelessWidget {
             icon: HugeIcons.strokeRoundedTask01,
             title: 'terms_of_use'.tr,
             onTap: () {
-              Get.toNamed(AppRoutes.commonpageView,
-                  arguments: 'terms_of_use'.tr); //termsOfUse
+              Get.toNamed(AppRoutes.commonpageView, arguments: 'terms_of_use'.tr); //termsOfUse
             },
           ),
           BuildTileWigets(
             icon: HugeIcons.strokeRoundedSquareLock01,
             title: 'privacy_policy'.tr,
             onTap: () {
-              Get.toNamed(AppRoutes.commonpageView,
-                  arguments: 'privacy_policy'.tr);
+              Get.toNamed(AppRoutes.commonpageView, arguments: 'privacy_policy'.tr);
             },
           ),
           BuildTileWigets(
@@ -174,8 +169,7 @@ class SettingView extends StatelessWidget {
           ),
           ListTile(
             contentPadding: EdgeInsets.all(0),
-            leading:
-                const Icon(HugeIcons.strokeRoundedLogout01, color: Colors.red),
+            leading: const Icon(HugeIcons.strokeRoundedLogout01, color: Colors.red),
             title: Text(
               'logout'.tr,
               style: TextStyle(color: Colors.red),
@@ -186,24 +180,19 @@ class SettingView extends StatelessWidget {
                 context: context,
                 builder: (context) {
                   return Padding(
-                    padding: const EdgeInsets.only(
-                        left: 14, right: 14, top: 10, bottom: 16),
+                    padding: const EdgeInsets.only(left: 14, right: 14, top: 10, bottom: 16),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Container(
                           width: 28,
                           height: 2,
-                          decoration:
-                              BoxDecoration(color: Colors.grey.shade400),
+                          decoration: BoxDecoration(color: Colors.grey.shade400),
                         ),
                         const SizedBox(height: 16),
                         Text(
                           'logout'.tr,
-                          style: TextStyle(
-                              color: Colors.red,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15),
+                          style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold, fontSize: 15),
                         ),
                         const SizedBox(height: 16),
                         Divider(
@@ -225,14 +214,11 @@ class SettingView extends StatelessWidget {
                                   alignment: Alignment.center,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(30),
-                                    color: Theme.of(context)
-                                        .primaryColor
-                                        .withOpacity(0.2),
+                                    color: Theme.of(context).primaryColor.withValues(alpha: 0.2),
                                   ),
                                   child: Text(
                                     'cancel'.tr,
-                                    style: TextStyle(
-                                        color: Theme.of(context).primaryColor),
+                                    style: TextStyle(color: Theme.of(context).primaryColor),
                                   ),
                                 ),
                               ),

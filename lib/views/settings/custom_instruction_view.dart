@@ -1,9 +1,7 @@
-import 'package:chatify_ai/constants/constants.dart';
 import 'package:chatify_ai/controllers/common_controller.dart';
 import 'package:chatify_ai/views/common/button_wigets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 import '../common/wigets.dart';
 
@@ -14,8 +12,7 @@ class CustomInstructionView extends StatelessWidget {
   Widget build(BuildContext context) {
     final CommonController commonController = Get.put(CommonController());
     final TextEditingController firstAnswerController = TextEditingController();
-    final TextEditingController secondAnswerController =
-        TextEditingController();
+    final TextEditingController secondAnswerController = TextEditingController();
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -31,7 +28,7 @@ class CustomInstructionView extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-             Text(
+            Text(
               'custom_instruction_help'.tr,
               style: TextStyle(fontSize: 15),
             ),
@@ -60,16 +57,14 @@ class CustomInstructionView extends StatelessWidget {
               maxLines: 5,
               decoration: InputDecoration(
                 hintText: 'your_answer'.tr,
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.0),
-                    borderSide: BorderSide.none),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.0), borderSide: BorderSide.none),
               ),
             ),
             const SizedBox(height: 24),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                 Text(
+                Text(
                   'enabnle'.tr,
                   style: TextStyle(
                     fontSize: 15,
@@ -101,7 +96,7 @@ class CustomInstructionView extends StatelessWidget {
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30),
-                        color: Theme.of(context).primaryColor.withOpacity(0.2),
+                        color: Theme.of(context).primaryColor.withValues(alpha: 0.2),
                       ),
                       child: Text(
                         'cancels'.tr,
@@ -112,11 +107,7 @@ class CustomInstructionView extends StatelessWidget {
                 ),
                 const SizedBox(width: 16),
                 Expanded(
-                  child: ElevatedButtonWigets(
-                      text: 'save'.tr,
-                      backgroundColor: Theme.of(context).primaryColor,
-                      foregroundColor: Colors.white,
-                      onClick: () {}),
+                  child: ElevatedButtonWigets(text: 'save'.tr, backgroundColor: Theme.of(context).primaryColor, foregroundColor: Colors.white, onClick: () {}),
                 ),
               ],
             ),

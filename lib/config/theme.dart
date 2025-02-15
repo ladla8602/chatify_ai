@@ -27,13 +27,11 @@ final lightTheme = ThemeData.light().copyWith(
   colorScheme: ColorScheme.light(
     primary: Color(0xff4CAF50), // Primary color
     secondary: Colors.greenAccent, // Accent color
-    surface: Colors.grey[100]!, // Surface background
-    background: Colors.white, // Overall background
+    surface: Colors.grey[100]!, // Overall background
     error: Colors.red, // Error color
     onPrimary: Colors.white, // Text on primary color
     onSecondary: Colors.black, // Text on secondary color
-    onSurface: Colors.black, // Text on surface
-    onBackground: Colors.black, // Text on background
+    onSurface: Colors.black, // Text on background
     onError: Colors.white, // Text on error color
     outline: Colors.grey.shade200, // Outline color
   ),
@@ -87,13 +85,11 @@ final darkTheme = ThemeData.dark().copyWith(
   colorScheme: ColorScheme.dark(
       primary: Colors.blue, // Primary color
       secondary: Colors.lightBlueAccent, // Accent color
-      surface: Colors.grey[850]!, // Surface background
-      background: Colors.black, // Overall background
+      surface: Colors.grey[850]!, // Overall background
       error: Colors.redAccent, // Error color
       onPrimary: Colors.white, // Text on primary color
       onSecondary: Colors.white, // Text on secondary color
-      onSurface: Colors.white, // Text on surface
-      onBackground: Colors.white, // Text on background
+      onSurface: Colors.white, // Text on background
       onError: Colors.black, // Text on error color
       outline: Colors.grey[850]!),
   iconTheme: IconThemeData(

@@ -1,13 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import './../../types/types.dart' as types;
 
 import '../../models/input_clear_mode.dart';
 import '../../models/send_button_visibility_mode.dart';
 import '../../utils/util.dart';
 import '../state/inherited_chat_theme.dart';
 import '../state/inherited_l10n.dart';
+import './../../types/types.dart' as types;
 import 'attachment_button.dart';
 import 'input_text_field_controller.dart';
 import 'send_button.dart';
@@ -165,7 +165,7 @@ class _InputState extends State<Input> {
                       cursorColor: InheritedChatTheme.of(context).theme.inputTextCursorColor,
                       decoration: InheritedChatTheme.of(context).theme.inputTextDecoration.copyWith(
                             hintStyle: InheritedChatTheme.of(context).theme.inputTextStyle.copyWith(
-                                  color: InheritedChatTheme.of(context).theme.inputTextColor.withOpacity(0.5),
+                                  color: InheritedChatTheme.of(context).theme.inputTextColor.withValues(alpha: 0.5),
                                 ),
                             hintText: InheritedL10n.of(context).l10n.inputPlaceholder,
                           ),

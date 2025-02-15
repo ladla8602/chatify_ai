@@ -1,7 +1,6 @@
 import 'package:chatify_ai/controllers/help_center_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:hugeicons/hugeicons.dart';
 
 class HelpCenterView extends StatefulWidget {
@@ -15,8 +14,7 @@ class _HelpCenterViewState extends State<HelpCenterView> {
   @override
   void initState() {
     super.initState();
-    final HelpCenterController helpCenterController =
-        Get.put(HelpCenterController());
+    final HelpCenterController helpCenterController = Get.put(HelpCenterController());
     helpCenterController.fetchCategories();
   }
 
@@ -28,7 +26,9 @@ class _HelpCenterViewState extends State<HelpCenterView> {
       child: Obx(() {
         return Scaffold(
           appBar: AppBar(
-            title:  Text( 'help_center'.tr,),
+            title: Text(
+              'help_center'.tr,
+            ),
             centerTitle: true,
             bottom: PreferredSize(
               preferredSize: const Size.fromHeight(60),
@@ -72,22 +72,12 @@ class _HelpCenterViewState extends State<HelpCenterView> {
                                 helpCenterController.selectCategory(index);
                               },
                               child: Container(
-                                margin: const EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 5),
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 10),
+                                margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                                 decoration: BoxDecoration(
-                                  color: helpCenterController
-                                              .selectedCategoryIndex ==
-                                          index
-                                      ? Theme.of(context).primaryColor
-                                      : Colors.white,
+                                  color: helpCenterController.selectedCategoryIndex.value == index ? Theme.of(context).primaryColor : Colors.white,
                                   border: Border.all(
-                                      color: helpCenterController
-                                                  .selectedCategoryIndex ==
-                                              index
-                                          ? Theme.of(context).primaryColor
-                                          : Colors.grey.shade100,
+                                      color: helpCenterController.selectedCategoryIndex.value == index ? Theme.of(context).primaryColor : Colors.grey.shade100,
                                       width: 1),
                                   borderRadius: BorderRadius.circular(20),
                                 ),
@@ -95,11 +85,7 @@ class _HelpCenterViewState extends State<HelpCenterView> {
                                   child: Text(
                                     helpCenterController.categories[index],
                                     style: TextStyle(
-                                      color: helpCenterController
-                                                  .selectedCategoryIndex ==
-                                              index
-                                          ? Colors.white
-                                          : Colors.black,
+                                      color: helpCenterController.selectedCategoryIndex.value == index ? Colors.white : Colors.black,
                                     ),
                                   ),
                                 ),
@@ -139,21 +125,14 @@ class _HelpCenterViewState extends State<HelpCenterView> {
                       itemBuilder: (context, index) {
                         return Container(
                           margin: EdgeInsets.only(bottom: 16),
-                          decoration: BoxDecoration(
-                              border: Border.all(color: Colors.grey.shade100),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10))),
+                          decoration: BoxDecoration(border: Border.all(color: Colors.grey.shade100), borderRadius: BorderRadius.all(Radius.circular(10))),
                           child: ExpansionTile(
-                            initiallyExpanded: helpCenterController
-                                .faqItems[index]['isExpanded'],
-                            childrenPadding:
-                                EdgeInsets.symmetric(horizontal: 14),
+                            initiallyExpanded: helpCenterController.faqItems[index]['isExpanded'],
+                            childrenPadding: EdgeInsets.symmetric(horizontal: 14),
                             shape: Border(bottom: BorderSide.none),
-                            title: Text(helpCenterController.faqItems[index]
-                                ['question']),
+                            title: Text(helpCenterController.faqItems[index]['question']),
                             children: [
-                              Text(helpCenterController.faqItems[index]
-                                  ['answer']),
+                              Text(helpCenterController.faqItems[index]['answer']),
                             ],
                           ),
                         );
@@ -171,17 +150,12 @@ class _HelpCenterViewState extends State<HelpCenterView> {
                       onTap: () {},
                       child: Container(
                         padding: EdgeInsets.all(14),
-                        decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey.shade100),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10))),
+                        decoration: BoxDecoration(border: Border.all(color: Colors.grey.shade100), borderRadius: BorderRadius.all(Radius.circular(10))),
                         child: Row(
                           children: [
-                            Icon(helpCenterController.contactUs[index]['icon'],
-                                color: Theme.of(context).primaryColor),
+                            Icon(helpCenterController.contactUs[index]['icon'], color: Theme.of(context).primaryColor),
                             SizedBox(width: 12),
-                            Text(
-                                helpCenterController.contactUs[index]['title']),
+                            Text(helpCenterController.contactUs[index]['title']),
                           ],
                         ),
                       ),

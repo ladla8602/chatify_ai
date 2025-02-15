@@ -1,9 +1,7 @@
-import 'package:chatify_ai/constants/constants.dart';
+import 'package:chatify_ai/controllers/common_controller.dart';
 import 'package:chatify_ai/views/common/wigets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import 'package:chatify_ai/controllers/common_controller.dart';
 
 class SecurityView extends StatelessWidget {
   const SecurityView({super.key});

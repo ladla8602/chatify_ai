@@ -17,7 +17,7 @@ class AudioMessage {
     required this.prompt,
     required this.voiceId,
     required this.duration,
-  }) : this.id = id ?? DateTime.now().millisecondsSinceEpoch.toString();
+  }) : id = id ?? DateTime.now().millisecondsSinceEpoch.toString();
 
   factory AudioMessage.fromFirestore(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;

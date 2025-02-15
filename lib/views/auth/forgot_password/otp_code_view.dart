@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pinput/pinput.dart';
 
-import '../../../constants/constants.dart';
 import '../../common/button_wigets.dart';
 
 class OtpCodeView extends StatelessWidget {
@@ -52,10 +51,7 @@ class OtpCodeView extends StatelessWidget {
                   defaultPinTheme: PinTheme(
                     width: 58,
                     height: 58,
-                    textStyle: const TextStyle(
-                        fontSize: 18,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold),
+                    textStyle: const TextStyle(fontSize: 18, color: Colors.black, fontWeight: FontWeight.bold),
                     decoration: BoxDecoration(
                       color: Colors.grey[200],
                       borderRadius: BorderRadius.circular(8),
@@ -64,10 +60,9 @@ class OtpCodeView extends StatelessWidget {
                   focusedPinTheme: PinTheme(
                     width: 58,
                     height: 58,
-                    textStyle:
-                        const TextStyle(fontSize: 18, color: Colors.black),
+                    textStyle: const TextStyle(fontSize: 18, color: Colors.black),
                     decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColor.withOpacity(0.3),
+                      color: Theme.of(context).primaryColor.withValues(alpha: 0.3),
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(color: Theme.of(context).primaryColor),
                     ),
@@ -75,8 +70,7 @@ class OtpCodeView extends StatelessWidget {
                   submittedPinTheme: PinTheme(
                     width: 58,
                     height: 58,
-                    textStyle:
-                        const TextStyle(fontSize: 15, color: Colors.black),
+                    textStyle: const TextStyle(fontSize: 15, color: Colors.black),
                     decoration: BoxDecoration(
                       color: Colors.grey[300],
                       borderRadius: BorderRadius.circular(8),
@@ -84,7 +78,7 @@ class OtpCodeView extends StatelessWidget {
                   ),
                   showCursor: true,
                   onCompleted: (pin) {
-                    print("Entered Code: $pin");
+                    debugPrint("Entered Code: $pin");
                   },
                 ),
               ),

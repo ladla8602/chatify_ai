@@ -1,4 +1,3 @@
-import 'package:chatify_ai/controllers/language_controller.dart';
 import 'package:chatify_ai/firebase_options.dart';
 import 'package:chatify_ai/lang/app_translations.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -37,7 +36,7 @@ class MyApp extends StatelessWidget {
     // Get AuthController to determine the initial route
     final AuthController authController = Get.find<AuthController>();
     final ThemeController themeController = Get.find<ThemeController>();
-    final LanguageController languageController = Get.put(LanguageController());
+    // final LanguageController languageController = Get.put(LanguageController());
 
     return Obx(
       () => GetMaterialApp(

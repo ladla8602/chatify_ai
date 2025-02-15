@@ -1,9 +1,6 @@
-import 'package:chatify_ai/constants/constants.dart';
 import 'package:chatify_ai/routes/app_routes.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:get/utils.dart';
 import 'package:hugeicons/hugeicons.dart';
 
 class BuildTileWigets extends StatelessWidget {
@@ -28,10 +25,7 @@ class BuildTileWigets extends StatelessWidget {
         color: Theme.of(context).iconTheme.color,
         size: 20,
       ),
-      title: Text(title,
-          style: TextStyle(
-              color: Theme.of(context).textTheme.bodyMedium!.color,
-              fontSize: 15)),
+      title: Text(title, style: TextStyle(color: Theme.of(context).textTheme.bodyMedium!.color, fontSize: 15)),
       trailing: trailing ??
           const Icon(
             HugeIcons.strokeRoundedArrowRight01,
@@ -45,8 +39,7 @@ class BuildTileWigets extends StatelessWidget {
 class CustomSwitchButtonWigets extends StatelessWidget {
   final bool isSwitched;
   final VoidCallback? onClick;
-  const CustomSwitchButtonWigets(
-      {super.key, this.onClick, required this.isSwitched});
+  const CustomSwitchButtonWigets({super.key, this.onClick, required this.isSwitched});
 
   @override
   Widget build(BuildContext context) {
@@ -58,9 +51,7 @@ class CustomSwitchButtonWigets extends StatelessWidget {
         height: 26,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(18),
-          color: isSwitched
-              ? Theme.of(context).primaryColor
-              : Colors.grey.shade300,
+          color: isSwitched ? Theme.of(context).primaryColor : Colors.grey.shade300,
         ),
         child: Stack(
           alignment: Alignment.center,
@@ -98,14 +89,11 @@ class GetPrimeWigets extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 6, vertical: 5),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(40),
-          gradient: LinearGradient(
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-              colors: [
-                Theme.of(context).primaryColor.withOpacity(0.6),
-                Theme.of(context).primaryColor,
-                Theme.of(context).primaryColor.withOpacity(0.7),
-              ]),
+          gradient: LinearGradient(begin: Alignment.centerLeft, end: Alignment.centerRight, colors: [
+            Theme.of(context).primaryColor.withValues(alpha: 0.6),
+            Theme.of(context).primaryColor,
+            Theme.of(context).primaryColor.withValues(alpha: 0.7),
+          ]),
         ),
         child: Row(
           children: [

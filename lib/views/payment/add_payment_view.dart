@@ -1,7 +1,5 @@
-import 'package:chatify_ai/constants/constants.dart';
 import 'package:chatify_ai/views/common/button_wigets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
 
@@ -28,10 +26,7 @@ class AddPaymentView extends StatelessWidget {
           style: TextStyle(fontSize: 20),
         ),
         centerTitle: true,
-        actions: [
-          IconButton(
-              onPressed: () {}, icon: Icon(HugeIcons.strokeRoundedIrisScan))
-        ],
+        actions: [IconButton(onPressed: () {}, icon: Icon(HugeIcons.strokeRoundedIrisScan))],
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
@@ -48,9 +43,7 @@ class AddPaymentView extends StatelessWidget {
               style: TextStyle(fontSize: 15),
               decoration: InputDecoration(
                 hintText: 'Enter Card Number',
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.0),
-                    borderSide: BorderSide.none),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.0), borderSide: BorderSide.none),
               ),
             ),
             SizedBox(height: 20),
@@ -64,9 +57,7 @@ class AddPaymentView extends StatelessWidget {
               style: TextStyle(fontSize: 15),
               decoration: InputDecoration(
                 hintText: 'Enter Name',
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.0),
-                    borderSide: BorderSide.none),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.0), borderSide: BorderSide.none),
               ),
             ),
             SizedBox(height: 20),
@@ -87,9 +78,7 @@ class AddPaymentView extends StatelessWidget {
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                           hintText: 'Enter Name',
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                              borderSide: BorderSide.none),
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.0), borderSide: BorderSide.none),
                         ),
                       ),
                     ],
@@ -111,9 +100,7 @@ class AddPaymentView extends StatelessWidget {
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                           hintText: 'Enter CVV',
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                              borderSide: BorderSide.none),
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.0), borderSide: BorderSide.none),
                         ),
                       ),
                     ],
