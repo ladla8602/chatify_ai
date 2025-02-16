@@ -4,7 +4,7 @@ A new Flutter project.
 
 ## Getting Started
 
-Flutter SDK used: 3.27.3
+Flutter SDK used: 3.27.4
 
 ## Flutter commands
 

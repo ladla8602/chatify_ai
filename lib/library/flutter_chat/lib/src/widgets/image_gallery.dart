@@ -42,17 +42,15 @@ class ImageGallery extends StatelessWidget {
           width: 20,
           height: 20,
           child: CircularProgressIndicator(
-            value: event == null || event.expectedTotalBytes == null
-                ? 0
-                : event.cumulativeBytesLoaded / event.expectedTotalBytes!,
+            value: event == null || event.expectedTotalBytes == null ? 0 : event.cumulativeBytesLoaded / event.expectedTotalBytes!,
           ),
         ),
       );
 
   @override
   Widget build(BuildContext context) => PopScope(
-        onPopInvoked: (didPop) {
-          if (didPop) {
+        onPopInvokedWithResult: (didPop, result) {
+          if (!didPop) {
             onClosePressed();
           }
         },
@@ -63,8 +61,7 @@ class ImageGallery extends StatelessWidget {
           child: Stack(
             children: [
               PhotoViewGallery.builder(
-                builder: (BuildContext context, int index) =>
-                    PhotoViewGalleryPageOptions(
+                builder: (BuildContext context, int index) => PhotoViewGalleryPageOptions(
                   imageProvider: imageProviderBuilder != null
                       ? imageProviderBuilder!(
                           uri: images[index].uri,
@@ -79,8 +76,7 @@ class ImageGallery extends StatelessWidget {
                   maxScale: options.maxScale,
                 ),
                 itemCount: images.length,
-                loadingBuilder: (context, event) =>
-                    _imageGalleryLoadingBuilder(event),
+                loadingBuilder: (context, event) => _imageGalleryLoadingBuilder(event),
                 pageController: pageController,
                 scrollPhysics: const ClampingScrollPhysics(),
               ),
