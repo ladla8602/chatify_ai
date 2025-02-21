@@ -118,7 +118,6 @@ class _ChatViewState extends State<ChatView>
                 fontWeight: FontWeight.bold,
               ),
             ),
-            Icon(HugeIcons.strokeRoundedArrowDown01)
           ],
         ),
       ),
