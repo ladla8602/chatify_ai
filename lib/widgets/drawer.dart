@@ -11,7 +11,8 @@ class DrawerWigets extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AuthController authController = Get.find<AuthController>();
-    final DashboardController dashboardController = Get.find<DashboardController>();
+    final DashboardController dashboardController =
+        Get.find<DashboardController>();
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -19,7 +20,8 @@ class DrawerWigets extends StatelessWidget {
           SizedBox(
             height: 120,
             child: DrawerHeader(
-              decoration: BoxDecoration(border: Border(bottom: BorderSide.none)),
+              decoration:
+                  BoxDecoration(border: Border(bottom: BorderSide.none)),
               child: Obx(() {
                 final user = authController.firebaseUser.value;
                 return Row(
@@ -29,7 +31,8 @@ class DrawerWigets extends StatelessWidget {
                       backgroundColor: Theme.of(context).colorScheme.onPrimary,
                       radius: 30,
                       backgroundImage: NetworkImage(
-                        user?.photoURL ?? 'https://cdn-icons-png.flaticon.com/128/8984/8984545.png',
+                        user?.photoURL ??
+                            'https://cdn-icons-png.flaticon.com/128/8984/8984545.png',
                       ),
                     ),
                     SizedBox(width: 10),
@@ -70,7 +73,9 @@ class DrawerWigets extends StatelessWidget {
             child: Container(
                 margin: EdgeInsets.symmetric(horizontal: 10),
                 padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(color: Theme.of(context).primaryColor, borderRadius: BorderRadius.circular(8)),
+                decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColor,
+                    borderRadius: BorderRadius.circular(8)),
                 child: Row(
                   children: [
                     Stack(
@@ -234,6 +239,16 @@ class DrawerWigets extends StatelessWidget {
             onTap: () {
               dashboardController.changeIndex(4);
               Get.to(AppRoutes.setting, preventDuplicates: false);
+            },
+          ),
+          ListTile(
+            leading: Icon(HugeIcons.strokeRoundedLogout01, color: Colors.red),
+            title: Text(
+              'logout'.tr,
+              style: TextStyle(fontSize: 15, color: Colors.red),
+            ),
+            onTap: () {
+              authController.logout();
             },
           ),
         ],

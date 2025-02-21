@@ -1,13 +1,66 @@
-import 'package:chatify_ai/library/flutter_chat/lib/flutter_chat.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
+
 import '../../controllers/chatbot_controller.dart';
 import '../../routes/app_routes.dart';
 import '../../widgets/drawer.dart';
-import 'widgets/chatbot_card_widget.dart';
 import 'widgets/chat_bot_loading_effect.dart';
-import 'package:flutter_svg/svg.dart';
+import 'widgets/chatbot_card_widget.dart';
+
+class CapabilityCard extends StatelessWidget {
+  final String title;
+  final String subtitle;
+  final VoidCallback? onTap;
+
+  const CapabilityCard(
+      {super.key, required this.title, required this.subtitle, this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surface,
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withValues(alpha: 0.25),
+                  spreadRadius: 2,
+                  blurRadius: 4,
+                  offset: const Offset(0, 2),
+                ),
+              ]),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 14,
+                  ),
+                ),
+                SizedBox(height: 5),
+                Text(
+                  subtitle,
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: Colors.grey.shade600,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
 
 class ChatView extends StatefulWidget {
   const ChatView({super.key});
@@ -38,47 +91,6 @@ class _ChatViewState extends State<ChatView>
   ];
 
   @override
-  void initState() {
-    super.initState();
-    _animationController = AnimationController(
-      duration: const Duration(seconds: 1),
-      vsync: this,
-    );
-
-    _offsetAnimation = Tween<Offset>(
-      begin: const Offset(0.0, 1.0),
-      end: Offset.zero,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeInOut,
-    ));
-
-    // Start the animation
-    _animationController.forward();
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
-  }
-
-  void _showChatifyAIBottomSheet(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (context) {
-        return SizedBox(
-          height: 300,
-          child: SelectModelWigets(),
-        );
-      },
-    );
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -95,22 +107,19 @@ class _ChatViewState extends State<ChatView>
             },
           ),
         ),
-        title: GestureDetector(
-          onTap: () => _showChatifyAIBottomSheet(context),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              SizedBox(width: 52),
-              Text(
-                "Chatify AI",
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            SizedBox(width: 52),
+            Text(
+              "Chatify AI",
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
               ),
-              Icon(HugeIcons.strokeRoundedArrowDown01)
-            ],
-          ),
+            ),
+            Icon(HugeIcons.strokeRoundedArrowDown01)
+          ],
         ),
       ),
       drawer: DrawerWigets(),
@@ -179,191 +188,122 @@ class _ChatViewState extends State<ChatView>
               ],
             ),
           ),
-        ],
-      ),
-    );
-  }
-}
-
-class CapabilityCard extends StatelessWidget {
-  final String title;
-  final String subtitle;
-  final VoidCallback? onTap;
-
-  const CapabilityCard(
-      {super.key, required this.title, required this.subtitle, this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      child: GestureDetector(
-        onTap: onTap,
-        child: Container(
-          decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surface,
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withValues(alpha: 0.25),
-                  spreadRadius: 2,
-                  blurRadius: 4,
-                  offset: const Offset(0, 2),
-                ),
-              ]),
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  title,
-                  style: TextStyle(
-                    fontSize: 14,
-                  ),
-                ),
-                SizedBox(height: 5),
-                Text(
-                  subtitle,
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: Colors.grey.shade600,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class SelectModelWigets extends StatefulWidget {
-  const SelectModelWigets({super.key});
-
-  @override
-  State<SelectModelWigets> createState() => _SelectModelWigetsState();
-}
-
-class _SelectModelWigetsState extends State<SelectModelWigets> {
-  int selectedIndex = 0;
-
-  List<Map<String, dynamic>> models = [
-    {"name": "OpenAI", "icon": 'assets/icons/chatgpt.svg'},
-    {"name": "Gemini", "icon": "assets/icons/gemini.svg"},
-    {"name": "Deepseek", "icon": "assets/icons/deepseek.svg"},
-  ];
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(16),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            height: 5,
-            width: 40,
-            decoration: BoxDecoration(
-              color: Colors.grey,
-              borderRadius: BorderRadius.circular(10),
-            ),
-          ),
-          SizedBox(height: 10),
-          Text(
-            "Select Model",
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          ),
-          SizedBox(height: 20),
-          Expanded(
-            child: ListView.builder(
-              itemCount: models.length,
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      selectedIndex = index;
-                    });
-                  },
-                  child: Card(
-                    color: Colors.grey.shade100,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: index == selectedIndex
-                              ? Colors.green
-                              : Colors.black12,
-                          width: 1.5,
-                        ),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: ListTile(
-                        leading: CircleAvatar(
-                          backgroundColor: Colors.white,
-                          radius: 16,
-                          child: SvgPicture.asset(
-                            models[index]['icon'],
-                            height: 40,
-                          ),
-                        ),
-                        title: Text(
-                          models[index]["name"],
-                          style: TextStyle(
-                              color: Colors.black, fontWeight: FontWeight.w500),
-                        ),
-                        trailing: SizedBox(
-                          width: 100,
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 8, vertical: 5),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12),
-                                    border: Border.all(color: Colors.black38),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: SlideTransition(
+              position: _offsetAnimation,
+              child: Container(
+                padding: EdgeInsets.all(10),
+                color: Theme.of(context).scaffoldBackgroundColor,
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        if (controller.chatbots.isNotEmpty) {
+                          Get.toNamed(AppRoutes.chatContentView,
+                              arguments: {"chatbot": controller.chatbots[0]});
+                        } else {
+                          Get.snackbar("Error", "No chatbots available");
+                        }
+                      },
+                      child: Row(
+                        children: [
+                          Flexible(
+                            child: ConstrainedBox(
+                              constraints: const BoxConstraints(
+                                  maxHeight: 90, minHeight: 36),
+                              child: TextFormField(
+                                enabled: false,
+                                keyboardType: TextInputType.multiline,
+                                decoration: InputDecoration(
+                                  alignLabelWithHint: true,
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.never,
+                                  filled: true,
+                                  fillColor:
+                                      Theme.of(context).colorScheme.surfaceDim,
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 16, vertical: 8),
+                                  hintText: '${'ask_anything'.tr}...',
+                                  border: OutlineInputBorder(
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(28)),
+                                    borderSide: BorderSide(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary),
                                   ),
-                                  child: Row(
-                                    children: [
-                                      SvgPicture.asset(
-                                        models[index]['icon'],
-                                        height: 12,
-                                        width: 15,
-                                      ),
-                                      SizedBox(width: 3),
-                                      Text(
-                                        models[index]["name"],
-                                        style: TextStyle(
-                                          fontSize: 9,
-                                          color: index == selectedIndex
-                                              ? Colors.black
-                                              : Colors.grey.shade700,
-                                        ),
-                                      ),
-                                    ],
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(28)),
+                                    borderSide: BorderSide(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .surface),
+                                  ),
+                                  disabledBorder: OutlineInputBorder(
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(28)),
+                                    borderSide: BorderSide(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary),
+                                  ),
+                                  errorBorder: const OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(28)),
                                   ),
                                 ),
                               ),
-                              SizedBox(width: 5),
-                              Icon(
-                                HugeIcons.strokeRoundedInformationCircle,
-                                size: 18,
-                                color: index == selectedIndex
-                                    ? Colors.black
-                                    : Colors.grey.shade700,
-                              ),
-                            ],
+                            ),
                           ),
-                        ),
+                          SizedBox(width: 8),
+                          CircleAvatar(
+                            backgroundColor: Theme.of(context).primaryColor,
+                            child: Icon(
+                              HugeIcons.strokeRoundedSent,
+                              color: Colors.white,
+                              size: 18,
+                            ),
+                          )
+                        ],
                       ),
                     ),
-                  ),
-                );
-              },
+                  ],
+                ),
+              ),
             ),
           ),
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      duration: const Duration(seconds: 1),
+      vsync: this,
+    );
+
+    _offsetAnimation = Tween<Offset>(
+      begin: const Offset(0.0, 1.0),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeInOut,
+    ));
+
+    // Start the animation
+    _animationController.forward();
   }
 }

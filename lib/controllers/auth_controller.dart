@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hugeicons/hugeicons.dart';
 
@@ -17,6 +18,7 @@ class AuthController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
+   final GetStorage _storage = GetStorage();
 
   // Observable User
   Rxn<User> firebaseUser = Rxn<User>();
@@ -126,8 +128,8 @@ class AuthController extends GetxController {
   Future<void> logout() async {
     await _googleSignIn.signOut();
     await _auth.signOut();
-
-    Get.offNamed(AppRoutes.login);
+    await _storage.erase(); 
+    Get.offAllNamed(AppRoutes.login);
   }
 
   @override
