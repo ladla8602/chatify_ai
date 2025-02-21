@@ -43,6 +43,8 @@ Follow this doc - https://firebase.google.com/docs/flutter/setup?platform=androi
 
 firebase emulators:start --import ./firebase-export-1738494335036oJP5Y8 --export-on-exit
 
+firebase deploy --only functions:stripeWebhook
+
 firebase functions:delete myFunction
 
 ## Stripe
@@ -50,6 +52,8 @@ firebase functions:delete myFunction
 ### Subscription Testing Cards
 
 https://docs.stripe.com/india-recurring-payments?integration=paymentIntents-setupIntents&testing-method=card-numbers#testing
+
+stripe listen --forward-to http://127.0.0.1:5001/chatifyai-7a694/us-central1/stripeWebhook
 
 ## 4. Firestore Database Design
 

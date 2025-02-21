@@ -44,7 +44,6 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         translationsKeys: AppTranslations.translationsKeys,
         locale: Get.deviceLocale, // Set default language
-        // locale: languageController.getCurrentLanguage()?.locale,
         fallbackLocale: Locale('en', 'US'), // Fallback language
         supportedLocales: const [
           Locale('en', 'US'),

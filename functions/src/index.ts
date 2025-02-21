@@ -369,19 +369,14 @@ export const createSubscription = onCall(async (request) => {
 
 
 export const stripeWebhook = functions.https.onRequest(
-  {
-    timeoutSeconds: 300,
-    cors: false, // Disable CORS for webhook endpoints
-    maxInstances: 1,
-  },
-  async (request: any, response: any) => {
+  async (request: functions.https.Request, response: any) => {
     const sig = request.headers["stripe-signature"] as string;
 
     // Webhook secret from Stripe Dashboard
     const webhookSecret = STRIPE_WEBHOOK_SECRET;
 
     // Important: Configure the cloud function to handle raw body
-    const rawBody = request.rawBody;
+    const { rawBody } = request;
 
     if (!rawBody) {
       console.error("No raw body found in request");

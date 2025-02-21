@@ -30,13 +30,13 @@ class SetPasswordView extends StatelessWidget {
 
         // Set the password in Firebase Authentication
         await firebaseUser?.updatePassword(password);
-        await auth.signInWithEmailAndPassword(
-          email: firebaseUser!.email!,
-          password: password,
-        );
+        // await auth.signInWithEmailAndPassword(
+        //   email: firebaseUser!.email!,
+        //   password: password,
+        // );
 
         // Navigate to chat view or any other screen
-        Get.toNamed(AppRoutes.chatview);
+        Get.toNamed(AppRoutes.dashboard);
       } catch (e) {
         Get.snackbar('Error', e.toString());
       }

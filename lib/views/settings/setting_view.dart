@@ -1,5 +1,4 @@
 import 'package:chatify_ai/controllers/auth_controller.dart';
-import 'package:chatify_ai/controllers/language_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
@@ -16,7 +15,7 @@ class SettingView extends StatelessWidget {
   Widget build(BuildContext context) {
     final AuthController authController = Get.find<AuthController>();
     final ThemeController themeController = Get.put(ThemeController());
-    final LanguageController languageController = Get.find<LanguageController>();
+    // final LanguageController languageController = Get.find<LanguageController>();
     return Scaffold(
       appBar: AppBar(
         surfaceTintColor: Colors.white,
@@ -99,18 +98,16 @@ class SettingView extends StatelessWidget {
               Get.toNamed(AppRoutes.security);
             },
           ),
-          Obx(
-            () => BuildTileWigets(
-              icon: HugeIcons.strokeRoundedGlobe02,
-              title: 'language'.tr,
-              trailing: Text(
-                languageController.selectedLanguage.value,
-                style: TextStyle(color: Colors.grey),
-              ),
-              onTap: () {
-                Get.toNamed(AppRoutes.languaeview);
-              },
+          BuildTileWigets(
+            icon: HugeIcons.strokeRoundedGlobe02,
+            title: 'language'.tr,
+            trailing: Text(
+              Get.locale!.toLanguageTag(),
+              style: TextStyle(color: Colors.grey),
             ),
+            onTap: () {
+              Get.toNamed(AppRoutes.languaeview);
+            },
           ),
           Obx(
             () {
