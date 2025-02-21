@@ -20,6 +20,26 @@
       "request": "launch",
       "type": "dart",
       "flutterMode": "release"
+    },
+    {
+      "name": "flutter_chat",
+      "cwd": "lib\\library\\flutter_chat",
+      "request": "launch",
+      "type": "dart"
+    },
+    {
+      "name": "flutter_chat (profile mode)",
+      "cwd": "lib\\library\\flutter_chat",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "profile"
+    },
+    {
+      "name": "flutter_chat (release mode)",
+      "cwd": "lib\\library\\flutter_chat",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "release"
     }
   ]
 }
