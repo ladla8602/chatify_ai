@@ -44,7 +44,7 @@ UsageService.initialize(db);
 export const askChatGPT = onCall<ChatRequest, Promise<ChatResponse>>({
   maxInstances: 2,
   timeoutSeconds: 120,
-  memory: "128MiB",
+  memory: "512MiB",
 }, async (request) => {
   try {
     const { auth } = request;
@@ -65,7 +65,7 @@ export const askChatGPT = onCall<ChatRequest, Promise<ChatResponse>>({
 
     // Prepare messages
     const messages: Message[] = [
-      { role: "assistant", content: request.data.chatBot.botPrompt || "You are a helpful assistant." },
+      { role: "assistant", content: request.data.chatbot?.botPrompt || "You are a helpful assistant." },
       { role: "user", content: message },
     ];
     // Generate response
@@ -96,7 +96,7 @@ export const askChatGPT = onCall<ChatRequest, Promise<ChatResponse>>({
 export const generateAIImage = onCall<ImageGenerateRequest, Promise<ImageGenerateResponse>>({
   maxInstances: 2,
   timeoutSeconds: 120,
-  memory: "128MiB",
+  memory: "512MiB",
 }, async (request) => {
   try {
     const { auth } = request;
@@ -131,12 +131,10 @@ export const generateAIImage = onCall<ImageGenerateRequest, Promise<ImageGenerat
   }
 });
 
-
-// audio generated///
 export const generateSpeech = onCall<TextToSpeechRequest, Promise<TextToSpeechResponse>>({
   maxInstances: 2,
   timeoutSeconds: 120,
-  memory: "256MiB",
+  memory: "512MiB",
 }, async (request) => {
   try {
     const { auth } = request;
@@ -183,7 +181,7 @@ export const generateSpeech = onCall<TextToSpeechRequest, Promise<TextToSpeechRe
 export const getVoiceChatToken = onCall({
   maxInstances: 3,
   timeoutSeconds: 120,
-  memory: "256MiB",
+  memory: "512MiB",
 }, async (request) => {
   try {
     const { auth } = request;
@@ -251,7 +249,6 @@ export const getSubscriptionPlans = onCall(
     }
   }
 );
-
 
 // Create Customer in Stripe
 export const createStripeCustomer = onCall(async (request) => {
@@ -366,7 +363,6 @@ export const createSubscription = onCall(async (request) => {
     };
   }
 });
-
 
 export const stripeWebhook = functions.https.onRequest(
   async (request: functions.https.Request, response: any) => {

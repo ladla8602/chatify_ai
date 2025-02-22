@@ -58,8 +58,8 @@ android {
         release {
             signingConfig signingConfigs.release
 
-            minifyEnabled false
-            shrinkResources false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             ndk {
                 abiFilters 'armeabi-v7a','arm64-v8a'
@@ -78,5 +78,7 @@ dependencies {
   implementation("com.google.firebase:firebase-auth")
   implementation("com.google.firebase:firebase-crashlytics")
   implementation("com.google.firebase:firebase-analytics")
-  compileOnly 'com.stripe:stripe-android-issuing-push-provisioning:1.1.0'
+  
+  compileOnly "com.google.android.gms:play-services-wallet:21.3.0"
+  compileOnly 'com.stripe:stripe-android-issuing-push-provisioning:1.2.2'
 }

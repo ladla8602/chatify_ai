@@ -1,6 +1,6 @@
 export interface ChatRequest {
   message: string;
-  chatBot: any;
+  chatbot: any;
   provider: "openai" | "gemini" | "deepseek";
 }
 
