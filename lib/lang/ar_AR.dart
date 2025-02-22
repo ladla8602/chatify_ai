@@ -9,7 +9,7 @@ final Map<String, String> arAR = {
   "create_google_account": "أنشئ حسابك",
   "already_account": "هل لديك حساب بالفعل؟ ",
   "login_with_email": "تسجيل الدخول بالبريد الإلكتروني",
-  "are_you_sure_logout": "هل أنت متأكد أنك تريد تسجيل الخروج؟",
+  "logout_message": "هل أنت متأكد أنك تريد تسجيل الخروج؟",
   "email": "البريد الإلكتروني",
   "cancel": "إلغاء",
   "yes_logout": "نعم، تسجيل الخروج",

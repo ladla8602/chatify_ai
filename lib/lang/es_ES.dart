@@ -9,7 +9,7 @@ final Map<String, String> esES = {
   "create_google_account": "Crear cuenta",
   "already_account": "¿Ya tienes una cuenta? ",
   "login_with_email": "Iniciar sesión con email",
-  "are_you_sure_logout": "¿Estás seguro de que quieres cerrar sesión?",
+  "logout_message": "¿Estás seguro de que quieres cerrar sesión?",
   "email": "Correo electrónico",
   "cancel": "Cancelar",
   "yes_logout": "Sí, cerrar sesión",

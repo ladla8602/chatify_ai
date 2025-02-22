@@ -19,23 +19,6 @@ class _VoiceChatScreenState extends State<VoiceAssistantChatScreen> with SingleT
   late VoiceAssistantController _voiceAssistantController;
 
   @override
-  void initState() {
-    super.initState();
-    _animationController = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 2),
-    );
-    _voiceAssistantController = Get.put(VoiceAssistantController(animationController: _animationController));
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    Get.delete<VoiceAssistantController>();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
@@ -138,73 +121,95 @@ class _VoiceChatScreenState extends State<VoiceAssistantChatScreen> with SingleT
               ],
             ),
             const Spacer(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(),
-                GestureDetector(
-                  onTap: _voiceAssistantController.isListening.value ? _voiceAssistantController.stopRecording : _voiceAssistantController.startRecording,
-                  child: Container(
-                    height: 80,
-                    width: 80,
-                    padding: const EdgeInsets.all(22),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withValues(alpha: 0.2),
-                          spreadRadius: 2,
-                          blurRadius: 4,
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
-                      gradient: LinearGradient(
-                        colors: [
-                          Theme.of(context).colorScheme.primary,
-                          Theme.of(context).colorScheme.primary,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 28.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 45,
+                  ),
+                  GestureDetector(
+                    onTap: _voiceAssistantController.isListening.value ? _voiceAssistantController.stopRecording : _voiceAssistantController.startRecording,
+                    child: Container(
+                      height: 80,
+                      width: 80,
+                      padding: const EdgeInsets.all(22),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withValues(alpha: 0.2),
+                            spreadRadius: 2,
+                            blurRadius: 4,
+                            offset: const Offset(0, 2),
+                          ),
                         ],
+                        gradient: LinearGradient(
+                          colors: [
+                            Theme.of(context).colorScheme.primary,
+                            Theme.of(context).colorScheme.primary,
+                          ],
+                        ),
+                      ),
+                      child: Icon(
+                        _voiceAssistantController.isListening.value ? HugeIcons.strokeRoundedPause : HugeIcons.strokeRoundedMic01,
+                        color: Colors.white,
                       ),
                     ),
-                    child: Icon(
-                      _voiceAssistantController.isListening.value ? HugeIcons.strokeRoundedPause : HugeIcons.strokeRoundedMic01,
-                      color: Colors.white,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Container(
+                      height: 45,
+                      width: 45,
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Theme.of(context).colorScheme.primary,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.shade300,
+                            spreadRadius: 2,
+                            blurRadius: 4,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: Icon(
+                        HugeIcons.strokeRoundedMultiplicationSign,
+                        color: Colors.white,
+                        size: 20,
+                      ),
                     ),
                   ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: Container(
-                    height: 45,
-                    width: 45,
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Theme.of(context).colorScheme.primary,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.shade300,
-                          spreadRadius: 2,
-                          blurRadius: 4,
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                    child: Icon(
-                      HugeIcons.strokeRoundedMultiplicationSign,
-                      color: Colors.white,
-                      size: 20,
-                    ),
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    Get.delete<VoiceAssistantController>();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 2),
+    );
+    _voiceAssistantController = Get.put(VoiceAssistantController(animationController: _animationController));
   }
 
   Widget _buildHeader(BuildContext context) {

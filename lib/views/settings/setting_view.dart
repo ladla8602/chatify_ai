@@ -196,7 +196,7 @@ class SettingView extends StatelessWidget {
                           color: Colors.grey.shade300,
                         ),
                         const SizedBox(height: 16),
-                        Text('are_you_sure_logout'.tr),
+                        Text('logout_message'.tr),
                         const SizedBox(height: 16),
                         Row(
                           children: [

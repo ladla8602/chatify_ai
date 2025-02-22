@@ -20,26 +20,52 @@ class ImageGenerateView extends StatefulWidget {
   State<ImageGenerateView> createState() => _ImageGenerateViewState();
 }
 
+class ImageGenerateWigets extends StatelessWidget {
+  final String title;
+  final Color color;
+  final bool isSelected;
+  final String imagePath;
+  final VoidCallback onClick;
+  const ImageGenerateWigets({super.key, required this.title, required this.color, required this.isSelected, required this.imagePath, required this.onClick});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        GestureDetector(
+          onTap: onClick,
+          child: Container(
+            width: 105,
+            height: 150,
+            decoration: BoxDecoration(
+                color: isSelected ? Theme.of(context).primaryColor : Colors.transparent,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: isSelected ? Theme.of(context).primaryColor : Colors.grey.shade300, width: isSelected ? 2 : 1),
+                image: DecorationImage(
+                  image: NetworkImage(
+                    imagePath,
+                  ),
+                  fit: BoxFit.cover,
+                )),
+          ),
+        ),
+        SizedBox(height: 8),
+        Text(
+          title,
+          style: TextStyle(
+            color: isSelected ? Theme.of(context).primaryColor : Theme.of(context).colorScheme.onSurface,
+            fontSize: 14,
+            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 class _ImageGenerateViewState extends State<ImageGenerateView> {
   late ImageGenController _imageGenController;
   int _selectedChipIndex = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    _imageGenController = Get.find<ImageGenController>();
-    initializeImageGen();
-  }
-
-  initializeImageGen() {
-    _imageGenController
-      ..imageGenCommand.art = 'None'
-      ..imageGenCommand.model = 'dall-e-2'
-      ..imageGenCommand.size = imageSizeOptionsDalle2.first
-      ..imageGenCommand.style = 'None'
-      ..imageGenCommand.quality = 'standard';
-    _imageGenController.loadInitialMessages();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +90,7 @@ class _ImageGenerateViewState extends State<ImageGenerateView> {
           'image_generate'.tr,
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
-        centerTitle: true,
+        // centerTitle: true,
         actions: [GetPrimeWigets(), SizedBox(width: 16)],
       ),
       drawer: DrawerWigets(),
@@ -308,47 +334,21 @@ class _ImageGenerateViewState extends State<ImageGenerateView> {
       ),
     );
   }
-}
 
-class ImageGenerateWigets extends StatelessWidget {
-  final String title;
-  final Color color;
-  final bool isSelected;
-  final String imagePath;
-  final VoidCallback onClick;
-  const ImageGenerateWigets({super.key, required this.title, required this.color, required this.isSelected, required this.imagePath, required this.onClick});
+  initializeImageGen() {
+    _imageGenController
+      ..imageGenCommand.art = 'None'
+      ..imageGenCommand.model = 'dall-e-2'
+      ..imageGenCommand.size = imageSizeOptionsDalle2.first
+      ..imageGenCommand.style = 'None'
+      ..imageGenCommand.quality = 'standard';
+    _imageGenController.loadInitialMessages();
+  }
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        GestureDetector(
-          onTap: onClick,
-          child: Container(
-            width: 105,
-            height: 150,
-            decoration: BoxDecoration(
-                color: isSelected ? Theme.of(context).primaryColor : Colors.transparent,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: isSelected ? Theme.of(context).primaryColor : Colors.grey.shade300, width: isSelected ? 2 : 1),
-                image: DecorationImage(
-                  image: NetworkImage(
-                    imagePath,
-                  ),
-                  fit: BoxFit.cover,
-                )),
-          ),
-        ),
-        SizedBox(height: 8),
-        Text(
-          title,
-          style: TextStyle(
-            color: isSelected ? Theme.of(context).primaryColor : Theme.of(context).colorScheme.onSurface,
-            fontSize: 14,
-            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-          ),
-        ),
-      ],
-    );
+  void initState() {
+    super.initState();
+    _imageGenController = Get.find<ImageGenController>();
+    initializeImageGen();
   }
 }

@@ -9,7 +9,7 @@ final Map<String, String> enUS = {
   "create_google_account": "Create your account",
   "already_account": "Already have an account? ",
   "login_with_email": "Login with email",
-  "are_you_sure_logout ": "Are you sure you want to logout?",
+  "logout_message": "Are you sure you want to logout?",
   "email": "Email",
   "cancel": "Cancel",
   "yes_logout": "Yes,Logout",

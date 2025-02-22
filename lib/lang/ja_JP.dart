@@ -7,7 +7,7 @@ final Map<String, String> jaJP = {
   "create_google_account": "アカウントを作成",
   "already_account": "すでにアカウントをお持ちですか？ ",
   "login_with_email": "メールでログイン",
-  "are_you_sure_logout": "本当にログアウトしますか？",
+  "logout_message": "本当にログアウトしますか？",
   "email": "メールアドレス",
   "cancel": "キャンセル",
   "yes_logout": "はい、ログアウト",

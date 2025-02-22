@@ -9,7 +9,7 @@ final Map<String, String> ruRU = {
   "create_google_account": "Создать аккаунт",
   "already_account": "Уже есть аккаунт? ",
   "login_with_email": "Войти с помощью email",
-  "are_you_sure_logout": "Вы уверены, что хотите выйти?",
+  "logout_message": "Вы уверены, что хотите выйти?",
   "email": "Электронная почта",
   "cancel": "Отмена",
   "yes_logout": "Да, выйти",

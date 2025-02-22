@@ -19,42 +19,52 @@ class AudioGenerateView extends StatefulWidget {
   State<AudioGenerateView> createState() => _AudioGenerateViewState();
 }
 
+class AudioGenerateWigets extends StatelessWidget {
+  final String title;
+
+  final bool isSelected;
+  final String imagePath;
+  final VoidCallback onClick;
+  const AudioGenerateWigets({super.key, required this.title, required this.isSelected, required this.imagePath, required this.onClick});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        GestureDetector(
+          onTap: onClick,
+          child: Container(
+            width: 75,
+            height: 75,
+            decoration: BoxDecoration(
+                color: isSelected ? Theme.of(context).primaryColor : Colors.transparent,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: isSelected ? Theme.of(context).primaryColor : Colors.grey.shade300, width: isSelected ? 2 : 1),
+                image: DecorationImage(
+                  image: NetworkImage(
+                    imagePath,
+                  ),
+                  fit: BoxFit.cover,
+                )),
+          ),
+        ),
+        SizedBox(height: 6),
+        Text(
+          title,
+          style: TextStyle(
+            color: isSelected ? Theme.of(context).primaryColor : Theme.of(context).colorScheme.onSurface,
+            fontSize: 12,
+            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 class _AudioGenerateViewState extends State<AudioGenerateView> {
   final AudioPlayer audioPlayer = AudioPlayer();
   late AudioGenerateController audioGenController;
-
-  @override
-  void initState() {
-    super.initState();
-    Get.put(AudioGenerateController());
-    audioGenController = Get.find<AudioGenerateController>();
-    initializeAudioGen();
-  }
-
-  initializeAudioGen() {
-    audioGenController
-      ..speechGenCommand.text = ''
-      ..speechGenCommand.voice = 'alloy';
-
-    audioGenController.loadInitialMessages();
-  }
-
-  Future<void> _handleGenerate(BuildContext context) async {
-    if (audioGenController.promptController.text.trim().isEmpty) {
-      Get.snackbar(
-        'Error',
-        'Please enter text to generate audio',
-        snackPosition: SnackPosition.BOTTOM,
-      );
-      return;
-    }
-
-    audioGenController.speechGenCommand
-      ..text = audioGenController.promptController.text.trim()
-      ..voice = audioGenController.audioGenerate[audioGenController.isSelected.value]['voice'];
-
-    await audioGenController.handleSendPressed();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +99,7 @@ class _AudioGenerateViewState extends State<AudioGenerateView> {
           'audio_generate'.tr,
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
-        centerTitle: true,
+        // centerTitle: true,
         actions: [GetPrimeWigets(), SizedBox(width: 16)],
       ),
       drawer: DrawerWigets(),
@@ -253,47 +263,37 @@ class _AudioGenerateViewState extends State<AudioGenerateView> {
       ),
     );
   }
-}
 
-class AudioGenerateWigets extends StatelessWidget {
-  final String title;
+  initializeAudioGen() {
+    audioGenController
+      ..speechGenCommand.text = ''
+      ..speechGenCommand.voice = 'alloy';
 
-  final bool isSelected;
-  final String imagePath;
-  final VoidCallback onClick;
-  const AudioGenerateWigets({super.key, required this.title, required this.isSelected, required this.imagePath, required this.onClick});
+    audioGenController.loadInitialMessages();
+  }
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        GestureDetector(
-          onTap: onClick,
-          child: Container(
-            width: 75,
-            height: 75,
-            decoration: BoxDecoration(
-                color: isSelected ? Theme.of(context).primaryColor : Colors.transparent,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: isSelected ? Theme.of(context).primaryColor : Colors.grey.shade300, width: isSelected ? 2 : 1),
-                image: DecorationImage(
-                  image: NetworkImage(
-                    imagePath,
-                  ),
-                  fit: BoxFit.cover,
-                )),
-          ),
-        ),
-        SizedBox(height: 6),
-        Text(
-          title,
-          style: TextStyle(
-            color: isSelected ? Theme.of(context).primaryColor : Theme.of(context).colorScheme.onSurface,
-            fontSize: 12,
-            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-          ),
-        ),
-      ],
-    );
+  void initState() {
+    super.initState();
+    Get.put(AudioGenerateController());
+    audioGenController = Get.find<AudioGenerateController>();
+    initializeAudioGen();
+  }
+
+  Future<void> _handleGenerate(BuildContext context) async {
+    if (audioGenController.promptController.text.trim().isEmpty) {
+      Get.snackbar(
+        'Error',
+        'Please enter text to generate audio',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      return;
+    }
+
+    audioGenController.speechGenCommand
+      ..text = audioGenController.promptController.text.trim()
+      ..voice = audioGenController.audioGenerate[audioGenController.isSelected.value]['voice'];
+
+    await audioGenController.handleSendPressed();
   }
 }
