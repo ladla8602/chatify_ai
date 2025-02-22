@@ -13,13 +13,12 @@ class ChatbotController extends GetxController {
 
   // Getters
   List<ChatBot> get chatbots => _chatbots;
-  bool get isLoading => _isLoading.value;
   String? get error => _error.value;
+  bool get isLoading => _isLoading.value;
 
-  @override
-  void onInit() {
-    super.onInit();
-    getChatbots();
+  void clearCache() {
+    GetStorage().remove(FirebasePaths.chatBotsName);
+    _chatbots.clear();
   }
 
   Future<void> getChatbots({bool forceRefresh = false}) async {
@@ -54,8 +53,9 @@ class ChatbotController extends GetxController {
     }
   }
 
-  void clearCache() {
-    GetStorage().remove(FirebasePaths.chatBotsName);
-    _chatbots.clear();
+  @override
+  void onInit() {
+    super.onInit();
+    getChatbots(forceRefresh: true);
   }
 }

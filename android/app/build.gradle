@@ -47,6 +47,10 @@ android {
        }
    }
 
+   configurations {
+        all*.exclude group: 'com.stripe.android', module: 'push-provisioning'
+    }
+
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
@@ -54,8 +58,8 @@ android {
         release {
             signingConfig signingConfigs.release
 
-            minifyEnabled true
-            shrinkResources true
+            minifyEnabled false
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             ndk {
                 abiFilters 'armeabi-v7a','arm64-v8a'
@@ -74,4 +78,5 @@ dependencies {
   implementation("com.google.firebase:firebase-auth")
   implementation("com.google.firebase:firebase-crashlytics")
   implementation("com.google.firebase:firebase-analytics")
+  compileOnly 'com.stripe:stripe-android-issuing-push-provisioning:1.1.0'
 }
