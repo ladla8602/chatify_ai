@@ -17,7 +17,7 @@ class SetPasswordView extends StatelessWidget {
   Widget build(BuildContext context) {
     final TextEditingController passwordController = TextEditingController();
     final AuthController authController = Get.find<AuthController>();
-    final FirebaseAuth auth = FirebaseAuth.instance;
+    // final FirebaseAuth auth = FirebaseAuth.instance;
     final formKey = GlobalKey<FormState>();
     Future<void> setPassword() async {
       try {

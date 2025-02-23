@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum PanelShape { rectangle, rounded }
-
 enum DockType { inside, outside }
-
-enum PanelState { open, closed }
 
 class FloatingMenuPanel extends StatefulWidget {
   //final Function(bool) isOpen;
@@ -62,6 +58,10 @@ class FloatingMenuPanel extends StatefulWidget {
   _FloatBoxState createState() => _FloatBoxState();
 }
 
+enum PanelShape { rectangle, rounded }
+
+enum PanelState { open, closed }
+
 class _FloatBoxState extends State<FloatingMenuPanel> {
   // Required to set the default state to closed when the widget gets initialized;
   PanelState _panelState = PanelState.closed;
@@ -80,14 +80,6 @@ class _FloatBoxState extends State<FloatingMenuPanel> {
   // e.g: When panel opened or closed, the position should change in a different
   // speed than when the panel is being dragged;
   int _movementSpeed = 0;
-
-  @override
-  void initState() {
-    _positionTop = widget.positionTop ?? 0;
-    _positionRight = widget.positionRight ?? 0;
-
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -364,6 +356,14 @@ class _FloatBoxState extends State<FloatingMenuPanel> {
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    _positionTop = widget.positionTop ?? 0;
+    _positionRight = widget.positionRight ?? 0;
+
+    super.initState();
   }
 }
 

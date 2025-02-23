@@ -43,9 +43,7 @@ class AboutChatifyScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('feedback'.tr,
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                  Text('feedback'.tr, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   Icon(HugeIcons.strokeRoundedArrowRight01),
                 ],
               ),
@@ -53,9 +51,7 @@ class AboutChatifyScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('rate us'.tr,
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                  Text('rate us'.tr, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   Icon(HugeIcons.strokeRoundedArrowRight01),
                 ],
               ),
@@ -63,9 +59,7 @@ class AboutChatifyScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('visit_website'.tr,
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                  Text('visit_website'.tr, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   Icon(HugeIcons.strokeRoundedArrowRight01),
                 ],
               ),
@@ -73,9 +67,7 @@ class AboutChatifyScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('follow_us'.tr,
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                  Text('follow_us'.tr, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                   Icon(HugeIcons.strokeRoundedArrowRight01),
                 ],
               ),
