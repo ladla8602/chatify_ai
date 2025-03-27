@@ -49,3 +49,5 @@ app.*.map.json
 .fvm/
 /firebasedata
 /functions/firebase-export*
+/functions/.env
+/functions/.env.default
