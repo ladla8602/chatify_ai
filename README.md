@@ -23,6 +23,34 @@ adb shell setprop debug.firebase.analytics.app com.fastlab.chatify_ai
 flutter build apk --release --no-tree-shake-icons
 flutter build appbundle --release --no-tree-shake-icons
 ```
+# Screenshots
+
+<table>
+  <tr>
+    <td><img src="https://github.com/user-attachments/assets/e41db2fa-2617-4581-a299-1303972d3a61" width="auto"></td>
+    <td><img src="https://github.com/user-attachments/assets/4526e009-0a29-4fe7-95a7-1d75749a343a" width="auto"></td>
+    <td><img src="https://github.com/user-attachments/assets/7a4d1b72-9a02-4afb-a613-751b8e5d5c85" width="auto"></td>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/user-attachments/assets/3e76b2a5-bbfa-4a72-a6c4-8748e7b0c52d" width="auto"></td>
+    <td><img src="https://github.com/user-attachments/assets/09533155-b765-47b3-9e4f-40251c8415e7" width="auto"></td>
+    <td><img src="https://github.com/user-attachments/assets/aefaec18-69d3-450a-8028-ff3a96d8c641" width="auto"></td>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/user-attachments/assets/06c1df3e-2ebd-44b4-8cb9-41c2125c415f" width="auto"></td>
+    <td><img src="https://github.com/user-attachments/assets/600a77c6-ef7d-4508-ac51-33a4fc245128" width="auto"></td>
+    <td><img src="https://github.com/user-attachments/assets/334bcc3f-639b-4af6-9a70-d67a6a1e1402" width="auto"></td>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/user-attachments/assets/7a32a1b2-5177-44a3-8849-1d691ca7408d" width="auto"></td>
+    <td><img src="https://github.com/user-attachments/assets/13204759-f986-4f59-924c-80e2e5a261d7" width="auto"></td>
+    <td><img src="https://github.com/user-attachments/assets/4476a0fe-11d5-43cc-95ad-0ed558c44005" width="auto"></td>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/user-attachments/assets/4a85b46e-735c-462a-961d-8d84e3fe0548" width="auto"></td>
+  </tr>
+</table>
+
 
 # Setup Firebase
 
