@@ -27,4 +27,13 @@
 #Crashlytics
 -keepattributes SourceFile,LineNumberTable        # Keep file names and line numbers.
 -keep public class * extends java.lang.Exception  
--keep class com.fastlab.vertex_ai.** { *; }.   # Unique App id
+-keep class com.fastlab.chatify_ai.** { *; }.   # Unique App id
+
+#Stripe
+-dontwarn com.stripe.android.pushProvisioning.PushProvisioningActivity$g
+-dontwarn com.stripe.android.pushProvisioning.PushProvisioningActivityStarter$Args
+-dontwarn com.stripe.android.pushProvisioning.PushProvisioningActivityStarter$Error
+-dontwarn com.stripe.android.pushProvisioning.PushProvisioningActivityStarter
+-dontwarn com.stripe.android.pushProvisioning.PushProvisioningEphemeralKeyProvider
+
+-dontwarn com.google.android.gms.tapandpay.TapAndPayClient
